@@ -408,7 +408,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Wavelet Multiresolution Spatio-Temporal Modelling Using the Integro-Difference Equation}
+\title{Spatio-Temporal Modelling Using the Integro-Difference Equation}
 %
 %
 % author names and IEEE memberships
@@ -420,10 +420,17 @@
 % was not built to handle multiple paragraphs
 %
 
-\author{Parham Aram,
-        Michael Dewar and Visakan Kadirkamanathan~\IEEEmembership{Member,~IEEE}  % <-this % stops a space
-\thanks{P. Aram and V. Kadirkamanathan are with the Department of Automatic Control and Systems Engineering, University of Sheffield, Sheffield, S1 3JD, U.K. (e-mail:p.aram@sheffield.ac.uk; visakan@sheffield.ac.uk).}% <-this % stops a space
-\thanks{M. Dewar is with the School of Informatics, University of Edinburgh, Edinburgh, EH8 9AB, U.K. (e-mail:mike.dewar@inf.ed.ac.uk)}}% <-this % stops a space
+\author{Parham Aram, Dean R. Freestone, 
+        Michael Dewar, David B. Grayden, Visakan Kadirkamanathan~\IEEEmembership{Member,~IEEE} and Kenneth Scerri  % <-this % stops a space
+\thanks{P. Aram is with the Theoretical Neuroscience Group, UMR 1106, Institut de Neurosciences des Systemes, 13385 Marseille, France (e-mail:parham.aram@univ-amu.fr).}% <-this % stops a space
+\thanks{D. R. Freestone and D. B. Grayden are with the Department of Electrical and Electronic Engineering, The University of Melbourne,
+Parkville, VIC, Australia (e-mail:deanrf@unimelb.edu.au; grayden@unimelb.edu.au).}
+\thanks{M. Dewar is with bit.ly, New York City, USA (e-mail:md@bit.ly)}  
+
+\thanks{V. Kadirkamanathan is with the Department of Automatic Control and Systems Engineering, University of Sheffield, Sheffield, S1 3JD, U.K. (e-mail: visakan@sheffield.ac.uk).}
+\thanks{K. Scerri is with the Department of Systems and Control Engineering, University of Malta, Msida, MSD, Malta (e-mail:kenneth.scerri@um.edu.mt).}}
+
+
 %\thanks{Manuscript received April 19, 2005; revised January 11, 2007.}}
 
 % note the % following the last \IEEEmembership and also \thanks - 
@@ -539,26 +546,6 @@ Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation b
 %  when the system spatial bandwidth and the kernel support are unknown.
 
 Behaviour of the spatial field is often of interest at a variety of scales \cite{Wiens1989,Chelton1994,Schmidt2005,Schnell2007}. At each scale, an appropriate model should be adopted to adequately reflect the underlying phenomenon. The spatial field may have features at multiple scales either naturally or as a consequence of the measurement process \cite{Wilsky2002,BAKSHI1999} and hence modelling methods that represent the field at multiple scales are essential. Multiresolution Approximation (MRA) \cite{Meyer1993,Mallat1989a,Mallat1989b}  provides such a modelling framework in which information at different scales can be represented simultaneously.
-%  and can be used for the analysis and modelling of systems in which the spatio-temporal dispersal patterns are markedly different at the global and local scales \cite{Chelton1994,WIKLE2003,Schnell2007}. At each scale, an appropriate model should be adopted to adequately reflect the underlying dynamics. 
-
-% At the same time, a successful multiresolution representation opens up possibilities to further investigate the system in order to develop more efficient modelling schemes. For instance, in irregular observation scenario information at different scales can be integrated in a model with varying scales each suited for a specific region. %Often a proper scale is not known a priori and hence MRA can gives insight to appropriate levels is necessary to adequately capture the behaviour of the system.
-
-% three distinct
-% ways in which multiresolution features can enter into a signal or image analysis problem. 
-
-% The spatial field may have features at multiple scales by nature,  or regardless the underlying nature of the field ,  observations might be collected at several different resolutions. In such cases, modelling methods that represent the field at multiple scales are better suited than single scale models.
-
-% The spatial field may possess features at multiple scales by nature,  or regardless the underlying nature of the field ,  observations might be collected at several different resolutions. Therefore modelling methods that represent the field at multiple scales are better suited than single scale models. Multiresolution approximation (MRA) \cite{Meyer1993,Mallat1989a}  provides such modelling framework in which information at different scales can be obtained simultaneously. 
-
-% One example is multiresolution representation of the gravity field in which a global trend (coarse level) is computed from the satellite data and the regional and local information (fine level) is obtained from terrestrial and airbone data sets \cite{Schmidt2005}. 
-
-% In addition to representing a phenomenon at different scales, MRA approximation properties make them attractive for many identification problems. MRA has been implemented in both static and dynamic spatio-temporal  modelling contexts, for example in static modelling it has been used to provide a multiresolution covariance structure for non-stationary models which can adapt to heterogeneous spatial correlations \cite{D.Nychka2002}. In dynamic modelling MRA is used to identify CML models, which infer spatio-temporal patterns from measured data \cite{Billings2006}.
-
-
-%   Semi-orthogonal B-spline wavelets are compactly supported and optimally localised in time and frequency. 
-
-In practice, MRA can be implemented using different types of wavelet and scaling functions. Semi-orthogonal B-spline wavelets \cite{Chui1992,Unser1993} benefit from distinctive properties which are useful for system identification purposes. They are compactly supported and have a closed-form analytic expression which allows simple manipulations such as integration \cite{Unser1992,Chui1992a}. This class of wavelets has been successfully applied in approximation schemes such as wavelet networks\cite{G.P.Liu2000,Jun2005} and wavelet based CML models \cite{Billings2006}. 
-
 
 In this paper a multiresolution approximation of the IDE based on the model proposed in \cite{Dewar2009} is presented. B-spline scaling and wavelet functions are used to decompose both the kernel and the spatial field. Maximum likelihood estimates of the derived parametric state-space model are obtained using the EM-based algorithm of  \cite{Dewar2009}.  In this model, the kernel and the spatio-temporal dynamics of the field are viewed at different spatial scales. Whereas in \cite{Scerri2009} different spatial scales were examined and one chosen, the work presented herein represents the system at a number of different spatial scales concurrently.
 % - a property that the alternative models described above do not typically share.
@@ -1066,8 +1053,7 @@ Therefore
  \newpage
 \bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
-\bibliography{IEEEabrv,../../../Papers/SpatioTemporalSystems,../../../Papers/Wavelet}
-
+\bibliography{IEEEabrv,IEEECorr}  
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
