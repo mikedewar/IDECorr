@@ -545,7 +545,7 @@ Another such model is the Integro-Difference Equation (IDE). These models have r
 Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation by decomposing the kernel and the field using a set of spectral basis functions. An alternative approach for the decomposition of the IDE was introduced in \cite{Dewar2009} where the resulting state and parameter space dimensions are independent of the number of observation locations. This is crucial not only for model parsimony but also has implications for studying systems observed at a high spatial resolution. In this method an Expectation-Maximisation (EM)  algorithm  was used to estimate both the field and the kernel from the observed data. A similar approach is adopted by \cite{Scerri2009} which developed a model selection procedure by considering various spatial scales at which to represent the system. %choose the appropriate model amongst models of varying Gaussian scale parameters incorporating spatio-temporal frequency domain properties of the data.
 %  when the system spatial bandwidth and the kernel support are unknown.
 
-Behaviour of the spatial field is often of interest at a variety of scales \cite{Wiens1989,Chelton1994,Schmidt2005,Schnell2007}. At each scale, an appropriate model should be adopted to adequately reflect the underlying phenomenon. The spatial field may have features at multiple scales either naturally or as a consequence of the measurement process \cite{Wilsky2002,BAKSHI1999} and hence modelling methods that represent the field at multiple scales are essential. Multiresolution Approximation (MRA) \cite{Meyer1993,Mallat1989a,Mallat1989b}  provides such a modelling framework in which information at different scales can be represented simultaneously.
+% Behaviour of the spatial field is often of interest at a variety of scales \cite{Wiens1989,Chelton1994,Schmidt2005,Schnell2007}. At each scale, an appropriate model should be adopted to adequately reflect the underlying phenomenon. The spatial field may have features at multiple scales either naturally or as a consequence of the measurement process \cite{Wilsky2002,BAKSHI1999} and hence modelling methods that represent the field at multiple scales are essential. Multiresolution Approximation (MRA) \cite{Meyer1993,Mallat1989a,Mallat1989b}  provides such a modelling framework in which information at different scales can be represented simultaneously.
 
 In this paper a multiresolution approximation of the IDE based on the model proposed in \cite{Dewar2009} is presented. B-spline scaling and wavelet functions are used to decompose both the kernel and the spatial field. Maximum likelihood estimates of the derived parametric state-space model are obtained using the EM-based algorithm of  \cite{Dewar2009}.  In this model, the kernel and the spatio-temporal dynamics of the field are viewed at different spatial scales. Whereas in \cite{Scerri2009} different spatial scales were examined and one chosen, the work presented herein represents the system at a number of different spatial scales concurrently.
 % - a property that the alternative models described above do not typically share.
@@ -655,166 +655,60 @@ In this paper a multiresolution approximation of the IDE based on the model prop
 % Note that, LaTeX2e, unlike IEEE journals, places footnotes above bottom
 % floats. This can be corrected via the \fnbelowfloat command of the
 % stfloats package.
-\section{MRA of the IDE in State-Space}
+\section{Stochastic IDE model}
 The spatially homogeneous, linear IDE is given by
 \begin{equation}
- z_{t+1}\left(\mathbf{s}\right)=\int_{\mathcal{S}}k\left(\mathbf{s}-\mathbf{r}\right)z_{t}\left(\mathbf{r}\right)d\mathbf{r}+e_{t}\left(\mathbf{s}\right)
+ z_{t+1}\left(\mathbf{r}\right)=\int_{\Omega}k\left(\mathbf{r}-\mathbf{r}'\right)z_{t}\left(\mathbf{r}'\right)d\mathbf{r}'+e_{t}\left(\mathbf{r}\right)
 \label{eq:ConvolutionIntegral}
 \end{equation}
-where $t\in \mathbb{Z}_0 $ denotes discrete time, $\mathbf{s},\mathbf{r} \in \mathcal{S} \subset \mathbb{R}^{n_\mathcal{S}}$ are spatial locations in $n_{\mathcal S}$-dimensional physical space, where $n_{\mathcal S} \in \left\lbrace 1,2,3 \right\rbrace $. The continuous spatial field at time $t$ and at location $\mathbf s$ is denoted $z_t\left(\mathbf s\right)$. The model dynamics  are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{s}-\mathbf{r}\right):\mathbb{R}^{n_\mathcal{S}}\rightarrow \mathbb{R}$ which maps the current spatial field to the next spatial field via the integral (\ref{eq:ConvolutionIntegral}). The disturbance $e_{t}(\mathbf{s})$ is a zero-mean normally distributed noise process, spatially coloured but temporally independent, with covariance 
+where $t\in \mathbb{Z}_0 $ denotes discrete time, $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n$-dimensional physical space, where $n \in \left\lbrace 1,2,3 \right\rbrace $. The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The model dynamics  are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}-\mathbf{r}'\right):\mathbb{R}^{n}\rightarrow \mathbb{R}$ which maps the current spatial field to the next spatial field via the integral (\ref{eq:ConvolutionIntegral}). The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially coloured but temporally independent, with covariance 
 \begin{equation}
-cov\left(e_{t}\left(\mathbf{s}\right),e_{t+\tau}\left(\mathbf{r}\right)\right)=
-\begin{cases}
-\eta\left(\mathbf{s}-\mathbf{r}\right), & \tau=0 \\
-0 & \mathrm{otherwise}
-\end{cases}
-\label{eq:FieldCovariance}
+cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d\eta(\mathbf{r}-\mathbf{r'})\delta(t-t'),
+\label{eq:FieldDisturbance}
 \end{equation}
-for any $\tau \in \mathbb{Z}$, where $\eta\left(\mathbf s-\mathbf r \right)$ is a  spatially homogeneous covariance function. The spatial field is observed by
+where $\eta(\mathbf{r}-\mathbf{r'})$ is a spatially homogeneous covariance function, $\sigma_d$ is disturbance variance and $\delta(\cdot)$ is the Dirac-delta function. The mapping between the spatial field and the observations, denoted by $\mathbf{y}_t$, is modeled using the observation function that incorporates sensors with a spatial extent by
+\begin{equation}\label{eq:ObservationEquation}
+	y_t(\mathbf{r}) = \int_{\Omega} { m\left(\mathbf{r}-\mathbf{r}'\right) z_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
+\end{equation}
+where $m\left(\mathbf{r}-\mathbf{r}'\right)$ is the observation kernel defined by the Gaussian
 \begin{equation}
- \mathbf{y}_{t}=\mathbf{z}_{t}+\mathbf{v}_t
-\label{eq:observation equation}
+	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
 \end{equation}
-where the observation vector $\mathbf{y}_{t}=[y_t(\mathbf{s}_1) y_t(\mathbf{s}_2)\cdots y_t(\mathbf{s}_{n_y})]^\top$, compiled at $n_{y}$ spatial locations and at time $t$, is corrupted by an i.i.d normally distributed zero-mean white noise $\mathbf{v}_{t}\sim \mathcal{N}\left(\mathbf{0},\mathbf{\Sigma}_{v}\right)$ with $\mathbf{\Sigma}_{v}=\sigma_v^2\mathbf I_{n_y} $. It is assumed here that $\boldsymbol\Sigma_v$ and $\eta\left(\mathbf s-\mathbf r \right)$ are known. The superscript $\top$ denotes the transpose operator.
+where $\sigma_m$ sets the kernel width. The superscript $\top$ denotes the transpose operator and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix. 
+\subsection{Estimation of Connectivity Kernel Support}
+For the derivation of the spatial properties estimator of the field equations we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
+\begin{equation}
+	\int_\Omega a(\mathbf{r}-\mathbf{r}')b(\mathbf{r}')d\mathbf{r}' = (a\ast b)(\mathbf{r}),
+\end{equation}
+and the spatial cross-correlation shall be denoted as 
+\begin{equation}
+	\int_\Omega a(\mathbf{r})b(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r} = (a\star b)(\boldsymbol{\tau}).
+\end{equation} 
+The spatial relationship between consecutive observations is governed by the shape of the connectivity kernel. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape. To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as
+\begin{equation}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\tau}\right),
+\end{equation}
+where $\tau$ is the spatial shift. The goal of the derivation is to make the necessary substitutions and simplifications to get an expression of the cross-correlation as a function of the connectivity kernel. In the next step we substitute equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and expand to give
+\begin{equation}
+	R_{y_{t+1}y_t}\left(\boldsymbol{\tau}\right) = \left(\left(m \ast z_{t+1}\right)\star y_t\right)\left(\boldsymbol{\tau}\right) + \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
+\end{equation}
+Next we substitute equation~\ref{eq:ConvolutionIntegral} for $z_{t+1}(\mathbf{r})$ giving 
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(k\ast z_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\\
+	&= \xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\tau}) \nonumber\\
+	&\quad+ T_s \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
+	&\quad+ \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
+	&\quad+ (\varepsilon_{t+1} \star y_t)(\boldsymbol{\tau}).
+\end{align}
+Now we take the expectation over time, so that the observation noise and process disturbance terms have minimal effect on the result, giving 
+\begin{align}\label{eq:ExpectationToCancelNoise}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E}[\xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\tau})] \nonumber \\
+	 &\quad+ T_s \mathbf{E}[\left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})],
+\end{align}
+since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. 
+The cross-correlation is further simplified by recognizing that the first term on right hand side of equation~\ref{eq:ExpectationToCancelNoise} can be written as
 
 
-Assuming $z_t(.)$ and $k(.)$ are square-integrable functions, MRA of the one-dimensional IDE can be obtained by expanding  both the field and the kernel in the integral (\ref{eq:ConvolutionIntegral}) in terms of the translations and dilations of a scaling function $\phi(s)$ and a mother wavelet $\psi(s)$. For the one-dimensional kernel this is given by,
-\begin{equation}
- k\left(s-r\right)=\sum_{l \in \mathbb{Z}}\alpha_{j_0,l}\phi_{j_0,l}\left(s-r\right)+\sum_{j\geq j_0}^{\infty} \sum_{l \in \mathbb{Z}}\beta_{j,l}\psi_{j,l}\left(s-r\right) 
-\label{eq:KernelExpansion}
-\end{equation}
-In this expansion, $\alpha_{j_0,l}$ are the approximation coefficients  at lowest scale $j_0$ and $ \beta_{j,l}$ represent the detail coefficients at different scales $j$, with $\phi_{j,l}\left(s\right)=2^{\frac{j}{2}}\phi\left(2^js-l\right) $ and $\psi_{j,l}\left(s\right)=2^{\frac{j}{2}}\psi\left(2^js-l\right)$. Integers $j$ and $l$ are called scale and translation parameters accordingly. The one-dimensional field can similarly be decomposed as
-\begin{equation}
- z_t\left(s\right)=\sum_{l \in \mathbb{Z}}x_{t,j_{0},l}\phi_{j_{0},l}\left(s\right)+\sum_{j\geq j_0}^{\infty} \sum_{l \in \mathbb{Z}} \check{x}_{t,j,l}\psi_{j,l}\left(s\right)
-\label{eq:FieldExpansion}
-\end{equation}
-where $ x_{t,j_{0},l}$ and $\check{x}_{t,j,l} $ are the coefficients of the expansion at time $t$.
-A  two-dimensional MRA can be implemented using 2-D scaling and wavelet functions built up  using the tensor-product approach \cite{Meyer1992,Mallat1998}. We write the 2-D scaling function as
-\begin{equation}
- \phi_{j,\mathbf{l}}\left(s_1,s_2\right)=\phi_{j,l_1}\left(s_1\right)\phi_{j,l_2}\left(s_2\right)
-\label{eq:2Dscalingfunction}
-\end{equation}
-and three 2-D wavelet functions $ \psi^{(n)} \left(\mathbf{s}\right)$ where $n=1,2,3$ as
-\begin{equation}
- \psi_{j,\mathbf{l}}^{(1)}\left(s_1,s_2\right)=\phi_{j,l_1}\left(s_1\right)\psi_{j,l_2}\left(s_2\right)
-\label{eq:2Dwavelet_1}
-\end{equation}
-\begin{equation}
- \psi_{j,\mathbf{l}}^{(2)}\left(s_1,s_2\right)=\psi_{j,l_1}\left(s_1\right)\phi_{j,l_2}\left(s_2\right)
-\label{eq:2Dwavelet_2}
-\end{equation}
-\begin{equation}
- \psi_{j,\mathbf{l}}^{(3)}\left(s_1,s_2\right)=\psi_{j,l_1}\left(s_1\right)\psi_{j,l_2}\left(s_2\right)
-\label{eq:2Dwavelet_3}
-\end{equation}
-for $j \in \mathbb{Z}$ and, $\mathbf{l} \in \mathbb{Z}^2$, where $\psi_{j,\mathbf{l}}^{(1)},  \psi_{j,\mathbf{l}}^{(2)}$ and $\psi_{j,\mathbf{l}}^{(3)} $ extract fine features of the 2-D field at vertical, horizontal and diagonal orientations respectively.
-This can be generalised to $d$-dimensional MRA by introducing the scaling function
-\setlength{\arraycolsep}{0.0em}
-\begin{eqnarray}
-  \phi_{j,\mathbf{l}}\left(s_1,s_2, \cdots s_d\right)&=&\phi_{j,l_1}\left(s_1\right)\phi_{j,l_2}\left(s_2\right) \cdots \phi_{j,l_d}\left(s_d\right) \label{eq:d-dimensionalscalingfunction}\\
- &&j \in \mathbb{Z}, \quad \mathbf{l} \in \mathbb{Z}^d \nonumber
-\end{eqnarray}
-\setlength{\arraycolsep}{5pt}
-and $2^d-1$ wavelet functions $ \psi^{(n)} \left(\mathbf{s}\right), n=1, \cdots,2^d-1$ with a procedure similar to the 2-D case. Using these basis functions, multi-dimensional MRA of the kernel and the field can be obtained by
-\setlength{\arraycolsep}{0.0em}
-\begin{eqnarray}
- k\left(\mathbf{s}-\mathbf{r}\right)&=&\sum_{\mathbf{l}\in \mathbb{Z}^d}\alpha_{j_0,\mathbf{l}}\phi_{j_0,\mathbf{l}}\left(\mathbf{s}-\mathbf{r}\right) \nonumber \\
-&+&\sum_{j\geq j_0}^{\infty} \sum_{\mathbf{l}\in \mathbb{Z}^d}\sum_{i=1}^{2^d-1}\beta_{j,\mathbf{l}}^{(i)} \psi_{j,\mathbf{l}}^{(i)}\left(\mathbf{s}-\mathbf{r}\right) 
-\label{eq:MultidimensionalKernelExpansion}
-\end{eqnarray}
-\setlength{\arraycolsep}{5pt}
-\begin{equation}
-z_t\left(\mathbf{s}\right)=\sum_{\mathbf{l}\in \mathbb{Z}^d}x_{t,j_{0},\mathbf{l}}\phi_{j_{0},\mathbf{l}}\left(\mathbf{s}\right)+\sum_{j\geq j_0}^{\infty} \sum_{\mathbf{l}\in \mathbb{Z}^d}\sum_{i=1}^{2^d-1} \check{x}_{t,j,\mathbf{l}}^{(i)}\psi_{j,\mathbf{l}}^{(i)}\left(\mathbf{s}\right)
-\label{eq:MultidimensionalFieldExpansion}
-\end{equation}
-Equations (\ref{eq:MultidimensionalKernelExpansion}) and (\ref{eq:MultidimensionalFieldExpansion}) are infinite series expansions. For practical implementation, (\ref{eq:MultidimensionalKernelExpansion}) and (\ref{eq:MultidimensionalFieldExpansion}) must be truncated at some level $j$, therefore we have
- \begin{equation}
- k\left(\mathbf{s}-\mathbf{r}\right)\approx \boldsymbol\theta^\top\boldsymbol\lambda\left(\mathbf{s}-\mathbf{r}\right)
-\label{eq:KernelFiniteExpansion}
-\end{equation}
-\begin{equation}
- z_t\left(\mathbf{s}\right)\approx\boldsymbol\mu\left(\mathbf{s}\right)^\top\mathbf{x}_t
-\label{eq:FieldFiniteExpansion}
-\end{equation}
-where the unknown parameter vector $ \boldsymbol\theta \in \mathbb{R}^{n_{\theta}}$ and the unknown state vector $ \mathbf{x}_t \in \mathbb{R}^{n_x}$ are defined as 
-\begin{equation}
- \boldsymbol\theta^\top=\left[ \boldsymbol\alpha_{j_0}^\top \quad \boldsymbol\beta_{j_0}^\top \quad \boldsymbol\beta_{j_0+1}^\top \cdots \boldsymbol\beta_{j}^\top\right] 
-\label{KernelWeights}
-\end{equation}
-\begin{equation}
- \mathbf{x}_{t}^\top=\left[\mathbf{x}_{t,j_{0}}^\top \quad  \check{\mathbf{x}}_{t,j_{0}}^\top \quad  \check{\mathbf{x}}_{t,j_{0}+1}^\top \cdots \check{\mathbf{x}}_{t,j}^\top\right] 
-\label{FieldWeights}
-\end{equation}
-and where the kernel approximation coefficient vector $\boldsymbol \alpha_{j_0}$  and the field approximation coefficient vector $\mathbf{x}_{t,j_{0}}$ comprise all the coefficients $\left\lbrace\alpha_{j_0,\mathbf l}:\mathbf{l} \in \mathbb{Z}^d \right\rbrace $ and $\left\lbrace x_{t,j_0,\mathbf l}: \mathbf{l} \in \mathbb{Z}^d\right\rbrace$ respectively. The kernel detail coefficient vectors $\boldsymbol \beta_{j}$ and the field detail coefficient vectors $\check{\mathbf{x}}_{t,j}$ are defined by
-\begin{equation}
- \boldsymbol\beta_{j}^\top=\left[\boldsymbol\beta_{j}^{(1)\top} \quad \boldsymbol\beta_{j}^{(2)\top} \cdots \boldsymbol\beta_{j}^{(2^d-1)\top}\right] 
-\end{equation}
-\begin{equation}
-\check{\mathbf{x}}_{t,j}^\top=\left[\check{\mathbf{x}}_{t,j}^{(1)\top} \quad \check{\mathbf{x}}_{t,j}^{(2)\top} \cdots \check{\mathbf{x}}_{t,j}^{(2^d-1)\top}\right] 
-\end{equation}
-where the vector $\boldsymbol\beta_{j}^{(i)}$ contains all the coefficient $\left\lbrace \beta_{j,\mathbf l}^{(i)} :\mathbf{l} \in \mathbb{Z}^d\right\rbrace$ and the vector $\check{\mathbf{x}}_{t,j}^{(i)}$ contains all the coefficient $\left\lbrace  \check x_{t,j,\mathbf l}^{(i)}:\mathbf{l} \in \mathbb{Z}^d\right\rbrace$. 
-%and  $\boldsymbol\lambda(\mathbf{s}-\mathbf{r})$ is the vector of the kernel scaling and wavelet functions and   $\boldsymbol\mu(\mathbf{s})$ is the vector of the field scaling and wavelet functions. 
- The vector of the kernel scaling and wavelet functions $\boldsymbol\lambda: \mathbb{R}^{n_{\mathcal S}}\rightarrow \mathbb{R}^{n_{\theta}}$ and the vector of the field scaling and wavelet functions $\boldsymbol\mu: \mathbb{R}^{n_{\mathcal S}}\rightarrow \mathbb{R}^{n_x}$ are defined by
-\begin{eqnarray}
- \boldsymbol\lambda^\top(\mathbf s-\mathbf r)&=&\left[ \boldsymbol\phi_{j_0}^\top(\mathbf s-\mathbf r) \quad \boldsymbol\psi_{j_0}^\top(\mathbf s-\mathbf r) \quad \boldsymbol\psi_{j_0+1}^\top(\mathbf s-\mathbf r) \right. \nonumber \\
-&&\left. \cdots \quad \boldsymbol\psi_{j}^\top(\mathbf s-\mathbf r)\right]
-\label{KernelBasisVector} 
-\end{eqnarray}
-\begin{equation}
- \boldsymbol\mu^\top(\mathbf s)=\left[ \boldsymbol\phi_{j_0}^\top(\mathbf s) \quad \boldsymbol\psi_{j_0}^\top(\mathbf s) \quad \boldsymbol\psi_{j_0+1}^\top(\mathbf s) \cdots \boldsymbol\psi_{j}^\top(\mathbf s) \right] 
-\label{FieldBasisVector}
-\end{equation}
-Each vector of basis functions on the right hand-side of (\ref{KernelBasisVector}) and (\ref{FieldBasisVector}) are constructed in a way similar to their corresponding weight vectors in (\ref{KernelWeights}) and (\ref{FieldWeights}). Note that the identified IDE model will approximate the underlying spatio-temporal dynamics at different spatial scales. In this way both macroscopic and microscopic behaviour of the system can be represented simultaneously. 
-
-% however it can be tailored to capture underlying dynamics with desired accuracy for a sufficiently large value of $j$, a value between zero and three is usually sufficient in many applications \cite{Wei2006}. Note that number of translation parameters is always finite and depends on the range of measured data.
-
-The state-space representation of the spatio-temporal IDE proposed in \cite{Dewar2009} is derived for an arbitrary set of basis functions and hence this derivation can be applied using scaling and wavelet basis functions. Let
-\begin{equation}
- \mathbf{\Lambda}_{x}=\int_{\mathcal{S}}\boldsymbol\mu\left(\mathbf{s}\right)\boldsymbol\mu\left(\mathbf{s}\right)^\top d\mathbf{s}
-\label{eq:ConstructionIntegral1}
-\end{equation}
-\begin{equation}
- \mathbf{\Lambda}_{\theta}=\iint\limits_{\mathcal{S}}\boldsymbol\mu\left(\mathbf{s}\right)\boldsymbol\theta^\top \boldsymbol\lambda\left(\mathbf{s-r}\right)\boldsymbol\mu\left(\mathbf{r}\right)^\top d\mathbf{r}d\mathbf{s}
-\label{eq:ConstructionIntegral2}
-\end{equation}
-where $\boldsymbol\Lambda_{x}, \boldsymbol\Lambda_{\theta} \in \mathbb{R}^{n_x \times n_x}$. The spatial IDE model in (\ref{eq:ConvolutionIntegral}) and (\ref{eq:observation equation}) can be represented as linear state-space model of the form  
-\begin{equation}
- \mathbf{x}_{t+1}=\mathbf{A}\left(\boldsymbol\theta\right)\mathbf{x}_t+\mathbf{w}_t
-\end{equation}
-\begin{equation}
-\mathbf{y}_t=\mathbf{C}\mathbf{x}_t+\mathbf{v}_t
-\end{equation}
-where 
-\begin{equation}
- \mathbf{A}\left(\boldsymbol\theta\right)=\mathbf{\Lambda}_{x}^{-1}\mathbf{\Lambda_{\theta}}
-\label{eq:TransitionMatrix}
-\end{equation}
-and  \\ \\ 
-$\mathbf{C}=$
-$\begin{pmatrix}
-\boldsymbol\phi_{j_0}\left(\mathbf{s}_1\right) & \boldsymbol\phi_{j_0}\left(\mathbf{s}_2\right)  &\cdots &\boldsymbol\phi_{j_0}\left(\mathbf{s}_{n_y}\right) \\
-\boldsymbol\psi_{j_0}\left(\mathbf{s}_1\right) & \boldsymbol\psi_{j_0}\left(\mathbf{s}_2\right)  &\cdots &\boldsymbol\psi_{j_0}\left(\mathbf{s}_{n_y}\right) \\
-\boldsymbol\psi_{j_0+1}\left(\mathbf{s}_1\right) & \boldsymbol\psi_{j_0+1}\left(\mathbf{s}_2\right)  &\cdots &\boldsymbol\psi_{j_0+1}\left(\mathbf{s}_{n_y}\right) \\
-\vdots & \vdots & \ddots& \vdots \\
-\boldsymbol\psi_{j}\left(\mathbf{s}_1\right) & \boldsymbol\psi_{j}\left(\mathbf{s}_2\right)  &\cdots &\boldsymbol\psi_{j}\left(\mathbf{s}_{n_y}\right) \\
-\end{pmatrix}^{\top}$ \\ \\
-\\ \\ and where 
-\begin{equation}
- \mathbf{w}_t=\mathbf{\Lambda}_{x}^{-1}\int_{\mathcal{S}}\boldsymbol\mu \left(\mathbf{s}\right)e_t\left(\mathbf{s}\right)d\mathbf{s}
-\label{CovofField}
-\end{equation}
- is a vector valued, zero-mean normally distributed white noise process with covariance given by (Lemma \ref{lemma:FieldCovariance}, Appendix)
-\begin{equation}
-\boldsymbol\Sigma_w =\mathbf{\Lambda}_{x}^{-1}\boldsymbol\Pi\mathbf{\Lambda}_{x}^{-\top}
-\end{equation}
-and
-\begin{equation}
- \boldsymbol\Pi=\iint\limits_{\mathcal{S}}\boldsymbol\mu\left(\mathbf{s}\right)\eta\left(\mathbf{s}-\mathbf{r}\right)\boldsymbol\mu\left(\mathbf{r}\right)^{\top}d\mathbf{r}d\mathbf{s}
-\label{eq:Pi}
-\end{equation}
-By substituting the  parameter vector $\boldsymbol\theta$, the  state vector $\mathbf{x_t}$, the vector of kernel basis functions $\boldsymbol\lambda$ and the vector of field basis functions $\boldsymbol\mu$ in (\ref{eq:ConstructionIntegral1}-\ref{eq:Pi}), the state-space representation of the multiresolution approximation of the IDE can be achieved. It should be noted that the complexity of the model is independent of the number of observation locations, providing more flexibility in handling high resolution data. %The model is also capable of being applicable to scenarios with irregular observation locations.
-
-% In practice, MRA can be implemented using different types of wavelet and scaling functions.  Semi-orthogonal B-spline wavelets are compactly supported and optimally localised in time and frequency. This class of wavelets has been applied in approximation schemes such as wavelet networks\cite{G.P.Liu2000,Jun2005} and wavelet based CML models \cite{Billings2006}.
 
 \section{Simulation}
 This section demonstrates the identification of the proposed IDE model. Primarily, the MRA of a synthetic model is demonstrated, which is able to represent the system at different spatial scales. In addition, the complexity of the field decomposition is shown to be independent to the number and spatial regularity of the observation locations. This allows the construction of parsimonious models using spatially dense observations, and demonstrates the utility of the approach to situations where the observations are not arranged on a regular lattice, i.e. sensor networks \cite{Sahu2008}.
