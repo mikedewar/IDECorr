@@ -373,8 +373,10 @@
 %
 % The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
 % later in the document, say, to conditionally put the References on a 
-% page by themselves.
-
+% page by themselves. 
+\usepackage{float}
+ \usepackage{hyperref}
+\hypersetup{colorlinks,linkcolor=black,filecolor=black,urlcolor=black,citecolor=black}
 
 
 
@@ -544,7 +546,7 @@ Another such model is the Integro-Difference Equation (IDE). These models have r
 
 Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation by decomposing the kernel and the field using a set of spectral basis functions. An alternative approach for the decomposition of the IDE was introduced in \cite{Dewar2009} where the resulting state and parameter space dimensions are independent of the number of observation locations. This is crucial not only for model parsimony but also has implications for studying systems observed at a high spatial resolution. In this method an Expectation-Maximisation (EM)  algorithm \cite{Dempster1977,Gibsona2005}  was used to estimate both the field and the kernel from the observed data. A similar approach is adopted by \cite{Scerri2009} which developed a model selection procedure by considering various spatial scales at which to represent the system.  
 
-In this paper we take a different approach, using the average (over time) spatial auto-correlation and cross-correlation  of the observed field a simple method is proposed to estimate the spatial mixing kernel, filed disturbance characteristics and the observation noise variance. This eliminate the computational complexity imposed by the methods in \cite{Dewar2009,Scerri2009} while they assumed that disturbance and noise characteristics were known to the estimator. Although the proposed method only estimate the spatial mixing kerne, disturbance and observation noise statistics, the results can be used as a prerequisite for the EM algorithm, providing better and efficient state and parameter estimations.
+In this work we take a different approach, using the average (over time) spatial auto-correlation and cross-correlation  of the observed field a simple method is proposed to estimate the spatial mixing kernel, filed disturbance characteristics and the observation noise variance. This eliminates the computational complexity imposed by the methods in \cite{Dewar2009,Scerri2009} while they assumed that disturbance and noise characteristics were known to the estimator. Although the proposed method only estimates the spatial mixing kerne, disturbance and observation noise statistics, the results can be used as a prerequisite for the EM algorithm, providing better and efficient state (spatial field) and parameter estimations.
 
 The rest of this paper is set out as follows: in Section 2, the stochastic IDE model is briefly reviewed. Section 3 introduces the estimation framework and provides necessary formulation  to construct such an estimator using observed field. In Section 5, synthetic examples are given to demonstrate the ability of the developed algorithm  in estimation of the spatial mixing kernel, field disturbannce and observation noise. Finally conclusions are drawn in Section 5.
 
@@ -669,7 +671,7 @@ where $m\left(\mathbf{r}-\mathbf{r}'\right)$ is the observation kernel defined b
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
 \end{equation}
 where $\sigma_m$ sets the kernel width. The superscript $\top$ denotes the transpose operator and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix.
-\section{Estimation method} 
+\section{Estimation method}\label{sec:EstimationMethod}
 For the derivation of the spatial properties estimator of the field equations we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
 \begin{equation}
 	\int_\Omega a(\mathbf{r}-\mathbf{r}')b(\mathbf{r}')d\mathbf{r}' = (a\ast b)(\mathbf{r}),
@@ -680,9 +682,9 @@ and the spatial cross-correlation shall be denoted as
 \end{equation} 
 where $\boldsymbol{\tau}$ is the spatial shift.
 \subsection{Estimation of Connectivity Kernel Support}
-The spatial relationship between consecutive observations is governed by the shape of the connectivity kernel. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape. To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as
+The spatial relationship between consecutive observations is governed by the shape of the mixing kernel. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape. To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as
 \begin{equation}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\tau}\right),
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
  The goal of the derivation is to make the necessary substitutions and simplifications to get an expression of the cross-correlation as a function of the connectivity kernel. In the next step we substitute equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and expand to give
 \begin{equation}
@@ -949,20 +951,30 @@ By considering different levels of decomposition, the proposed approach could be
 % \subsection or using \label (\appendices by itself
 % starts a section numbered zero.)
 %
-\section*{Convolution and Correlation}
-To show 
-\begin{equation}
- \left(a \ast b \right)\left(\tau\right)  \star c\left(\tau\right)  = a\left(-\tau\right)\ast\left(b \star c\right)\left(\tau\right),
+\section*{Convolution and Correlation}\label{ap:CorrelationAnalysis}
+In this appendix the properties of the cross-correlation and the convolution used in Section~\ref{sec:EstimationMethod}   are derived. To show 
+\begin{equation}\label{eq:app-ConvXcorRelation1}
+ \left(a \ast b \right)\left(\boldsymbol\tau\right)  \star c\left(\boldsymbol\tau\right)  = a\left(-\boldsymbol\tau\right)\ast\left(b \star c\right)\left(\boldsymbol\tau\right)
 \end{equation}
-we note that cross-correlation function is related to the convolution by \cite{Yarlagadda2009}
-\begin{equation}
- \left(a \star b\right)\left(\tau\right)= a\left(-\tau \right)\ast b\left(\tau\right).
+and
+\begin{equation}\label{eq:app-ConvXcorRelation2}
+(a \ast b)(\boldsymbol \tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau),
 \end{equation}
-Therefore, we can write
+first note that cross-correlation function is related to the convolution by \cite{Yarlagadda2009}
+\begin{equation}\label{eq:app-ConvXcorRelation}
+ \left(a \star b\right)\left(\boldsymbol\tau\right)= a\left(-\boldsymbol\tau\right)\ast b\left(\boldsymbol\tau\right).
+\end{equation}
+Therefore, \eqref{eq:app-ConvXcorRelation1} can be written as
 \begin{align}
- \left(a \ast b\right)\left(\tau\right) \star c\left(\tau\right)&= \left(a \ast b\right)\left(-\tau \right)\ast c\left(\tau\right) \nonumber \\
-&=a\left(-\tau\right)\ast \left(b\left(-\tau\right) \ast c\left(\tau\right)\right)\nonumber \\
-&=a\left(-\tau\right)\ast\left(b\star c\right)\left(\tau\right)
+ \left(a \ast b\right)\left(\boldsymbol\tau\right) \star c\left(\boldsymbol\tau\right)&= \left(a \ast b\right)\left(-\boldsymbol\tau \right)\ast c\left(\boldsymbol\tau\right) \nonumber \\
+&=a\left(-\boldsymbol\tau\right)\ast \left(b\left(-\boldsymbol\tau\right) \ast c\left(\boldsymbol\tau\right)\right)\nonumber \\
+&=a\left(-\boldsymbol\tau\right)\ast\left(b\star c\right)\left(\boldsymbol\tau\right).
+\end{align}
+Similarly, \eqref{eq:app-ConvXcorRelation2} can be written as
+\begin{align}
+ (a \ast b)(\boldsymbol \tau) \star (a \ast b)(\boldsymbol\tau)&=(a \ast b)(-\boldsymbol\tau) \ast (a \ast b)(\boldsymbol\tau) \nonumber \\
+&=a(-\boldsymbol\tau)\ast a(\boldsymbol\tau) \ast b(-\boldsymbol\tau)\ast b(\boldsymbol\tau) \nonumber \\
+&=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau).
 \end{align}
 
 
