@@ -498,7 +498,7 @@ The Integro Difference Equation (IDE) is an increasingly popular model of spatio
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-B-spline wavelets, dynamic spatio-temporal modelling, Expectation Maximisation (EM) algorithm, Integro-Difference Equation (IDE), Multiresolution Approximation (MRA).
+dynamic spatio-temporal modelling, Integro-Difference Equation (IDE).
 \end{IEEEkeywords}
 
 
@@ -539,20 +539,15 @@ B-spline wavelets, dynamic spatio-temporal modelling, Expectation Maximisation (
 Techniques for modelling spatio-temporal systems are generating growing interest, both in the applied and theoretical literature. Of particular interest are the class of dynamic spatio-temporal models, including Cellular Automata (CA) \cite{Wolfram1994}, Coupled Map Lattices (CMLs) \cite{Billings2002}, Lattice Dynamical Wavelet Neural Network (LDWNN) \cite{Wei2009} and spatially correlated time series  \cite{Pfeifer1980,Glasbey2008,Dewar2007} which have all been used in a system identification context. The extent of the spatial interactions in these models is determined by a discrete neighbourhood structure.
 
 
-Another such model is the Integro-Difference Equation (IDE). These models have received much attention in population ecology as models for the spatio-temporal spread of organisms \cite{Kot1992,Kot1996}. IDE models combine discrete temporal dynamics with a continuous spatial representation. The dynamics of this model are given by a spatial mixing kernel, which defines the mapping between the current spatial field and the previous spatial field. The IDE model can be applied to data sampled both regularly and irregularly in space due to the continuous representation of each spatial field. Estimating the underlying spatial field in time is of particular interest, and is not straightforward especially when the field displays structure at different spatial scales. Estimation of the underlying spatial field can be achieved by estimating the associated spatial mixing kernel from measured data, and then using this in a filtering framework. 
+Another such model is the Integro-Difference Equation (IDE). These models have received much attention in population ecology as models for the spatio-temporal spread of organisms \cite{Kot1992,Kot1996} and the spatio-temporal neural field modeling  \cite{Freestone2011}. IDE models combine discrete temporal dynamics with a continuous spatial representation. The dynamics of this model are given by a spatial mixing kernel, which defines the mapping between the current spatial field and the previous spatial field. The IDE model can be applied to data sampled both regularly and irregularly in space due to the continuous representation of each spatial field. Estimating the underlying spatial field in time is of particular interest. Estimation of the underlying spatial field can be achieved by estimating the associated spatial mixing kernel from measured data, and then using this in a filtering framework. 
 
 
-Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation by decomposing the kernel and the field using a set of spectral basis functions. An alternative approach for the decomposition of the IDE was introduced in \cite{Dewar2009} where the resulting state and parameter space dimensions are independent of the number of observation locations. This is crucial not only for model parsimony but also has implications for studying systems observed at a high spatial resolution. In this method an Expectation-Maximisation (EM)  algorithm  was used to estimate both the field and the kernel from the observed data. A similar approach is adopted by \cite{Scerri2009} which developed a model selection procedure by considering various spatial scales at which to represent the system. %choose the appropriate model amongst models of varying Gaussian scale parameters incorporating spatio-temporal frequency domain properties of the data.
-%  when the system spatial bandwidth and the kernel support are unknown.
+Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation by decomposing the kernel and the field using a set of spectral basis functions. An alternative approach for the decomposition of the IDE was introduced in \cite{Dewar2009} where the resulting state and parameter space dimensions are independent of the number of observation locations. This is crucial not only for model parsimony but also has implications for studying systems observed at a high spatial resolution. In this method an Expectation-Maximisation (EM)  algorithm  was used to estimate both the field and the kernel from the observed data. A similar approach is adopted by \cite{Scerri2009} which developed a model selection procedure by considering various spatial scales at which to represent the system.  
 
-% Behaviour of the spatial field is often of interest at a variety of scales \cite{Wiens1989,Chelton1994,Schmidt2005,Schnell2007}. At each scale, an appropriate model should be adopted to adequately reflect the underlying phenomenon. The spatial field may have features at multiple scales either naturally or as a consequence of the measurement process \cite{Wilsky2002,BAKSHI1999} and hence modelling methods that represent the field at multiple scales are essential. Multiresolution Approximation (MRA) \cite{Meyer1993,Mallat1989a,Mallat1989b}  provides such a modelling framework in which information at different scales can be represented simultaneously.
+In this paper, we take a different approach to estimate the spatial mixing kernel. Using the autocorrelation and cross-correlation of the observed field a simple method is proposed to estimate the spatial mixing kernel, filed disturbance characteristics and the observation noise variance. This eliminate the computational complexity of the methods proposed in \cite{Dewar2009,Scerri2009}. Alternatively the proposed method can be considered a prerequisite for the EM algorithm  where
+the estimated kernel, disturbance and observation noise can be used to estimate the underlying field.
 
-In this paper a multiresolution approximation of the IDE based on the model proposed in \cite{Dewar2009} is presented. B-spline scaling and wavelet functions are used to decompose both the kernel and the spatial field. Maximum likelihood estimates of the derived parametric state-space model are obtained using the EM-based algorithm of  \cite{Dewar2009}.  In this model, the kernel and the spatio-temporal dynamics of the field are viewed at different spatial scales. Whereas in \cite{Scerri2009} different spatial scales were examined and one chosen, the work presented herein represents the system at a number of different spatial scales concurrently.
-% - a property that the alternative models described above do not typically share.
-% Gaussian Radial Basis Functions have been used by  to identify the appropriate scale for the IDE to represent the underlying spatio-temporal dynamic however not in a MRA framework.
-
-
-  The rest of this paper is set out as follows: in Section 2, the IDE model is briefly reviewed and the MRA of the IDE is presented. Section 3 introduces the B-spline wavelet IDE model and provides necessary formulation  to construct such a model in state-space. Section 4 briefly reviews the EM-based approach for parameter and state estimation. In Section 5, synthetic examples are given to demonstrate the ability of the developed MRA model in estimation of the hidden spatio-temporal field and the spatial mixing kernel. Finally conclusions are drawn in Section 6.
+The rest of this paper is set out as follows: in Section 2, the IDE model is briefly reviewed and the MRA of the IDE is presented. Section 3 introduces the B-spline wavelet IDE model and provides necessary formulation  to construct such a model in state-space. Section 4 briefly reviews the EM-based approach for parameter and state estimation. In Section 5, synthetic examples are given to demonstrate the ability of the developed MRA model in estimation of the hidden spatio-temporal field and the spatial mixing kernel. Finally conclusions are drawn in Section 6.
 
 
 
@@ -663,10 +658,10 @@ The spatially homogeneous, linear IDE is given by
 \end{equation}
 where $t\in \mathbb{Z}_0 $ denotes discrete time, $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n$-dimensional physical space, where $n \in \left\lbrace 1,2,3 \right\rbrace $. The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The model dynamics  are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}-\mathbf{r}'\right):\mathbb{R}^{n}\rightarrow \mathbb{R}$ which maps the current spatial field to the next spatial field via the integral (\ref{eq:ConvolutionIntegral}). The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially coloured but temporally independent, with covariance 
 \begin{equation}
-cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d\eta(\mathbf{r}-\mathbf{r'})\delta(t-t'),
+cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d\gamma(\mathbf{r}-\mathbf{r'})\delta(t-t'),
 \label{eq:FieldDisturbance}
 \end{equation}
-where $\eta(\mathbf{r}-\mathbf{r'})$ is a spatially homogeneous covariance function, $\sigma_d$ is disturbance variance and $\delta(\cdot)$ is the Dirac-delta function. The mapping between the spatial field and the observations, denoted by $\mathbf{y}_t$, is modeled using the observation function that incorporates sensors with a spatial extent by
+where $\gamma(\mathbf{r}-\mathbf{r'})$ is a spatially homogeneous covariance function, $\sigma_d$ is disturbance variance and $\delta(\cdot)$ is the Dirac-delta function. The mapping between the spatial field and the observations, denoted by $\mathbf{y}_t$, is modeled using the observation function that incorporates sensors with a spatial extent by
 \begin{equation}\label{eq:ObservationEquation}
 	y_t(\mathbf{r}) = \int_{\Omega} { m\left(\mathbf{r}-\mathbf{r}'\right) z_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
 \end{equation}
@@ -694,22 +689,134 @@ where $\tau$ is the spatial shift. The goal of the derivation is to make the nec
 \end{equation}
 Next we substitute equation~\ref{eq:ConvolutionIntegral} for $z_{t+1}(\mathbf{r})$ giving 
 \begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(k\ast z_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\\
-	&= \xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\tau}) \nonumber\\
-	&\quad+ T_s \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
-	&\quad+ \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
-	&\quad+ (\varepsilon_{t+1} \star y_t)(\boldsymbol{\tau}).
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(k\ast z_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\nonumber\\
+	&= \left(\left(m\ast k\ast z_t\right)\star y_t \right)(\boldsymbol{\tau}) + \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau})+ \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{align}
 Now we take the expectation over time, so that the observation noise and process disturbance terms have minimal effect on the result, giving 
 \begin{align}\label{eq:ExpectationToCancelNoise}
-	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E}[\xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\tau})] \nonumber \\
-	 &\quad+ T_s \mathbf{E}[\left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})],
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E} \left(\left(m\ast k\ast z_t\right)\star y_t \right)(\boldsymbol{\tau}) ],
 \end{align}
-since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. 
-The cross-correlation is further simplified by recognizing that the first term on right hand side of equation~\ref{eq:ExpectationToCancelNoise} can be written as
+since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. Now by substituting $y_t - \varepsilon_t$ in for $m\ast z_t$ the above equation can be written as
+ \begin{align}\label{eq:ExpectationToCancelNoise}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E} [\left( k\ast (y_t - \varepsilon_t)\star y_t \right)(\boldsymbol{\tau}) ].
+\end{align}
+To isolate the kernel, the order of the convolution and cross-correlation is reversed by recognizing that a property $(a \ast b)(\boldsymbol\iota) \star c(\boldsymbol\iota) = a(-\boldsymbol\iota)\ast(b \star c)(\boldsymbol\iota)$ (see Appendix~\ref{ap:CorrelationAnalysis}). Therefore,
+\begin{align}\label{eq:ExpectationToCancelNoise1}
+ (k \ast (y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau) &= k(-\boldsymbol\tau) \ast ((y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau).
+\end{align}  
+Substituting equation \ref{eq:ExpectationToCancelNoise1} back into equation \ref{eq:ExpectationToCancelNoise} we have
+\begin{align}\label{eq:ExpectationToCancelNoise2}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= k(-\boldsymbol\tau) \ast \mathbf{E} [((y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau)].
+\end{align} 
+The cross-correlation is further simplified by recognizing that the right hand side of equation~\ref{eq:ExpectationToCancelNoise2} can be written as 
+\begin{align}\label{eq:FirstTermReduced}  
+	\mathbf{E}\left[\left(\left(y_t-\varepsilon_t\right) \star y_t \right)(\boldsymbol{\tau})\right] &= \mathbf{E}\left[ (y_t \star y_t)(\boldsymbol{\tau}) - \left(\varepsilon_t\star y_t \right)(\boldsymbol{\tau})\right] \nonumber \\
+	&=\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})  - \left(\varepsilon_t \star (m\ast v_t + \varepsilon_t)\right) (\boldsymbol{\tau})] \nonumber\\
+	&=\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau}) -\left(\varepsilon_t\star (m\ast v_t)\right)(\boldsymbol{\tau}) - (\varepsilon_t\star\varepsilon_t)(\boldsymbol{\tau})]\nonumber \\
+	&=\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau}), 
+\end{align}
+where $\delta\left(\cdot\right)$ denotes Kronecker delta. Now substituting equation \ref{eq:FirstTermReduced} into \ref{eq:ExpectationToCancelNoise2} gives
+ \begin{align}\label{eq:Tobesolvedforthekernel}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= k(-\boldsymbol\tau) \ast \left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right).
+\end{align} 
+The solution of the above equation for the connectivity kernel is a deconvolution. Using the convolution theorem \eqref{eq:Tobesolvedforthekernel} can be solved for the kernel in the frequency domain.
+\begin{align}\label{eq:EM-XcorrFourier}
+	\mathcal{F}\{k(-\boldsymbol\tau)\} \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}.
+\end{align}
+Now rearranging \eqref{eq:EM-XcorrFourier} gives
+\begin{equation}\label{eq:EM-Fourier_TF_of_Kernel}
+	\mathcal{F}\left(k(-\boldsymbol\tau)\right) = \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}}\right].
+\end{equation}
+From \eqref{eq:EM-Fourier_TF_of_Kernel} it can be seen that to compute the exact shape of the kernel, the observation noise variance is required. An error in the initial guess of  the observation noise variance will result in a distortion in the shape of the kernel, however if the signal-to-noise ratio is high such a distortion becomes insignificant.
+By the Wiener-Khintchine theorem (WKT) the denominator in \eqref{eq:EM-Fourier_TF_of_Kernel} is equivalent to the power spectral density (PSD) of the noise-free observations which is non-negative and a real quantity. The WKT states that the power spectral density of the wide sense stationary process is the Fourier transform of its auto-correlation function \cite{Ricker2003}. The numerator is also known as the cross-spectrum or cross-spectral density. The WKT allows to establish the bounds on the initial guess of $\sigma_{\varepsilon}^2$
+\begin{align}
+	\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}\ge&0 \nonumber \\
+	\implies & \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\}\ge\mathcal{F}\{\sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}\ge0 \nonumber \\
+	\implies & \min\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\}\ge\sigma_{\varepsilon}^2\ge0. \label{eq:BoundOnObsVariance}
+\end{align}
+Since the connectivity kernel is a real function, the following relation holds \cite{Bracewell2000}
+\begin{equation}
+ \mathcal{F}\left(k(\boldsymbol\tau)\right)=\overline{\mathcal{F}\left(k(-\boldsymbol\tau)\right)},
+\end{equation}
+where over-bar denotes the complex conjugate operator. Finally, an expression for the kernel is obtained by taking the inverse Fourier transform giving
+\begin{equation}\label{eq:EM-KernelSolution}
+	k(\boldsymbol\tau) = \mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }\right\}}.
+\end{equation}
+The complex conjugate operator essentially reflects the connectivity kernel through the origin in the spatial domain, therefore, if the connectivity kernel is isotropic, the complex conjugate operator can be dropped. 
+% Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations.  
+% Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. To show this we take the spatial Fourier transform of both sides of equation~\ref{} giving
+\subsubsection{Estimation of disturbance covariance support}
 
+Similar to the above, the aim of the derivation is to make the necessary substitutions and simplifications to get an expression of the auto-correlation as a function of the disturbance covariance function. The observation auto-correlation at time $t+1$ can be expressed as
+\begin{equation}\label{eq:EM-ObservationEquationAutocorrelation}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})=(y_{t+1} \star y_{t+1})(\boldsymbol\iota).
+\end{equation}
+ After substituting for $y_{t+1}$ from \eqref{eq:ObservationEquation} and using \eqref{eq:ConvolutionIntegral}   for $z_{t+1}$, equation \eqref{eq:EM-ObservationEquationAutocorrelation} is expanded to give
+\begin{align}\label{eq:EM-expanded_auto_corr}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= ((m\ast k\ast z_t)\star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
+	&+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\tau})+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\tau}).
+\end{align}
+By using similar arguments that were used in the derivation for the connectivity kernel support, the auto-correlation can be simplified by recognising that
+\begin{align}\label{eq:EM-Autoterm2}
+	((m\ast k \ast z_t) \star y_{t+1})(\boldsymbol\tau) &= k(-\boldsymbol\tau) \ast R_{y_ty_{t+1}}(\boldsymbol\tau),
+\end{align}
+and
+\begin{align}\label{eq:EM-Autoterm3}
+ (\varepsilon_{t+1}\star y_{t+1})(\boldsymbol\iota)&=\sigma_{\varepsilon}^2\delta(\boldsymbol{\iota}).
+\end{align}
+Substituting \eqref{eq:EM-Autoterm2}, and ~\eqref{eq:EM-Autoterm3} back into \eqref{eq:EM-expanded_auto_corr} and taking the expectation over time  gives
+\begin{align}\label{eq:EM-Auto&CrossNoisy}
+	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})] &= k(-\boldsymbol\tau) \ast (\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ) \nonumber \\
+	&+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] +\sigma_{\epsilon}^2\delta(\boldsymbol{\tau}).
+\end{align}
+The second term in \eqref{eq:EM-Auto&CrossNoisy} can be simplified as
+\begin{align}\label{eq:EM-term3Noisy}
+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] &= \mathbf{E}[((m\ast e_t)\star (m\ast z_{t+1}+\varepsilon_{t+1})) (\boldsymbol\tau)] \nonumber \\
+	&= \mathbf{E}[(\left(m \ast e_t\right) \star (m \ast [k\ast z_t + e_t]+\varepsilon_{t+1}))(\boldsymbol\tau)] \nonumber \\
+	&=\mathbf{E}[\left(m \ast e_t\right)\star\left(m \ast e_t\right)(\boldsymbol\tau)].
+\end{align}  
+This holds as the disturbance, $e_t$, is not correlated with the field, $z_t$, and the observation noise, $\varepsilon_{t+1}$. A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix~\ref{ap:CorrelationAnalysis}). By using this relationship and the isotropy property of the observation kernel \eqref{eq:EM-term3Noisy} can be written
+\begin{align}\label{eq:EM-Autoterm4}
+\mathbf{E}[(\left(m \ast e_t\right)\star\left(m \ast e_t\right))(\boldsymbol\tau)]&=\mathbf{E}[(\left(m \star m\right)\ast\left(e_t \star e_t\right))(\boldsymbol\tau)] \nonumber \\
+&=(m\ast m \ast \gamma)(\boldsymbol\tau).
+\end{align}
+Substituting this back into \eqref{eq:EM-Auto&CrossNoisy} gives
+\begin{align}
+	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})] &=k(-\boldsymbol\tau) \ast (\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ) \nonumber \\
+	&+(m\ast m \ast \gamma)(\boldsymbol\tau) +\sigma_{\epsilon}^2\delta(\boldsymbol{\tau}).
+\end{align}
+To solve for the disturbance covariance function, once again the convolution theorem is used. Taking the Fourier transform and rearranging gives
+\begin{align}
+	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}\nonumber \\ 
+	&-\mathcal{F}\{k(-\boldsymbol\tau)\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}-\sigma_{\varepsilon}^2.
+\end{align}
+Now substituting in \eqref{eq:EM-Fourier_TF_of_Kernel} for $\mathcal{F}\{w(-\boldsymbol{\iota})\}$ results in
+\begin{align}
+	\mathcal{F}&\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} = \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}\nonumber \\ 
+	&-\left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}}\right]\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\} -\sigma_{\varepsilon}^2.\label{eq:EM-mmgamma}
+\end{align}
+Now simplifying the above equation gives
+\begin{align}\label{eq:EM-MMGFourier1}
+	\mathcal{F}&\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{\gamma(\boldsymbol\tau)\} = \nonumber \\
+&\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]-\sigma_{\varepsilon}^2 ,
+\end{align}
+rearranging and taking the inverse Fourier transform yields the final result
+\begin{align}\label{eq:EM-MMGFourier2}
+	&\gamma(\boldsymbol\iota) = \nonumber \\
+&\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\tau)}\left[\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2\right]- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]\right]\right\rbrace  ,
+\end{align}
+where
+\begin{equation}
+ \tilde{m}(\boldsymbol\tau)=\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}.
+\end{equation}
+% from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
+From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Again if the signal-to-noise ratio is high the effect of $\sigma_{\varepsilon}^2$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral densities of the noise-free observations at time $t+1$ and $t$ respectively. If $m(\cdot)$ is a point sensor then the spatial support of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} is then required.  Alternatively, assuming a Gaussian shape for both the disturbance function and the sensor kernel (with known support), the support of the disturbance covariance function, $\sigma^2_{\gamma}$, can be determined analytically using the expression for Gaussian basis functions' convolution, giving 
+\begin{equation}\label{eq:EM-AnalyticSupportCalculation}
+ \sigma_{\gamma}^2=\sigma_{mm\gamma}^2-2\sigma_m^2,
+\end{equation}
+where $\sigma_{mm\gamma}^2$ is the width of the fitted Gaussian function to the estimated support of $(m\ast m\ast\gamma)(\boldsymbol\tau)$ from \eqref{eq:EM-MMGFourier1}.
 
-
+Note using uniform observation samples in equations \eqref{eq:EM-KernelSolution}, \eqref{eq:EM-MMGFourier1} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated supports of the connectivity kernel and disturbance covariance function.
 \section{Simulation}
 This section demonstrates the identification of the proposed IDE model. Primarily, the MRA of a synthetic model is demonstrated, which is able to represent the system at different spatial scales. In addition, the complexity of the field decomposition is shown to be independent to the number and spatial regularity of the observation locations. This allows the construction of parsimonious models using spatially dense observations, and demonstrates the utility of the approach to situations where the observations are not arranged on a regular lattice, i.e. sensor networks \cite{Sahu2008}.
 \subsection{One dimensional example}
@@ -840,71 +947,21 @@ By considering different levels of decomposition, the proposed approach could be
 % \subsection or using \label (\appendices by itself
 % starts a section numbered zero.)
 %
-\newtheorem{lemma}{Lemma}
-\begin{lemma}
-Consider the zero-mean process $e_t\left(s\right)$ with covariance as defined by (\ref{eq:FieldCovariance}) then
+\section*{Convolution and Correlation}
+To show 
 \begin{equation}
- \mathbf{w}_t=\mathbf{\Lambda}_{x}^{-1}\int_{\mathcal{S}}\boldsymbol\mu \left(\mathbf{s}\right)e_t\left(\mathbf{s}\right)d\mathbf{s}
-\label{eq:AppendixWt}
+ \left(a \ast b \right)\left(\tau\right)  \star c\left(\tau\right)  = a\left(-\tau\right)\ast\left(b \star c\right)\left(\tau\right),
 \end{equation}
-is a vector valued, zero mean normally distributed white noise process with covariance
+we note that cross-correlation function is related to the convolution by \cite{Yarlagadda2009}
 \begin{equation}
-\boldsymbol\Sigma_w =\mathbf{\Lambda}_{x}^{-1}\boldsymbol\Pi\mathbf{\Lambda}_{x}^{- \top}
+ \left(a \star b\right)\left(\tau\right)= a\left(-\tau \right)\ast b\left(\tau\right).
 \end{equation}
-and
-\begin{equation}
- \boldsymbol\Pi=\iint\limits_{\mathcal{S}}\boldsymbol\mu\left(\mathbf s\right)\eta\left(\mathbf s-\mathbf r\right)\boldsymbol\mu\left(\mathbf r\right)^\top d\mathbf{r}d\mathbf{s}
-\end{equation}
-\label{lemma:FieldCovariance}
-\end{lemma}
-\begin{IEEEproof}
- Equation (\ref{eq:AppendixWt}) is a linear function of $e_t(\mathbf s)$ and hence $\mathbf{w}_t$ is also normally distributed. The expected value of $\mathbf w_t$ is given by 
-\begin{eqnarray}
- \mathbf E\left[ \mathbf w_t\right]&=& \mathbf{\Lambda}_{x}^{-1}\int_{\mathcal{S}}\boldsymbol\mu \left(\mathbf{s}\right)\mathbf E\left[e_t\left(\mathbf{s}\right)\right] d\mathbf{s} \nonumber \\
-&=&0
-\end{eqnarray}
-and 
-\begin{eqnarray}
-\mathbf \Sigma_w&{}={}&\mathbf E[ \mathbf w_t \mathbf w_{t}^{\top}]\nonumber\\
-&=& \mathbf{\Lambda}_{x}^{-1}\mathbf E[\int_{\mathcal{S}}\boldsymbol\mu\left(\mathbf s\right)e_t\left(\mathbf s\right)d\mathbf s\int_{\mathcal{S}}\boldsymbol\mu\left(\mathbf r\right)^{\top}e_t\left(\mathbf r\right)d\mathbf r]\mathbf{\Lambda}_{x}^{- \top} \nonumber \\
-&=&\mathbf{\Lambda}_{x}^{-1}\iint\limits_{\mathcal{S}}\boldsymbol\mu\left(\mathbf s\right) \mathbf E[e_t\left(\mathbf s\right)e_t\left(\mathbf r\right)]\boldsymbol\mu\left(\mathbf r\right)^{\top}d\mathbf r d\mathbf s\mathbf{\Lambda}_{x}^{- \top} \nonumber\\
-&=&{}\mathbf{\Lambda}_{x}^{-1}\iint\limits_{\mathcal{S}}\boldsymbol\mu\left(\mathbf s\right) \eta\left(\mathbf s- \mathbf r \right)\boldsymbol\mu\left(\mathbf r\right)^{\top}d\mathbf r d\mathbf s\mathbf{\Lambda}_{x}^{- \top} \nonumber\\
-&=&\mathbf{\Lambda}_{x}^{-1}\boldsymbol\Pi\mathbf{\Lambda}_{x}^{- \top}
-\end{eqnarray}
-\setlength{\arraycolsep}{5pt}
-\end{IEEEproof}
-\begin{lemma}
-Let $N_m\left(s-l_1\right)$ and $N_{m'}\left(s-l_2\right)$ be shifted cardinal B-spline functions of order $m$ and $m'$ respectively. Then the inner product of  $N_m\left(s-l_1\right)$  and $N_{m'}\left(s-l_2\right)$ can be calculated by 
-\setlength{\arraycolsep}{0.0em}
-\begin{eqnarray}
-\left\langle N_{m}\left(s-l_{1}\right), N_{m'}\left(s-l_{2}\right)\right\rangle&=&N_{m+m'}\left(m+l_{1}-l_{2}\right) \nonumber \\
-&=&N_{m+m'}\left(m'+l_{2}-l_{1}\right) 
-\end{eqnarray}
-\setlength{\arraycolsep}{5pt}
-\label{lemma:InProduct}
-\end{lemma}
-\begin{IEEEproof}
-The support of $N_m\left(s\right)$ is $\left[ 0,m\right]$ and  is symmetric with respect to $s=\frac{m}{2}$, i.e.
-\begin{equation}
- N_{m}\left(\frac{m}{2}+s\right)=N_{m}\left(\frac{m}{2}-s\right)
-\label{SymmetrySplieEq}
-\end{equation}
-A direct consequence of (\ref{SymmetrySplieEq}) is 
-\begin{equation}
- N_{m}\left(s\right)=N_{m}\left(m-s\right)
-\end{equation}
-Therefore
-\setlength{\arraycolsep}{0.0em}
-\begin{IEEEeqnarray}{l}
-\int_{-\infty}^{+\infty}N_{m}\left(s-l_{1}\right)N_{m'}\left(s-l_{2}\right)ds \nonumber \\
-\qquad=\int_{-\infty}^{+\infty}N_{m}\left(m-s+l_{1}\right)N_{m'}\left(s-l_{2}\right)ds \nonumber \\
-\qquad=\int_{-\infty}^{+\infty}N_{m}\left(m+l_{1}-l_{2}-u\right)N_{m'}\left(u\right)du \nonumber \\
-\qquad=\left(N_m \ast N_m'\right) \left(m+l_{1}-l_{2}\right) \nonumber \\
-\qquad=N_{m+m'}\left(m+l_{1}-l_{2}\right) \nonumber \\
-\qquad=N_{m+m'}\left(m'+l_{2}-l_{1}\right) \nonumber
-\end{IEEEeqnarray}
-\setlength{\arraycolsep}{5pt}
-\end{IEEEproof}
+Therefore, we can write
+\begin{align}
+ \left(a \ast b\right)\left(\tau\right) \star c\left(\tau\right)&= \left(a \ast b\right)\left(-\tau \right)\ast c\left(\tau\right) \nonumber \\
+&=a\left(-\tau\right)\ast \left(b\left(-\tau\right) \ast c\left(\tau\right)\right)\nonumber \\
+&=a\left(-\tau\right)\ast\left(b\star c\right)\left(\tau\right)
+\end{align}
 
 
 
