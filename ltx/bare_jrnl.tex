@@ -489,7 +489,7 @@ Parkville, VIC, Australia (e-mail:deanrf@unimelb.edu.au; grayden@unimelb.edu.au)
 
 \begin{abstract}
 %\boldmath
-The Integro Difference Equation (IDE) is an increasingly popular model of spatio-temporal processes. Here we develop an estimation framework for the IDE based on spatial auto-correlation and cross-correlation of the observed field to estimate the spatial mixing kernel, field disturbance and observation noise variance. Synthetic examples are given to demonstrate the performance of the estimation algorithm.
+The Integro Difference Equation (IDE) is an increasingly popular model of spatio-temporal processes. Here we develop an estimation framework for the IDE based on spatial auto-correlation and cross-correlation of the observed field to estimate the spatial mixing kernel, field disturbance and observation noise variance.  Synthetic examples are given to demonstrate the performance of the estimation algorithm. The proposed method can be applied prior to the expectation maximization (EM) algorithm to provide better and efficient state and parameter estimation.
 \end{abstract}
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
 % This preserves the distinction between vectors and scalars. However,
@@ -500,7 +500,8 @@ The Integro Difference Equation (IDE) is an increasingly popular model of spatio
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-dynamic spatio-temporal modelling, Integro-Difference Equation (IDE).
+dynamic spatio-temporal modelling, Integro-Difference Equation (IDE), expectation maximization
+	(EM) algorithm.
 \end{IEEEkeywords}
 
 
@@ -816,15 +817,10 @@ where
  \tilde{m}(\boldsymbol\tau)=\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}.
 \end{equation}
 % from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
-From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Again if the signal-to-noise ratio is high the effect of $\sigma_{\varepsilon}^2$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral densities of the noise-free observations at time $t+1$ and $t$ respectively. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} is then required.  Alternatively, assuming a Gaussian shape for both the disturbance function and the sensor kernel (with known support), the support of the disturbance covariance function, $\sigma^2_{\gamma}$, can be determined analytically using the expression for Gaussian basis functions' convolution \cite{Freestone2011}, giving 
-\begin{equation}\label{eq:EM-AnalyticSupportCalculation}
- \sigma_{\gamma}^2=\sigma_{mm\gamma}^2-2\sigma_m^2,
-\end{equation}
-where $\sigma_{mm\gamma}^2$ is the width of the fitted Gaussian function to the estimated support of $(m\ast m\ast\gamma)(\boldsymbol\tau)$ from \eqref{eq:EM-MMGFourier2}.
-
+From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Again if the signal-to-noise ratio is high the effect of $\sigma_{\varepsilon}^2$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral densities of the noise-free observations at time $t+1$ and $t$ respectively. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} is then required. 
 Note using uniform observation samples in equations \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
 \section{Simulation}
-This section demonstrates the performance of the proposed estimation scheme. Several examples are shown where different spatial mixing kernels were adopted. In each case data is generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation}  and sampled at $t=1 \dots 2000$.
+This section demonstrates the performance of the proposed estimation scheme. Several examples are shown where different spatial mixing kernels were adopted. In each case data is generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation}  and sampled at $t=1 \dots 2000$. The formulations given in \ref{eq:EM-KernelSolution} and \ref{eq:EM-MMGFourier2} are applied in two stages, first $\sigma_{\varepsilon}^2$ is set to zero as this only affects the estimation at the origin, this way we avoid numerical errors at other locations. Second $\sigma_{\varepsilon}^2$ is chosen according to the bound estabilished by \ref{eq:BoundOnObsVariance}  to correct the estimation at the origin. 
 \subsection{One dimensional example}
  Consider the following homogeneous spatial mixing kernel 
 \setlength{\arraycolsep}{0.0em}
