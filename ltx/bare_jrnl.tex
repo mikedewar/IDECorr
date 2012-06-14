@@ -752,7 +752,7 @@ The complex conjugate operator essentially reflects the connectivity kernel thro
 \subsection{Estimation of disturbance covariance function}
 The field disturbance at each spatial location and at a given time is correlated with other spatial locations through the disturbance covariance
 function, suggesting the auto-correlation of the observed field at each time instant can provide useful information about the field disturbance characteristics.
- Similar to the above, the aim of the derivation is to make the necessary substitutions and simplifications to get an expression of the auto-correlation as a function of the disturbance covariance function. The observation auto-correlation at time $t+1$ can be expressed as
+The observation auto-correlation at time $t+1$ can be expressed as
 \begin{equation}\label{eq:EM-ObservationEquationAutocorrelation}
 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})=(y_{t+1} \star y_{t+1})(\boldsymbol\iota).
 \end{equation}
@@ -761,13 +761,13 @@ function, suggesting the auto-correlation of the observed field at each time ins
 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= ((m\ast k\ast z_t)\star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
 	&+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\tau})+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\tau}).
 \end{align}
-By using similar arguments that were used in the derivation for the connectivity kernel support, the auto-correlation can be simplified by recognising that
+By using similar arguments that were used in the derivation for the connectivity kernel, the auto-correlation can be simplified by recognising that
 \begin{align}\label{eq:EM-Autoterm2}
 	((m\ast k \ast z_t) \star y_{t+1})(\boldsymbol\tau) &= k(-\boldsymbol\tau) \ast R_{y_ty_{t+1}}(\boldsymbol\tau),
 \end{align}
 and
 \begin{align}\label{eq:EM-Autoterm3}
- (\varepsilon_{t+1}\star y_{t+1})(\boldsymbol\iota)&=\sigma_{\varepsilon}^2\delta(\boldsymbol{\iota}).
+ (\varepsilon_{t+1}\star y_{t+1})(\boldsymbol\tau)&=\sigma_{\varepsilon}^2\delta(\boldsymbol{\tau}).
 \end{align}
 Substituting \eqref{eq:EM-Autoterm2}, and ~\eqref{eq:EM-Autoterm3} back into \eqref{eq:EM-expanded_auto_corr} and taking the expectation over time  gives
 \begin{align}\label{eq:EM-Auto&CrossNoisy}
@@ -781,7 +781,7 @@ The second term in \eqref{eq:EM-Auto&CrossNoisy} can be simplified as
 	&= \mathbf{E}[(\left(m \ast e_t\right) \star (m \ast [k\ast z_t + e_t]+\varepsilon_{t+1}))(\boldsymbol\tau)] \nonumber \\
 	&=\mathbf{E}[\left(m \ast e_t\right)\star\left(m \ast e_t\right)(\boldsymbol\tau)].
 \end{align}  
-This holds as the disturbance, $e_t$, is not correlated with the field, $z_t$, and the observation noise, $\varepsilon_{t+1}$. A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix~\ref{ap:CorrelationAnalysis}). By using this relationship and the isotropy property of the observation kernel \eqref{eq:EM-term3Noisy} can be written
+This holds as the disturbance, $e_t$, is not correlated with the field, $z_t$, and the observation noise, $\varepsilon_{t+1}$. A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix~\ref{ap:CorrelationAnalysis}). By using this relationship and the isotropy property of the observation kernel \eqref{eq:EM-term3Noisy} can be written as
 \begin{align}\label{eq:EM-Autoterm4}
 \mathbf{E}[(\left(m \ast e_t\right)\star\left(m \ast e_t\right))(\boldsymbol\tau)]&=\mathbf{E}[(\left(m \star m\right)\ast\left(e_t \star e_t\right))(\boldsymbol\tau)] \nonumber \\
 &=(m\ast m \ast \gamma)(\boldsymbol\tau).
@@ -801,11 +801,11 @@ Now substituting in \eqref{eq:EM-Fourier_TF_of_Kernel} for $\mathcal{F}\{w(-\bol
 	\mathcal{F}&\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} = \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}\nonumber \\ 
 	&-\left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}}\right]\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\} -\sigma_{\varepsilon}^2.\label{eq:EM-mmgamma}
 \end{align}
-Now simplifying the above equation gives
-\begin{align}\label{eq:EM-MMGFourier1}
-	\mathcal{F}&\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{\gamma(\boldsymbol\tau)\} =\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\ &-\left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]-\sigma_{\varepsilon}^2 ,
-\end{align}
-rearranging and taking the inverse Fourier transform yields the final result
+Now rearranging and taking the inverse Fourier transform of the above equation yields the final result 
+% \begin{align}\label{eq:EM-MMGFourier1}
+% 	\mathcal{F}&\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{\gamma(\boldsymbol\tau)\} =\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\ &-\left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]-\sigma_{\varepsilon}^2 ,
+% \end{align}
+% rearranging and taking the inverse Fourier transform yields the final result
 \begin{align}\label{eq:EM-MMGFourier2}
 	&\gamma(\boldsymbol\tau) = \nonumber \\
 &\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\tau)}\Bigg[\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2\right] \nonumber \right.\\
@@ -816,13 +816,13 @@ where
  \tilde{m}(\boldsymbol\tau)=\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}.
 \end{equation}
 % from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
-From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Again if the signal-to-noise ratio is high the effect of $\sigma_{\varepsilon}^2$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral densities of the noise-free observations at time $t+1$ and $t$ respectively. If $m(\cdot)$ is a point sensor then the spatial support of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} is then required.  Alternatively, assuming a Gaussian shape for both the disturbance function and the sensor kernel (with known support), the support of the disturbance covariance function, $\sigma^2_{\gamma}$, can be determined analytically using the expression for Gaussian basis functions' convolution \cite{Freestone2011}, giving 
+From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Again if the signal-to-noise ratio is high the effect of $\sigma_{\varepsilon}^2$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral densities of the noise-free observations at time $t+1$ and $t$ respectively. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} is then required.  Alternatively, assuming a Gaussian shape for both the disturbance function and the sensor kernel (with known support), the support of the disturbance covariance function, $\sigma^2_{\gamma}$, can be determined analytically using the expression for Gaussian basis functions' convolution \cite{Freestone2011}, giving 
 \begin{equation}\label{eq:EM-AnalyticSupportCalculation}
  \sigma_{\gamma}^2=\sigma_{mm\gamma}^2-2\sigma_m^2,
 \end{equation}
-where $\sigma_{mm\gamma}^2$ is the width of the fitted Gaussian function to the estimated support of $(m\ast m\ast\gamma)(\boldsymbol\tau)$ from \eqref{eq:EM-MMGFourier1}.
+where $\sigma_{mm\gamma}^2$ is the width of the fitted Gaussian function to the estimated support of $(m\ast m\ast\gamma)(\boldsymbol\tau)$ from \eqref{eq:EM-MMGFourier2}.
 
-Note using uniform observation samples in equations \eqref{eq:EM-KernelSolution}, \eqref{eq:EM-MMGFourier1} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated supports of the connectivity kernel and disturbance covariance function.
+Note using uniform observation samples in equations \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
 \section{Simulation}
 This section demonstrates the performance of the proposed estimation scheme. Several examples are shown where different spatial mixing kernels were adopted. In each case data is generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation}  and sampled at $t=1 \dots 2000$.
 \subsection{One dimensional example}
