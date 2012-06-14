@@ -682,7 +682,7 @@ and the spatial cross-correlation shall be denoted as
 	\int_\Omega a(\mathbf{r})b(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r} = (a\star b)(\boldsymbol{\tau}),
 \end{equation} 
 where $\boldsymbol{\tau}$ is the spatial shift.
-\subsection{Estimation of Connectivity Kernel Support} 
+\subsection{Estimation of spatial mixing kernel} 
 Under the assumption that the sensors are not spatially band-limiting the spectral content of the field and the spatial mixing kernel is homogeneous, the shape of the spatial mixing kernel can be inferred by studying the spatial cross-correlation between consecutive observations. The deterministic component of the spatial mapping of the current field is due to the convolution of the kernel with the previous field. The spatial relationship between consecutive observations is governed by the shape of the mixing kernel. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape. To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as
 \begin{equation}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\tau}\right).
@@ -733,7 +733,8 @@ Now rearranging \eqref{eq:EM-XcorrFourier} gives
 	\mathcal{F}\left(k(-\boldsymbol\tau)\right) = \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}}\right].
 \end{equation}
 From \eqref{eq:EM-Fourier_TF_of_Kernel} it can be seen that to compute the exact shape of the kernel, the observation noise variance is required. An error in the initial guess of  the observation noise variance will result in a distortion in the shape of the kernel, however if the signal-to-noise ratio is high such a distortion becomes insignificant.
-By the Wiener-Khintchine theorem (WKT) the denominator in \eqref{eq:EM-Fourier_TF_of_Kernel} is equivalent to the power spectral density (PSD) of the noise-free observations which is non-negative and a real quantity. The WKT states that the power spectral density of the wide sense stationary process is the Fourier transform of its auto-correlation function \cite{Ricker2003}. The numerator is also known as the cross-spectrum or cross-spectral density. The WKT allows to establish the bounds on the initial guess of $\sigma_{\varepsilon}^2$
+By the Wiener-Khintchine theorem (WKT) the denominator in \eqref{eq:EM-Fourier_TF_of_Kernel} is equivalent to the power spectral density (PSD) of the noise-free observations which is non-negative and a real quantity \cite{Ricker2003}. The numerator is also known as the cross-spectrum or cross-spectral density. The WKT allows to establish the bounds on the initial guess of $\sigma_{\varepsilon}^2$
+% The WKT states that the power spectral density of the wide sense stationary process is the Fourier transform of its auto-correlation function .
 \begin{align}
 	\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]& - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}\ge0 \nonumber \\
 	\implies & \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\}\ge\mathcal{F}\{\sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}\ge0 \nonumber \\
@@ -747,7 +748,7 @@ where over-bar denotes the complex conjugate operator. Finally, an expression fo
 \begin{equation}\label{eq:EM-KernelSolution}
 	k(\boldsymbol\tau) = \mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }\right\}}.
 \end{equation}
-The complex conjugate operator essentially reflects the connectivity kernel through the origin in the spatial domain, therefore, if the connectivity kernel is isotropic, the complex conjugate operator can be dropped. 
+The complex conjugate operator essentially reflects the kernel through the origin in the spatial domain. In the case of isotropic kernel, the complex conjugate operator can be dropped. 
 % Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations.  
 % Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. To show this we take the spatial Fourier transform of both sides of equation~\ref{} giving
 \subsection{Estimation of disturbance covariance function}
@@ -820,7 +821,7 @@ where
 From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Again if the signal-to-noise ratio is high the effect of $\sigma_{\varepsilon}^2$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral densities of the noise-free observations at time $t+1$ and $t$ respectively. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} is then required. 
 Note using uniform observation samples in equations \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
 \section{Simulation}   
-This section demonstrates the performance of the proposed estimation scheme. Several examples are shown where different spatial mixing kernels were adopted. In each example data is generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled at $t=\left\lbrace1 \cdots 2000  \right\rbrace $. The formulations given in \ref{eq:EM-KernelSolution} and \ref{eq:EM-MMGFourier2} are applied in two stages, first $\sigma_{\varepsilon}^2$ is set to zero as this only affects the estimation at the origin, this way we avoid numerical errors at other locations. Second $\sigma_{\varepsilon}^2$ is chosen according to the bound estabilished by \ref{eq:BoundOnObsVariance}  to correct estimations at the origin. 
+This section demonstrates the performance of the proposed estimation scheme. Several examples are shown where different spatial mixing kernels were adopted. In each example data was generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled at $t=\left\lbrace1 \cdots 2000  \right\rbrace $. The formulations given in \ref{eq:EM-KernelSolution} and \ref{eq:EM-MMGFourier2} are applied in two stages, first $\sigma_{\varepsilon}^2$ is set to zero as this only affects the estimation at the origin, this way we avoid numerical errors at other locations. Second $\sigma_{\varepsilon}^2$ is chosen according to the bound estabilished by \ref{eq:BoundOnObsVariance}  to correct estimations at the origin. 
 \subsection{One dimensional example}
  Consider the following homogeneous spatial mixing kernel 
 \setlength{\arraycolsep}{0.0em}
