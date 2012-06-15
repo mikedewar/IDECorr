@@ -668,7 +668,7 @@ where $\gamma(\mathbf{r}-\mathbf{r'})$ is a spatially homogeneous covariance fun
 	y_t(\mathbf{r}) = \int_{\Omega} { m\left(\mathbf{r}-\mathbf{r}'\right) z_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
 \end{equation}
 where $m\left(\mathbf{r}-\mathbf{r}'\right)$ is the observation kernel defined by the Gaussian
-\begin{equation}
+\begin{equation}\label{eq:observationkernel}
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
 \end{equation}
 where $\sigma_m$ sets the kernel width. The superscript $\top$ denotes the transpose operator and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix.
@@ -687,7 +687,7 @@ Under the assumption that the sensors are not spatially band-limiting the spectr
 \begin{equation}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
- The goal of the derivation is to make the necessary substitutions and simplifications to get an expression of the cross-correlation as a function of the connectivity kernel. In the next step we substitute equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and expand to give
+ The goal of the derivation is to make the necessary substitutions and simplifications to get an expression of the cross-correlation as a function of the mixing kernel. In the next step we substitute equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and expand to give
 \begin{equation}
 	R_{y_{t+1}y_t}\left(\boldsymbol{\tau}\right) = \left(\left(m \ast z_{t+1}\right)\star y_t\right)\left(\boldsymbol{\tau}\right) + \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
@@ -724,7 +724,7 @@ where $\delta\left(\cdot\right)$ denotes Kronecker delta. Now substituting equat
  \begin{align}\label{eq:Tobesolvedforthekernel}
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= k(-\boldsymbol\tau) \ast \left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right).
 \end{align} 
-The solution of the above equation for the connectivity kernel is a deconvolution. Using the convolution theorem \eqref{eq:Tobesolvedforthekernel} can be solved for the kernel in the frequency domain.
+The solution of the above equation for the mixing kernel is a deconvolution. Using the convolution theorem \eqref{eq:Tobesolvedforthekernel} can be solved for the kernel in the frequency domain.
 \begin{align}\label{eq:EM-XcorrFourier}
 	\mathcal{F}\{k(-\boldsymbol\tau)\} \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}.
 \end{align}
@@ -740,7 +740,7 @@ By the Wiener-Khintchine theorem (WKT) the denominator in \eqref{eq:EM-Fourier_T
 	\implies & \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\}\ge\mathcal{F}\{\sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}\ge0 \nonumber \\
 	\implies & \min\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\}\ge\sigma_{\varepsilon}^2\ge0. \label{eq:BoundOnObsVariance}
 \end{align}
-Since the connectivity kernel is a real function, the following relation holds \cite{Bracewell2000}
+Since the mixing kernel is a real function, the following relation holds \cite{Bracewell2000}
 \begin{equation}
  \mathcal{F}\left(k(\boldsymbol\tau)\right)=\overline{\mathcal{F}\left(k(-\boldsymbol\tau)\right)},
 \end{equation}
@@ -763,7 +763,7 @@ The observation auto-correlation at time $t+1$ can be expressed as
 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= ((m\ast k\ast z_t)\star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
 	&+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\tau})+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\tau}).
 \end{align}
-By using similar arguments that were used in the derivation for the connectivity kernel, the auto-correlation can be simplified by recognising that
+By using similar arguments that were used in the derivation for the mixing kernel, the auto-correlation can be simplified by recognizing that
 \begin{align}\label{eq:EM-Autoterm2}
 	((m\ast k \ast z_t) \star y_{t+1})(\boldsymbol\tau) &= k(-\boldsymbol\tau) \ast R_{y_ty_{t+1}}(\boldsymbol\tau),
 \end{align}
@@ -821,19 +821,17 @@ where
 From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Again if the signal-to-noise ratio is high the effect of $\sigma_{\varepsilon}^2$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral densities of the noise-free observations at time $t+1$ and $t$ respectively. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} is then required. 
 Note using uniform observation samples in equations \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
 \section{Simulation}   
-This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where different spatial mixing kernels (isotropic and anisotropic) were adopted. In each example data was generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled at $t=\left\lbrace1 \cdots 2000  \right\rbrace $. First 1000 samples discarded allowing the model's initial transients to die out. We assumed periodic boundary conditions (PBC) for the spatial field. The formulations given in \ref{eq:EM-KernelSolution} and \ref{eq:EM-MMGFourier2} are applied in two stages, first $\sigma_{\varepsilon}^2$ is set to zero as this only affects the estimation at the origin, this way we avoid numerical errors at other locations. Second $\sigma_{\varepsilon}^2$ is chosen according to the bound estabilished by \ref{eq:BoundOnObsVariance}  to correct estimations at the origin. 
+This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where different spatial mixing kernels (isotropic and anisotropic) were adopted. These kernels are defined as a sum of Gaussian basis functions in the form of
+\begin{align}\label{eq:sumofGaussians}
+ k\left(\mathbf{r}-\mathbf{r}'\right)=\sum_{i=0}^{n_{\theta}}\theta_i\psi_i\left(\mathbf{r}-\mathbf{r}'\right), 
+ \end{align}
+where $\theta_i$ is the weight and
+\begin{equation}\label{eq:Kernelbasis}
+	\psi_i=\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)}{\sigma_i^2}\right)}.
+\end{equation}
+ In each example data was generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled over $t=\left\lbrace1 \cdots 2000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by equation \ref{eq:observationkernel} with $\sigma_m^2=0.81$. First 1000 samples discarded allowing the model's initial transients to die out. We assumed periodic boundary conditions (PBC) for the spatial field.      The formulations given in \ref{eq:EM-KernelSolution} and \ref{eq:EM-MMGFourier2} are applied in two stages, first $\sigma_{\varepsilon}^2$ is set to zero as this only affects the estimation at the origin, this way we avoid numerical errors at other locations. Second $\sigma_{\varepsilon}^2$ is chosen according to the bound established by \ref{eq:BoundOnObsVariance}  to correct estimations at the origin. 
 \subsection{Example I: isotropic mixing kernel}
- Consider the following homogeneous spatial mixing kernel 
-\setlength{\arraycolsep}{0.0em}
-\begin{align}
- 	k\left(\mathbf{r}-\mathbf{r}'\right) &=\theta_0 \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_0)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_0)}{\sigma_0^2}\right)}\nonumber\\
-&+\theta_1 \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_1)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_1)}{\sigma_1^2}\right)},
-\label{eq:1DSimulationKernel}
-\end{align}
-\setlength{\arraycolsep}{5pt}                                                                                                             
-where $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, and $\theta_0=0.5$, $\theta_1=-0.3$.
-
-The kernel and its decomposition are plotted in  \figurename{\ref{fig:SpatialMixingKernel}}. The dynamics associated with the IDE defined by (\ref{eq:1DSimulationKernel}) will be oscillatory and dissipative to initial conditions. The field is decomposed using scaling functions $\phi_{4;0,k} $ and the associated wavelet functions $\psi_{4;j,k} $ with $j=0,1$. Observations are then generated from (\ref{eq:ConstructionIntegral1}-\ref{eq:Pi}) for spatial domain defined as $\mathcal{S}=\left[0,10 \right] $ in response to an initial condition where $\boldsymbol\Sigma_v=0.2 \times \mathbf{I}_{n_y}$ and $ \eta(s-r)=2.5\times\phi_{4,3,-2}(s-r)$. The response was sampled at 50 irregularly spaced random locations, at $t=1, \cdots 400 $.
+ Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, and $\theta_0=0.5$, $\theta_1=-0.3$ in equations \ref{eq:sumofGaussians} and \ref{eq:Kernelbasis}. The kernel is plotted in  \figurename{\ref{fig:SpatialMixingKernel}}.  
 % \begin{figure}[!h] 
 % \centering
 % \includegraphics[width=0.5\textwidth]{./Graph_ireg/KernelWithKerneldecomposition.pdf}
