@@ -855,34 +855,11 @@ where $\theta_i$ is the weight and
 % \caption{Spatial field at a number of time instants; estimated and true fields are shown by solid and dashed line respectively; the top panel of each plot is the estimate with maximmum scale $j=0$ and the bottom panel is the estimate with maximum scale $j=1$.}
 % \label{fig:1DFieldEstimation}
 % \end{figure*}   
-In order to estimate the spatial mixing kernel and the spatio-temporal field, the  kernel and the field are decomposed using
-\begin{equation}
- k\left(s-r\right)=\sum_{l \in \mathbb{Z}}\alpha_{0,l}\phi_{4;0,l}\left(s-r\right)+\sum_{j=0}^{1} \sum_{l \in \mathbb{Z}}\beta_{j,l}\psi_{4;j,l}\left(s-r\right)
-\label{1DKernelDecompositionForSimulation}
-\end{equation}
-\begin{equation}
- z_t\left(s\right)=\sum_{l \in \mathbb{Z}}x_{t,0,l}\phi_{4;0,l}\left(s\right)+\sum_{j=0}^{1} \sum_{l \in \mathbb{Z}} \check{x}_{t,j,l}\psi_{4;j,l}\left(s\right)
-\label{1DFieldDecompositionForSimulation}
-\end{equation}
-Note that the number of translation operations depends on the spatial range of the data. It follows that the total number of terms in (\ref{1DKernelDecompositionForSimulation}) and (\ref{1DFieldDecompositionForSimulation}) are 8 and 47 respectively. The estimated kernel in \figurename{\ref{fig:SpatialMixingKernelEstimate} } is obtained for the cubic B-spline, with initial scale 0 and maximum scale 1. The EM algorithm is allowed to run for 30 iterations to avoid any issues regarding early stopping, though typically the change in $\parallel \mathbf{A} \parallel_{F}$ falls below $10^{-4} $ after less than 15 iterations. A total number of 500 estimation experiments are performed, where $v_t$ and $w_t$ are re-generated each trial.
+
 
 
  The performance measure employed here is the Mean Integrated Squared Error (MISE) defined as
-\begin{equation}
- \mathbf{E}\left[\int_{\mathcal{S}}\left[e\left(s\right) \right]^2ds  \right]
-\label{MISE} 
-\end{equation}
- where  $e\left(s\right)$ is the error between the unknown function, $f\left( s\right) $ and its estimate, $\hat{f}\left( s\right) $. In this example the original kernel and the field are known and hence the integral in  (\ref{MISE}) can be computed analytically. For spatial mixing kernel we have
-\begin{eqnarray}
- \lefteqn{\int_{\mathcal{S}}\left[e\left(s\right)\right]^2ds}\nonumber \\  &=\left(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}}\right)^\top\left[ \int_{\mathcal{S}}\boldsymbol\lambda\left(s-r\right)\boldsymbol\lambda\left(s-r\right)^\top ds\right] \left(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}}\right)&
-\label{MISEKernel}
-\end{eqnarray}
-  Here, we are particularly interested in assessing the performance improvement as the scale of the details in MRA is increased. Performance based on (\ref{MISEKernel}) at different spatial scales and over 500 trials have been evaluated. The MISE of the model at $j=0$ is 0.024 and reduces to 0.005 when $\psi_{4;1,k}$ terms are also included in the model, in fact estimation performance is improved by a factor of 4.8. The coarsest approximation of the kernel along with its approximation at $j=1$ are illustrated in \figurename{\ref{fig:SpatialMixingKernelEstimate}. It can be seen that the model is able to estimate both slowly and rapidly varying segments of the  kernel with very high accuracy.  Field estimates  at a selection of time instants are shown in \figurename{\ref{fig:1DFieldEstimation}}. It is clearly observed that the coarse and fine features of the original field have been captured accurately over regions where observations are available. Observation locations are generated randomly, as shown in \figurename{\ref{fig:FieldVariance}. Assuming the observed field can be fully described by the  decomposed IDE model, the variance of the field can be computed to express the  uncertainty of the estimation, at each point in space and at time $t$ we have 
-\begin{equation}
- \text{Var}(\hat z_t(s_i))=\boldsymbol\mu^{\top}(s_i) \mathbf P_{t|T}\boldsymbol\mu(s_i)
-\label{eq:FieldVariance}
-\end{equation}
-where $\mathbf P_{t|T} $ is the covariance matrix associated with the  state estimates obtained from the RTS smoother. Variance based on (\ref{eq:FieldVariance}) at each spatial location and at $t=50$ is shown in \figurename{\ref{fig:FieldVariance}}. The uncertainty of the estimation is higher at almost  every spatial location at $j=1$ compared to $j=0$. This is to be expected as there are more wavelet basis functions at higher resolution and hence more associated weights need to be estimated. Peaks in the variance of the field coincide with regions where no observations have been made. Increasing the number of observation locations, or using equally spaced observation locations would reduce the variance of the field estimation.
+
 
 \subsection{Example II: anisotropic mixing kernel}
 In order to demonstrate the ability of the developed model in higher dimensions, a two dimensional IDE model with a single B-spline kernel $\phi_{4;0,\mathbf{l}}\left(s_1-r_1,s_2-r_2\right) $ and $\mathbf l=[-2,-2]^ \top$ is used with parameter $\theta=1$. In this example spatial region $\mathcal{S}=[0,4]^2 $ is simulated over $t=\left\lbrace1 \cdots 200  \right\rbrace $ using $7$ scaling and wavelet functions at $j=0$ together with $24$ wavelet functions at $j=1$. Univariate cubic B-spline scaling and wavelet functions are used to generate 2-D basis functions using (\ref{eq:2Dscalingfunction}-\ref{eq:2Dwavelet_3}). A set of $250$ random  observation locations is used; $\mathbf{\Sigma}_v$ is taken the same as that in example 1 and $ \eta\left(s_1-r_1,s_2-r_2\right) =2.5\times\phi_{4,3,\mathbf{l}}\left(s_1-r_1,s_2-r_2\right)$ where $\mathbf l=[-2,-2]^ \top$. The histogram of the parameter estimates  in \figurename{\ref{fig:2DHist} is generated using 500 runs of the EM algorithm. For comparison, snapshots for the original and the corresponding coarse and fine field estimates at time instants 5, 50 and 150 are illustrated in \figurename{\ref{fig:2DFieldEstimation1}-\ref{fig:2DFieldEstimation3}}. In addition, the MISE of the dynamic field at some time instants are presented in Table \ref{table:ValidationResultField}.  This shows that the multiresolution IDE model can estimate the spatio-temporal dynamics of the original system accurately. The accuracy of the estimation remains consistent over time. Performance is improved significantly at $j=1$ compared to the case where $j=0$.
