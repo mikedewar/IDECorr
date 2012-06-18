@@ -831,13 +831,20 @@ where $\theta_i$ is the weight and
 \end{equation}
  In each example data was generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled over $t=\left\lbrace1 \cdots 2000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by equation \ref{eq:observationkernel} with $\sigma_m^2=0.81$. First 1000 samples discarded allowing the model's initial transients to die out. We assumed periodic boundary conditions (PBC) for the spatial field.      The formulations given in \ref{eq:EM-KernelSolution} and \ref{eq:EM-MMGFourier2} are applied in two stages, first $\sigma_{\varepsilon}^2$ is set to zero as this only affects the estimation at the origin, this way we avoid numerical errors at other locations. Second $\sigma_{\varepsilon}^2$ is chosen according to the bound established by \ref{eq:BoundOnObsVariance}  to correct estimations at the origin. 
 \subsection{Example I: isotropic mixing kernel}
- Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, and $\theta_0=0.5$, $\theta_1=-0.3$ in equations \ref{eq:sumofGaussians} and \ref{eq:Kernelbasis}. The kernel is plotted in  \figurename{\ref{fig:SpatialMixingKernel}}.  
-% \begin{figure}[!h] 
-% \centering
-% \includegraphics[width=0.5\textwidth]{./Graph_ireg/KernelWithKerneldecomposition.pdf}
-% \caption{Multiresolution decomposition of a complex spatial mixing kernel (dark line) and the corresponding scaling and wavelet basis functions (light lines).}
-% \label{fig:SpatialMixingKernel}
-% \end{figure} 
+ Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, and $\theta_0=0.5$, $\theta_1=-0.3$ in equations \ref{eq:sumofGaussians} and \ref{eq:Kernelbasis}. The kernel and its estimation are plotted in  \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. 
+ 
+ \begin{figure}[!h] 
+ \centering
+ \includegraphics[width=0.5\textwidth]{./Graph/KernelEstimation2d.pdf}
+ \caption{Estimation of isotropic mixing kernel (Mexican-hat shape); left panel is the true kernel; right panel is the estimated kernel.}
+ \label{fig:MexHatKernel2d}
+ \end{figure}
+ \begin{figure}[!h] 
+ \centering
+ \includegraphics[width=0.5\textwidth]{./Graph/KernelSupportEstimation1d.pdf}
+ \caption{Estimation of isotropic mixing kernel (Mexican-hat shape);  cross-sections of the true and estimated kernels are shown by solid and dotted lines respectively .}
+ \label{fig:MexHatKernel1d}
+ \end{figure}
 % \begin{figure}[!h] 
 % \centering
 % \includegraphics[width=0.5\textwidth]{./Graph_ireg/irKernelEstimateCoaeseDetail.pdf}

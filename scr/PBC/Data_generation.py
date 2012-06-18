@@ -34,7 +34,7 @@ estimation_field_width=simulation_field_width
 Fs = 1e3                                       
 #sampling period
 Ts = 1/Fs   
-t_end= 10
+t_end= 1
 NSamples = t_end*Fs;
 T = pb.linspace(0,t_end,NSamples);
 
@@ -77,10 +77,9 @@ NF_Connectivity_kernel=IDEComponents.Kernel(NF_Connectivity_kernel_basis_functio
 
 
 #Field noise
-gamma_center=pb.matrix([[0],[0]])
-gamma_width=1.3**2 
+Sigma_e_temp=io.loadmat('periodic_sigma_gamma')
+Sigma_gamma=Sigma_e_temp['Sigma_gamma']
 gamma_weight=0.1
-gamma=basis(gamma_center,gamma_width,dimension)
 #Observation noise
 varepsilon=0.1
 Sigma_varepsilon =varepsilon*np.eye(len(obs_locns),len(obs_locns))
@@ -97,10 +96,10 @@ sensor_kernel=basis(sensor_center,sensor_width,dimension)
 First_n_observations=100
 number_of_iterations=50
 #populate the model
-NF_model=NF(NF_Connectivity_kernel,sensor_kernel,obs_locns,gamma,gamma_weight,Sigma_varepsilon,simulation_space_x_y,simulation_spacestep)
+NF_model=NF(NF_Connectivity_kernel,sensor_kernel,obs_locns,Sigma_gamma,gamma_weight,Sigma_varepsilon,simulation_space_x_y,simulation_spacestep)
 #generate the Neural Field model
 NF_model.gen_ssmodel()
 V,Y=NF_model.simulate(T)
 data=dict(Y=Y)
-io.savemat('data',data)
+#io.savemat('data',data)
 
