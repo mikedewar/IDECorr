@@ -818,7 +818,7 @@ where
  \tilde{m}(\boldsymbol\tau)=\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}.
 \end{equation}
 % from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
-From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Again if the signal-to-noise ratio is high the effect of $\sigma_{\varepsilon}^2$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral densities of the noise-free observations at time $t+1$ and $t$ respectively. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} is then required. 
+From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Again if the signal-to-noise ratio is high the effect of $\sigma_{\varepsilon}^2$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral densities of the noise-free observations at time $t+1$ and $t$ respectively. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} is then required. 
 Note using uniform observation samples in equations \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
 \section{Simulation}   
 This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where different spatial mixing kernels (isotropic and anisotropic) were adopted. These kernels are defined as a sum of Gaussian basis functions in the form of
@@ -829,9 +829,9 @@ where $\theta_i$ is the weight and
 \begin{equation}\label{eq:Kernelbasis}
 	\psi_i=\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)}{\sigma_i^2}\right)}.
 \end{equation}
- In each example data was generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled over $t=\left\lbrace1 \cdots 2000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by equation \ref{eq:observationkernel} with $\sigma_m^2=0.81$. First 1000 samples discarded allowing the model's initial transients to die out. We assumed periodic boundary conditions (PBC) for the spatial field.      The formulations given in \ref{eq:EM-KernelSolution} and \ref{eq:EM-MMGFourier2} are applied in two stages, first $\sigma_{\varepsilon}^2$ is set to zero as this only affects the estimation at the origin, this way we avoid numerical errors at other locations. Second $\sigma_{\varepsilon}^2$ is chosen according to the bound established by \ref{eq:BoundOnObsVariance}  to correct estimations at the origin. 
+ In each example data was generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled over $t=\left\lbrace1 \cdots 2000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by equation \ref{eq:observationkernel} with $\sigma_m^2=0.81$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}=1.3$ and $\sigma_d^2=0.1$.  First 1000 samples discarded allowing the model's initial transients to die out. We assumed periodic boundary conditions (PBC) for the spatial field.      The formulations given in \ref{eq:EM-KernelSolution} and \ref{eq:EM-MMGFourier2} are applied in two stages, first $\sigma_{\varepsilon}^2$ is set to zero as this only affects the estimation at the origin, this way we avoid numerical errors at other locations. Second $\sigma_{\varepsilon}^2$ is chosen according to the bound established by \ref{eq:BoundOnObsVariance}  to correct estimations at the origin. 
 \subsection{Example I: isotropic mixing kernel}
- Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, and $\theta_0=0.5$, $\theta_1=-0.3$ in equations \ref{eq:sumofGaussians} and \ref{eq:Kernelbasis}. The kernel and its estimation are plotted in  \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. 
+ Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, and $\theta_0=0.5$, $\theta_1=-0.3$ in equations \ref{eq:sumofGaussians} and \ref{eq:Kernelbasis}. The kernel and its estimation are plotted in  \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. The estimated disturbance covariance function is shown in \figurename{\ref{fig:EstimatedSupport1d}}. In this figure the estimated covariance function shown by dashed line where $\sigma_{\varepsilon}=0$ and the value at the origin is then corrected using according to the inequality \ref{eq:BoundOnObsVariance} which gives $\sigma_{\varepsilon}^2=0.104$.
  
  \begin{figure}[!h] 
  \centering
@@ -844,7 +844,13 @@ where $\theta_i$ is the weight and
  \includegraphics[width=0.5\textwidth]{./Graph/KernelSupportEstimation1d.pdf}
  \caption{Estimation of isotropic mixing kernel (Mexican-hat shape);  cross-sections of the true and estimated kernels are shown by solid and dotted lines respectively .}
  \label{fig:MexHatKernel1d}
- \end{figure}
+ \end{figure}  
+\begin{figure}[!h] 
+ \centering
+ \includegraphics[width=0.5\textwidth]{./Graph/DisturbanceSupportEstimation1d.pdf}
+ \caption{Estimation of disturbance covariance function;  cross-sections of the true, estimated and corrected estimations  are shown by solid, dashed and dotted lines respectively.}
+ \label{fig:EstimatedSupport1d}
+ \end{figure} 
 % \begin{figure}[!h] 
 % \centering
 % \includegraphics[width=0.5\textwidth]{./Graph_ireg/irKernelEstimateCoaeseDetail.pdf}

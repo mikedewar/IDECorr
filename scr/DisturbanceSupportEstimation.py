@@ -9,7 +9,7 @@ from Bases2D import *
 #Observation noise
 ny=196
 delta_s=1.5
-varepsilon=0.1012
+varepsilon=0.
 
 
 
@@ -127,13 +127,23 @@ sub2_cbar=fig.get_axes()[-1]
 
 sub1_cbar.set_position([0.17, 0.23, 0.22, 0.65])
 sub2_cbar.set_position([0.65, 0.23, 0.22, 0.65])
-fig.subplots_adjust(left=0.07, bottom=0.23, right=0.97, top=0.79,wspace=0.03, hspace=0.56)
-fig.savefig('DisturbanceWidthEstimation.pdf',format='pdf', dpi=300) 
-pb.figure()
-pb.plot(pb.diagonal(Estimatedgamma))
-pb.plot(pb.diagonal(gammavalues))
-#pb.plot(Estimatedgamma[14])
-#pb.plot(gammavalues[14])
+fig.subplots_adjust(left=0.17, bottom=0.23, right=0.97, top=0.79,wspace=0.03, hspace=0.56)
+fig.savefig('DisturbanceWidthEstimation.pdf',format='pdf', dpi=300)
+
+fig1=pb.figure(figsize=(3.27,2))
+fig1.subplots_adjust(left=0.17, bottom=0.23, right=0.94, top=0.94,wspace=0.2, hspace=0.2)
+ax3=fig1.add_subplot(111)
+ax3.plot(s,pb.diagonal(Estimatedgamma),'k--',label=r'$\hat{\sigma_d\gamma}$')
+ax3.plot(s,pb.diagonal(gammavalues),'k',label=r'$\sigma_d\gamma$')
+#leg=ax3.legend(frameon=False,prop={'size':'medium'})
+Estimatedgamma[13,13]=0.116
+ax3.plot(s,pb.diagonal(Estimatedgamma),'k:',label=r'$\hat{\sigma_d\gamma}$')
+ax3.set_xticks([-20,0,20])
+ax3.set_yticks([-0.05,0.2])
+ax3.set_xlabel('Space',fontsize=10,fontname='Arial')
+ax3.text(-25,.1,'Amplitude',fontsize=10,fontname='Arial',rotation='vertical')
+fig1.savefig('DisturbanceSupportEstimation1d.pdf',format='pdf',bbox_inches='tight', dpi=300) 
+
 pb.show()
 
 

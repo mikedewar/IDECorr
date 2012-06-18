@@ -131,9 +131,9 @@ ax2.plot(s,w.diagonal(),'k:',label=r'$\hat{k}$')
 leg=ax2.legend(frameon=False,prop={'size':'medium'})
 
 ax2.set_xticks([-20,0,20])
-ax2.set_yticks([-0.05,0,0.25])
+ax2.set_yticks([-0.05,0.25])
 ax2.set_xlabel('Space',fontsize=10,fontname='Arial')
-ax2.set_ylabel('Amplitude',fontsize=10,fontname='Arial')
+ax2.text(-25,.14,'Amplitude',fontsize=10,fontname='Arial',rotation='vertical')
 fig2.savefig('KernelSupportEstimation1d.pdf',format='pdf',bbox_inches='tight', dpi=300) 
 
 pb.show()
