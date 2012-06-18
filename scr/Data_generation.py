@@ -34,7 +34,7 @@ estimation_field_width=simulation_field_width
 Fs = 1e3                                       
 #sampling period
 Ts = 1/Fs   
-t_end= 2.5
+t_end= 10
 NSamples = t_end*Fs;
 T = pb.linspace(0,t_end,NSamples);
 
@@ -51,13 +51,17 @@ obs_locns=pb.array(zip(obs_locns_x.flatten(),obs_locns_y.flatten()))
 #Define connectivity kernel basis functions
 
 #centers
-psi0_center=pb.matrix([[-0.5],[-0.5]]);psi1_center=pb.matrix([[0],[0]]);psi2_center=pb.matrix([[0.5],[0.5]])
+#psi0_center=pb.matrix([[-0.5],[-0.5]]);psi1_center=pb.matrix([[0],[0]]);psi2_center=pb.matrix([[0.5],[0.5]])
+psi0_center=pb.matrix([[0],[0]]);psi1_center=pb.matrix([[0],[0]]);psi2_center=pb.matrix([[0],[0]])
+
 #widths
-#psi0_width=1.8**2;psi1_width=2.4**2;psi2_width=6.**2
-psi0_width=2.4**2;psi1_width=2.4**2;psi2_width=2.4**2
+psi0_width=1.8**2;psi1_width=2.4**2;psi2_width=6.**2
+#psi0_width=2.4**2;psi1_width=2.4**2;psi2_width=2.4**2
 
 #weights
-psi0_weight=-.07;psi1_weight=.07;psi2_weight=.02
+#psi0_weight=-.07;psi1_weight=.07;psi2_weight=.02
+psi0_weight=.5;psi1_weight=-.3;psi2_weight=0
+
 #define each kernel basis functions
 psi0=basis(psi0_center,psi0_width,dimension)
 psi1=basis(psi1_center,psi1_width,dimension)

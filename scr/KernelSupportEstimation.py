@@ -15,7 +15,7 @@ Ts = 1/Fs   #sampling period, second
 #Observation noise
 ny=196
 delta_s=1.5
-varepsilon=0.100
+varepsilon=0.105
 dimension=2
 
 
@@ -49,6 +49,8 @@ Denum=pb.fft2(ShiftedAutoCorrCopy)
 #calculate Fourier Transform of the kernel
 FFTShiftedXCorr=pb.fft2(ShiftedXCorr)
 W=pb.conjugate((FFTShiftedXCorr/Denum))
+#W=(FFTShiftedXCorr/Denum)
+
 #find the kernel in spatial domain
 w=pb.real(pb.ifft2(W))/(delta_s**2)
 w=pb.ifftshift(w)
@@ -58,21 +60,25 @@ w=pb.roll(w,-1,axis=1)
 #Define the true kernel
 
 #centers
-psi0_center=pb.matrix([[-0.5],[-0.5]]);psi1_center=pb.matrix([[0],[0]]);psi2_center=pb.matrix([[0.5],[0.5]])
+#psi0_center=pb.matrix([[-0.5],[-0.5]]);psi1_center=pb.matrix([[0],[0]]);psi2_center=pb.matrix([[0.5],[0.5]])
+
+psi0_center=pb.matrix([[0],[0]]);psi1_center=pb.matrix([[0],[0]]);psi2_center=pb.matrix([[0],[0]])
 #widths
-#psi0_width=1.8**2;psi1_width=2.4**2;psi2_width=6.**2
-psi0_width=2.4**2;psi1_width=2.4**2;psi2_width=2.4**2
+psi0_width=1.8**2;psi1_width=2.4**2;psi2_width=6.**2
+#psi0_width=2.4**2;psi1_width=2.4**2;psi2_width=2.4**2
 
 #weights
-psi0_weight=-.07;psi1_weight=.07;psi2_weight=.02
+#psi0_weight=-.07;psi1_weight=.07;psi2_weight=.02
+psi0_weight=.5;psi1_weight=-.3;psi2_weight=0
+
 #define each kernel basis functions
 psi0=basis(psi0_center,psi0_width,dimension)
 psi1=basis(psi1_center,psi1_width,dimension)
 psi2=basis(psi2_center,psi2_width,dimension)
 #Define space
 #~~~~~~~~~~~~~
-#s=pb.linspace(-20,20,len(w.diagonal()))
 s=pb.linspace(-20,20,len(w.diagonal()))
+#s=pb.linspace(-20,20,500)
 s1,s2=pb.meshgrid(s,s)
 Psi=psi0_weight*psi0(s1,s2)+psi1_weight*psi1(s1,s2)+psi2_weight*psi2(s1,s2)
 
