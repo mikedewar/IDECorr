@@ -456,7 +456,7 @@ Parkville, VIC, Australia (e-mail:deanrf@unimelb.edu.au; grayden@unimelb.edu.au)
 
 
 % The paper headers
-\markboth{Journal of }%
+\markboth{IEEE TRANSACTIONS ON SIGNAL PROCESSING}%
 {Aram \MakeLowercase{\textit{et al.}}: Spatio-Temporal Modelling Using the Integro-Difference Equation}
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
@@ -542,14 +542,14 @@ dynamic spatio-temporal modelling, Integro-Difference Equation (IDE), expectatio
 Techniques for modelling spatio-temporal systems are generating growing interest, both in the applied and theoretical literature. Of particular interest are the class of dynamic spatio-temporal models, including Cellular Automata (CA) \cite{Wolfram1994}, Coupled Map Lattices (CMLs) \cite{Billings2002}, Lattice Dynamical Wavelet Neural Network (LDWNN) \cite{Wei2009} and spatially correlated time series  \cite{Pfeifer1980,Glasbey2008,Dewar2007} which have all been used in a system identification context. The extent of the spatial interactions in these models is determined by a discrete neighbourhood structure.
 
 
-Another such model is the Integro-Difference Equation (IDE). These models have received much attention in population ecology as models for the spatio-temporal spread of organisms \cite{Kot1992,Kot1996} and in the brain dynamics to model the electrophysiological data  \cite{Deco2008,Schiff2008,Freestone2011}. IDE models combine discrete temporal dynamics with a continuous spatial representation. The dynamics of this model are given by a spatial mixing kernel, which defines the mapping between the current spatial field and the previous spatial field. The IDE model can be applied to data sampled both regularly and irregularly in space due to the continuous representation of each spatial field. Estimating the underlying spatial field in time is of particular interest which can be achieved by estimating the associated spatial mixing kernel from measured data, and then using this in a filtering framework \cite{Dewar2009}. 
+Another such model is the Integro-Difference Equation (IDE). These models have received much attention in population ecology as models for the spatio-temporal spread of organisms \cite{Kot1992,Kot1996} and in the brain dynamics to model the electrophysiological data  \cite{Deco2008,Schiff2008,Freestone2011}. IDE models combine discrete temporal dynamics with a continuous spatial representation. The dynamics of this model are given by a spatial mixing kernel, which defines the mapping between the current spatial field and the previous spatial field. The IDE model can be applied to data sampled both regularly and irregularly in space due to the continuous representation of each spatial field. Estimating the spatial mixing kernel and the underlying spatial field is of particular interest which can be achieved by  using conventional state-space modelling \cite{Dewar2009,Scerri2009} or in a hierarchical Bayesian framework \cite{Wikle1999,Xu2005,Wikle2011}. 
 
 
 Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation by decomposing the kernel and the field using a set of spectral basis functions. An alternative approach for the decomposition of the IDE was introduced in \cite{Dewar2009} where the resulting state and parameter space dimensions are independent of the number of observation locations. Therefore, increasing the resolution at which the system is observed does not necessarily increase the complexity of the system identification problem. In this work an Expectation-Maximisation (EM) algorithm \cite{Dempster1977,Gibsona2005}  was used to estimate both the field and the kernel from the observed data. A similar approach is adopted by \cite{Scerri2009} which developed a model selection procedure by considering various spatial scales at which to represent the system.  
 
-Here we take a different approach, using the average (over time) spatial auto-correlation and cross-correlation  of the observed field an efficient method is proposed to estimate the spatial mixing kernel, filed disturbance characteristics and the observation noise variance. This eliminates the computational complexity imposed by the methods in \cite{Dewar2009,Scerri2009} while they assumed that disturbance and noise characteristics were known to the estimator. Although the proposed method does not infer the underlying field from observed data, the results can be used as a prerequisite for the EM based algorithm (see \cite{Dewar2009}), providing better and efficient state (spatial field) and parameter estimations (spatial mixing kernel). 
+Here we take a different approach, using the average (over time) spatial auto-correlation and cross-correlation  of the observed field an efficient method is proposed to estimate the spatial mixing kernel, filed disturbance characteristics and the observation noise variance. This eliminates the computational complexity imposed by the methods in \cite{Dewar2009,Scerri2009} while they assumed that disturbance and noise characteristics were known to the estimator. Although the proposed method does not infer the underlying field from observed data, the results can be used as a prerequisite for the EM based algorithm (see \cite{Dewar2009,Xu2007}), providing better and efficient state (spatial field) and parameter estimations (spatial mixing kernel). 
 
-The rest of this paper is set out as follows: in Section 2, the stochastic IDE model is briefly reviewed. Section 3 introduces the estimation framework and provides necessary formulation  to construct such an estimator using observed field. In Section 4, synthetic examples are given to demonstrate the performance of the developed algorithm. Finally conclusions are drawn in Section 5.
+The rest of this paper is set out as follows: in Section 2, the stochastic IDE model is briefly reviewed. Section 3 introduces the estimation framework and provides necessary formulations  to construct such an estimator using observed field. In Section 4, synthetic examples are given to demonstrate the performance of the developed algorithm. Finally conclusions are drawn in Section 5.
 
 
 
@@ -660,7 +660,7 @@ The spatially homogeneous, linear IDE is given by
 \end{equation}
 where $t\in \mathbb{Z}_0 $ denotes discrete time, $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n$-dimensional physical space, where $n \in \left\lbrace 1,2,3 \right\rbrace $. The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The model dynamics  are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}-\mathbf{r}'\right)$ which maps the current spatial field to the next spatial field via the integral (\ref{eq:ConvolutionIntegral}). The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
 \begin{equation}
-cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d\delta(t-t')\gamma(\mathbf{r}-\mathbf{r'}),
+cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d^2\delta(t-t')\gamma(\mathbf{r}-\mathbf{r'}),
 \label{eq:FieldDisturbance}
 \end{equation}
 where $\sigma_d$ is temporal disturbance, $\delta(\cdot)$ is the Dirac-delta function and $\gamma(\mathbf{r}-\mathbf{r'})$ is a spatially homogeneous covariance function. The mapping between the spatial field and the observations, denoted by $\mathbf{y}_t$, is modeled using the observation function that incorporates sensors with a spatial extent
@@ -683,8 +683,9 @@ and the spatial cross-correlation shall be denoted as
 \end{equation} 
 where $\boldsymbol{\tau}$ is the spatial shift.
 \subsection{Estimation of spatial mixing kernel} 
-Under the assumption that the sensors are not spatially band-limiting the spectral content of the field and the spatial mixing kernel is homogeneous, the shape of the spatial mixing kernel can be inferred by studying the spatial cross-correlation between consecutive observations. The deterministic component of the spatial mapping of the current field is due to the convolution of the kernel with the previous field. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape. To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as  
-% The spatial relationship between consecutive observations is governed by the shape of the mixing kernel.
+Under the assumption that the sensors are not spatially band-limiting the spectral content of the field and the spatial mixing kernel is homogeneous, the shape of the spatial mixing kernel can be inferred by studying the spatial cross-correlation between consecutive observations.  To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as  
+% The spatial relationship between consecutive observations is governed by the shape of the mixing kernel. 
+% The deterministic component of the spatial mapping of the current field is due to the convolution of the kernel with the previous field. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape.
 \begin{equation}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
@@ -819,7 +820,7 @@ where
  \tilde{m}(\boldsymbol\tau)=\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}.
 \end{equation}
 % from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
-From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Again if the signal-to-noise ratio is high the effect of $\sigma_{\varepsilon}^2$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral densities of the noise-free observations at time $t+1$ and $t$ respectively. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} is then required. 
+From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Similarly an estimate  of $\sigma_{\varepsilon}^2$ can be found using \eqref{eq:BoundOnObsVariance}. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} is then required. 
 Note using uniform observation samples in equations \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
 \section{Simulation}   
 This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where different spatial mixing kernels (isotropic and anisotropic) were adopted. These kernels are defined as a sum of Gaussian basis functions in the form of
@@ -830,9 +831,17 @@ where $\theta_i$ is the weight and
 \begin{equation}\label{eq:Kernelbasis}
 	\psi_i=\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)}{\sigma_i^2}\right)}.
 \end{equation}
- In each example data was generated using equations \ref{eq:ConvolutionIntegral} and \ref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled over $t=\left\lbrace1 \cdots 2000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by equation \ref{eq:observationkernel} with $\sigma_m^2=0.81$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}=1.3$ and $\sigma_d^2=0.1$.  First 1000 samples discarded allowing the model's initial transients to die out. We assumed periodic boundary conditions (PBC) for the spatial field.      The formulations given in \ref{eq:EM-KernelSolution} and \ref{eq:EM-MMGFourier2} are applied in two stages, first $\sigma_{\varepsilon}^2$ is set to zero as this only affects the estimation at the origin, this way we avoid numerical errors at other locations. Second $\sigma_{\varepsilon}^2$ is chosen according to the bound established by \ref{eq:BoundOnObsVariance}  to correct estimations at the origin. 
+ In each example data was generated using equations \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled over $t=\left\lbrace1 \cdots 10000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by equation \eqref{eq:observationkernel} with $\sigma_m^2=0.81$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. First 1000 samples discarded allowing the model's initial transients to die out. We assumed periodic boundary conditions (PBC) for the spatial field. Examples of the field for each experiment at a single time instant are shown in \figurename{\ref{fig:field}}. 
+
+In the experiments first $\sigma_{\varepsilon}^2$ is estimated using the minimum defined by inequality \eqref{eq:BoundOnObsVariance}. The estimated variance is then used in the formulations given by \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} to estimate the spatial mixing kernel and the disturbance covariance function, (multiplied by temporal disturbance) $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$.
+\begin{figure}[!h] 
+ \centering
+ \includegraphics[width=0.5\textwidth]{./Graph/FieldSnapshot.pdf}
+ \caption{Snapshots of the underlying fields using different spatial mixing kernels; left and right panels are the generated periodic fields using isotropic (Mexican-hat shape) and anisotropic spatial mixing kernels.}
+ \label{fig:field}
+ \end{figure} 
 \subsection{Example I: isotropic mixing kernel}
- Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, and $\theta_0=0.5$, $\theta_1=-0.3$ in equations \ref{eq:sumofGaussians} and \ref{eq:Kernelbasis}. The kernel and its estimation are plotted in  \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. The estimated disturbance covariance function is shown in \figurename{\ref{fig:EstimatedSupport1d}}. In this figure the estimated covariance function shown by dashed line where $\sigma_{\varepsilon}^2=0$ and the value at the origin is then corrected according to the inequality \ref{eq:BoundOnObsVariance} which gives $\sigma_{\varepsilon}^2=0.104$.
+ Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, $\theta_0=0.5$ and $\theta_1=-0.3$ in equations \eqref{eq:sumofGaussians} and \eqref{eq:Kernelbasis}, forming a semi-compact support Mexican-hat shape. Such a kernel is commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The kernel and its estimation are plotted in \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. An estimation for $\sigma_{\varepsilon}^2$ is found by \eqref{eq:BoundOnObsVariance} giving $\sigma_{\varepsilon}^2=0.105$ which is close to the actual value of the observation noise variance. The estimated disturbance covariance function is also shown in \figurename{\ref{fig:EstimatedSupport1d}}. In this figure the true and estimated covariance function at observation locations are shown by solid and dashed lines respectively.
  
  \begin{figure}[!h] 
  \centering
@@ -843,71 +852,39 @@ where $\theta_i$ is the weight and
  \begin{figure}[!h] 
  \centering
  \includegraphics[width=0.5\textwidth]{./Graph/KernelSupportEstimation1d.pdf}
- \caption{Estimation of isotropic mixing kernel (Mexican-hat shape);  cross-sections of the true and estimated kernels are shown by solid and dotted lines respectively .}
+ \caption{Estimation of isotropic mixing kernel (Mexican-hat shape);  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
  \label{fig:MexHatKernel1d}
  \end{figure}  
 \begin{figure}[!h] 
  \centering
  \includegraphics[width=0.5\textwidth]{./Graph/DisturbanceSupportEstimation1d.pdf}
- \caption{Estimation of disturbance covariance function;  cross-sections of the true, estimated and corrected estimations  are shown by solid, dashed and dotted lines respectively.}
+ \caption{Estimation of disturbance covariance function, $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$;  cross-sections of the true and estimated  kernels  are shown by solid and dashed lines respectively.}
  \label{fig:EstimatedSupport1d}
  \end{figure} 
-% \begin{figure}[!h] 
-% \centering
-% \includegraphics[width=0.5\textwidth]{./Graph_ireg/irKernelEstimateCoaeseDetail.pdf}
-% \caption{Spatial mixing kernel; estimated and true kernels are shown by solid and dashed line respectively; top panel is estimation with maximmum scale $j=0$ and bottom panel is estimation with maximum scale $j=1$. }
-% \label{fig:SpatialMixingKernelEstimate}
-% \end{figure}
-% \begin{figure*}[!hb] 
-% \renewcommand*{\thesubfigure}{}
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat5.pdf}}
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat10.pdf}}
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat50.pdf}}\\ 
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat100.pdf}}
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat200.pdf}} 
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat300.pdf}}
-% \caption{Spatial field at a number of time instants; estimated and true fields are shown by solid and dashed line respectively; the top panel of each plot is the estimate with maximmum scale $j=0$ and the bottom panel is the estimate with maximum scale $j=1$.}
-% \label{fig:1DFieldEstimation}
-% \end{figure*}   
-
-
-
- The performance measure employed here is the Mean Integrated Squared Error (MISE) defined as
-
-
 \subsection{Example II: anisotropic mixing kernel}
-
-% \begin{figure}[!t] 
-% \centering
-% \includegraphics[width=0.5\textwidth]{./Graph_ireg/ir2Dhistogram500itr.pdf}
-% \caption{Distribution of the parameter estimate for 2-D Example over 500 runs of the EM algorithm. The dotted line indicates the true parameter.}
-% \label{fig:2DHist}
-% \end{figure}             
-% \begin{figure*}[!th] 
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DTrueFieldat5.pdf}}
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DCoaeseEstimatedFieldat5.pdf}}
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DEstimatedFieldat5.pdf}}\\ 
-% \caption{Spatial field at t=5; a: True field; b: Estimated field with maximmum scale $j=0$; c: Estimated field with maximmum scale $j=1$.}
-% \label{fig:2DFieldEstimation1}
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DTrueFieldat50.pdf}}
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DCoaeseEstimatedFieldat50}} 
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DEstimatedFieldat50.pdf}}\\
-% \caption{Spatial field at t=50; a: True field; b: Estimated field with maximmum scale $j=0$; c: Estimated field with maximmum scale $j=1$.}
-% \label{fig:2DFieldEstimation2}
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DTrueFieldat150.pdf}}
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DCoaeseEstimatedFieldat150.pdf}} 
-% \subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DEstimatedFieldat150.pdf}}
-% \caption{Spatial field at t=150; a: True field; b: Estimated field with maximmum scale $j=0$; c: Estimated field with maximmum scale $j=1$.}
-% \label{fig:2DFieldEstimation3}
-% \end{figure*}       
+For this experiment the homogeneous kernel parameters are set as $n_\theta=3$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$ and $\boldsymbol\mu_1=[0~0]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=-0.07$, $\theta_1=0.07$ and $\theta_2=0.02$ resulting in anisotropic kernel shown in \figurename{\ref{fig:anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:anisoKernel2d}} are shown in \figurename{\ref{fig:anisoKernel1d}}.
+\begin{figure}[!h] 
+ \centering
+ \includegraphics[width=0.5\textwidth]{./Graph/anisoKernelEstimation2d.pdf}
+ \caption{Estimation of anisotropic mixing kernel; left panel is the true kernel; right panel is the estimated kernel.}
+ \label{fig:anisoKernel2d}
+ \end{figure}
+\begin{figure}[!h] 
+ \centering
+ \includegraphics[width=0.5\textwidth]{./Graph/anisoKernelSupportEstimation1d.pdf}
+ \caption{Estimation of anisotropic mixing kernel;  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
+ \label{fig:anisoKernel1d}    
+ \end{figure} 
 \section{Conclusion}
-A multi-resolution approach to modelling spatio-temporal systems has been presented. This model is able to represent continuous-space, discrete-time dynamics at a number of spatial scales simultaneously. This ability greatly extends the class of system which the Integro-Difference Equation can represent.
+An efficient and novel approach to modeling spatio-temporal systems has been presented. This model is able to identify spatial mixing kernel, disturbance and noise characteristics from observed field. This ability greatly facilitates the identification of the class of system which the Integro-Difference Equation can represent.
 
 
 The EM framework combined with the proposed method in this work  enables estimation of the temporal disturbance and noise characteristics of the system. The estimated supports can be  used as a guide to constrain the placement of basis functions and the corresponding coefficients can be further corrected using the EM algorithm for more accurate representation of the mixing kernel structure. In fact, the correlation analysis can be considered a prerequisite for the EM algorithm described in \cite{Dewar2009}, where the approximated supports are used to estimate the gain of the kernel and the field disturbance variance.                                             
                                                                                                                                                                               
 
-An alternative to estimating the support of the kernel is to place a regular grid of connectivity kernel basis functions over the entire spatial domain of the field. However, the estimate of the spatial extent of the connectivity kernel greatly improves the speed of the estimation algorithm as the number of basis functions can be significantly reduced. This also improves the uncertainty in the estimated coefficients, as a lower number of unknown parameters are estimated. The approximated support of the disturbance covariance function facilitates the application of the EM algorithm for estimating the temporal variance in the disturbance signal. This way the disturbance covariance matrix can be decomposed into two parts: an unknown scalar and a constant matrix depending only on the inferred spatial support. Therefore, the estimation problem of the disturbance covariance matrix breaks down to the estimation of a single scalar parameter, improving the accuracy and the convergence property of the algorithm.         
+An alternative to estimating the support of the kernel in a traditional state-space scheme is to place a regular grid of connectivity kernel basis functions over the entire spatial domain of the field. However, the estimate of the spatial extent of the connectivity kernel greatly improves the speed of the estimation algorithm as the number of basis functions can be significantly reduced. This also improves the uncertainty in the estimated coefficients, as a lower number of unknown parameters are estimated. 
+
+The approximated support of the disturbance covariance function also facilitates the application of the EM algorithm for estimating the temporal variance in the disturbance signal. This way the disturbance covariance matrix can be decomposed into two parts: an unknown scalar and a constant matrix depending only on the inferred spatial support. Therefore, the estimation problem of the disturbance covariance matrix breaks down to the estimation of a single scalar parameter, improving the accuracy and the convergence property of the algorithm.         
 
 
 
@@ -988,7 +965,7 @@ Similarly, \eqref{eq:app-ConvXcorRelation2} can be written as
 % http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
- \newpage
+ % \newpage
 \bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
 \bibliography{IEEEabrv,IEEECorr}  

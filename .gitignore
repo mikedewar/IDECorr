@@ -122,3 +122,23 @@ scr/ComputeCorrelation.py
 scr/KernelSupportEstimation.py
 
 scr/PBC/Data_generation.py
+
+scr/Data_generation.py
+
+scr/DisturbanceSupportEstimation.py
+
+scr/DisturbanceSupportEstimation1d.pdf
+
+scr/DisturbanceWidthEstimation.pdf
+
+scr/PlotFieldExample/FieldSnapshot.pdf
+
+scr/PlotFieldExample/PlotField.py
+
+scr/PlotFieldExample/anisodata.mat
+
+scr/PlotFieldExample/isodata.mat
+
+scr/anisoKernelEstimation2d.pdf
+
+scr/anisoKernelSupportEstimation1d.pdf

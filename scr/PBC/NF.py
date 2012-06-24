@@ -163,7 +163,7 @@ class NF():
 			v = pb.dot(self.Sigma_varepsilon_c,np.random.randn(len(self.obs_locns),1))
 			w = pb.reshape(pb.dot(self.Sigma_e_c,np.random.randn(spatial_location_num,1)),(sim_field_space_len,sim_field_space_len))
 			#print "simulation at time",t
-			g=signal.convolve2d(self.K,v_membrane,mode='same',boundary='wrap') 
+			g=signal.fftconvolve(self.K,v_membrane,mode='same') 
 			g*=(self.spacestep**2)
 			v_membrane=g+w
             
