@@ -489,7 +489,7 @@ Parkville, VIC, Australia (e-mail:deanrf@unimelb.edu.au; grayden@unimelb.edu.au)
 
 \begin{abstract}
 %\boldmath
-The Integro Difference Equation (IDE) is an increasingly popular model of spatio-temporal processes. Here we develop an estimation framework for the IDE based on spatial auto-correlation and cross-correlation of the observed field to estimate the spatial mixing kernel, field disturbance and observation noise variance.  Synthetic examples are given to demonstrate the performance of the estimation algorithm. The proposed method can be applied prior to the expectation maximization (EM) algorithm to provide better and efficient state and parameter estimation.
+The Integro Difference Equation (IDE) is an increasingly popular model of spatio-temporal processes. Here we develop an estimation framework for the IDE based on spatial auto-correlation and cross-correlation of the observed field to estimate the spatial mixing kernel, field disturbance and observation noise variance.  Synthetic examples are given to demonstrate the performance of the estimation algorithm. The proposed method can be also applied prior to the expectation maximization (EM) algorithm to provide better and efficient state and parameter estimation.
 \end{abstract}
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
 % This preserves the distinction between vectors and scalars. However,
@@ -545,7 +545,7 @@ Techniques for modelling spatio-temporal systems are generating growing interest
 Another such model is the Integro-Difference Equation (IDE). These models have received much attention in population ecology as models for the spatio-temporal spread of organisms \cite{Kot1992,Kot1996} and in the brain dynamics to model the electrophysiological data  \cite{Deco2008,Schiff2008,Freestone2011}. IDE models combine discrete temporal dynamics with a continuous spatial representation. The dynamics of this model are given by a spatial mixing kernel, which defines the mapping between the current spatial field and the previous spatial field. The IDE model can be applied to data sampled both regularly and irregularly in space due to the continuous representation of each spatial field. Estimating the spatial mixing kernel and the underlying spatial field is of particular interest which can be achieved by  using conventional state-space modelling \cite{Dewar2009,Scerri2009} or in a hierarchical Bayesian framework \cite{Wikle1999,Xu2005,Wikle2011}. 
 
 
-Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation by decomposing the kernel and the field using a set of spectral basis functions. An alternative approach for the decomposition of the IDE was introduced in \cite{Dewar2009} where the resulting state and parameter space dimensions are independent of the number of observation locations. Therefore, increasing the resolution at which the system is observed does not necessarily increase the complexity of the system identification problem. In this work an Expectation-Maximisation (EM) algorithm \cite{Dempster1977,Gibsona2005}  was used to estimate both the field and the kernel from the observed data. A similar approach is adopted by \cite{Scerri2009} which developed a model selection procedure by considering various spatial scales at which to represent the system.  
+Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation by decomposing the kernel and the field using a set of spectral basis functions. An alternative approach for the decomposition of the IDE was introduced in \cite{Dewar2009} where the resulting state and parameter space dimensions are independent of the number of observation locations. Therefore, increasing the resolution at which the system is observed does not necessarily increase the complexity of the system identification problem. In this work a framework based on Expectation-Maximisation (EM)  algorithm \cite{Dempster1977,Gibsona2005}  was used to estimate both the field and the kernel from the observed data. A similar approach is adopted by \cite{Scerri2009} which developed a model selection procedure by considering various spatial scales at which to represent the system.  
 
 Here we take a different approach, using the average (over time) spatial auto-correlation and cross-correlation  of the observed field an efficient method is proposed to estimate the spatial mixing kernel, filed disturbance characteristics and the observation noise variance. This eliminates the computational complexity imposed by the methods in \cite{Dewar2009,Scerri2009} while they assumed that disturbance and noise characteristics were known to the estimator. Although the proposed method does not infer the underlying field from observed data, the results can be used as a prerequisite for the EM based algorithm (see \cite{Dewar2009,Xu2007}), providing better and efficient state (spatial field) and parameter estimations (spatial mixing kernel). 
 
@@ -689,11 +689,11 @@ Under the assumption that the sensors are not spatially band-limiting the spectr
 \begin{equation}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
- The goal of the derivation is to make the necessary substitutions and simplifications to get an expression of the cross-correlation as a function of the mixing kernel. In the next step we substitute equation~\eqref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and expand to give
+ The goal of the derivation is to make the necessary substitutions and simplifications to get an expression of the cross-correlation as a function of the mixing kernel. In the next step we substitute \eqref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and expand to give
 \begin{equation}
 	R_{y_{t+1}y_t}\left(\boldsymbol{\tau}\right) = \left(\left(m \ast z_{t+1}\right)\star y_t\right)\left(\boldsymbol{\tau}\right) + \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
-Next we substitute equation~\eqref{eq:ConvolutionIntegral} for $z_{t+1}(\mathbf{r})$ giving 
+Next we substitute \eqref{eq:ConvolutionIntegral} for $z_{t+1}(\mathbf{r})$ giving 
 \begin{align}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(k\ast z_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\nonumber\\
 	&= \left(\left(m\ast k\ast z_t\right)\star y_t \right)(\boldsymbol{\tau}) + \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber \\
@@ -703,7 +703,7 @@ Now we take the expectation over time, so that the observation noise and process
 \begin{align}\label{eq:ExpectationToCancelNoise}
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E} \left(\left(m\ast k\ast z_t\right)\star y_t \right)(\boldsymbol{\tau}) ],
 \end{align}
-since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. Now by substituting $y_t - \varepsilon_t$ in for $m\ast z_t$ the above equation can be written as
+since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. Now by substituting $y_t - \varepsilon_t$   in for $m\ast z_t$ from \eqref{eq:ObservationEquation} the above equation can be written as
  \begin{align}\label{eq:ExpectationToCancelNoise}
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E} [\left( k\ast (y_t - \varepsilon_t)\star y_t \right)(\boldsymbol{\tau}) ].
 \end{align}
@@ -711,18 +711,18 @@ To isolate the kernel, the order of the convolution and cross-correlation is rev
 \begin{align}\label{eq:ExpectationToCancelNoise1}
  (k \ast (y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau) &= k(-\boldsymbol\tau) \ast ((y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau).
 \end{align}  
-Substituting equation \eqref{eq:ExpectationToCancelNoise1} back into equation \eqref{eq:ExpectationToCancelNoise} we have
+Substituting \eqref{eq:ExpectationToCancelNoise1} back into \eqref{eq:ExpectationToCancelNoise} we have
 \begin{align}\label{eq:ExpectationToCancelNoise2}
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= k(-\boldsymbol\tau) \ast \mathbf{E} [((y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau)].
 \end{align} 
-The cross-correlation is further simplified by recognizing that the right hand side of equation~\eqref{eq:ExpectationToCancelNoise2} can be written as 
+The cross-correlation is further simplified by recognizing that the right hand side of \eqref{eq:ExpectationToCancelNoise2} can be written as 
 \begin{align}\label{eq:FirstTermReduced}  
 	\mathbf{E}&\left[\left(\left(y_t-\varepsilon_t\right) \star y_t \right)(\boldsymbol{\tau})\right] = \mathbf{E}\left[ (y_t \star y_t)(\boldsymbol{\tau}) - \left(\varepsilon_t\star y_t \right)(\boldsymbol{\tau})\right] \nonumber \\
 	&=\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})  - \left(\varepsilon_t \star (m\ast v_t + \varepsilon_t)\right) (\boldsymbol{\tau})] \nonumber\\
 	&=\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau}) -\left(\varepsilon_t\star (m\ast v_t)\right)(\boldsymbol{\tau}) - (\varepsilon_t\star\varepsilon_t)(\boldsymbol{\tau})]\nonumber \\
 	&=\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau}), 
 \end{align}
-where $\delta\left(\cdot\right)$ denotes Kronecker delta. Now substituting equation \eqref{eq:FirstTermReduced} into \eqref{eq:ExpectationToCancelNoise2} gives
+where $\delta\left(\cdot\right)$ denotes Kronecker delta. Now substituting \eqref{eq:FirstTermReduced} into \eqref{eq:ExpectationToCancelNoise2} gives
  \begin{align}\label{eq:Tobesolvedforthekernel}
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= k(-\boldsymbol\tau) \ast \left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right).
 \end{align} 
@@ -760,7 +760,7 @@ The observation auto-correlation at time $t+1$ can be expressed as
 \begin{equation}\label{eq:EM-ObservationEquationAutocorrelation}
 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})=(y_{t+1} \star y_{t+1})(\boldsymbol\tau).
 \end{equation}
- After substituting for $y_{t+1}$ from \eqref{eq:ObservationEquation} and using \eqref{eq:ConvolutionIntegral}   for $z_{t+1}$, equation \eqref{eq:EM-ObservationEquationAutocorrelation} is expanded to give
+ After substituting for $y_{t+1}$ from \eqref{eq:ObservationEquation} and using \eqref{eq:ConvolutionIntegral}   for $z_{t+1}$,  \eqref{eq:EM-ObservationEquationAutocorrelation} is expanded to give
 \begin{align}\label{eq:EM-expanded_auto_corr}
 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= ((m\ast k\ast z_t)\star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
 	&+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\tau})+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\tau}).
@@ -821,7 +821,7 @@ where
 \end{equation}
 % from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
 From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Similarly an estimate  of $\sigma_{\varepsilon}^2$ can be found using \eqref{eq:BoundOnObsVariance}. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} is then required. 
-Note using uniform observation samples in equations \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
+Note using uniform observation samples in \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
 \section{Simulation}   
 This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where different spatial mixing kernels (isotropic and anisotropic) were adopted. These kernels are defined as a sum of Gaussian basis functions in the form of
 \begin{align}\label{eq:sumofGaussians}
@@ -831,7 +831,7 @@ where $\theta_i$ is the weight and
 \begin{equation}\label{eq:Kernelbasis}
 	\psi_i=\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)}{\sigma_i^2}\right)}.
 \end{equation}
- In each example data was generated using equations \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled over $t=\left\lbrace1 \cdots 10000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by equation \eqref{eq:observationkernel} with $\sigma_m^2=0.81$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. First 1000 samples discarded allowing the model's initial transients to die out. We assumed periodic boundary conditions (PBC) for the spatial field. Examples of the generated fields for each experiment at a single time instant are shown in \figurename{\ref{fig:field}}. 
+ In each example data was generated using \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled over $t=\left\lbrace1 \cdots 10000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by \eqref{eq:observationkernel} with $\sigma_m^2=0.81$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. First 1000 samples discarded allowing the model's initial transients to die out. We assumed periodic boundary conditions (PBC) for the spatial field. Examples of the generated fields for each experiment at a single time instant are shown in \figurename{\ref{fig:field}}. 
 
 In the experiments first $\sigma_{\varepsilon}^2$ is estimated using the minimum defined by inequality \eqref{eq:BoundOnObsVariance}. The estimated variance is then used in the formulations given by \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} to estimate the spatial mixing kernel and the disturbance covariance function, (multiplied by temporal disturbance) $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$.
 \begin{figure}[!h] 
@@ -841,7 +841,7 @@ In the experiments first $\sigma_{\varepsilon}^2$ is estimated using the minimum
  \label{fig:field}
  \end{figure} 
 \subsection{Example I: isotropic mixing kernel}
- Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, $\theta_0=0.5$ and $\theta_1=-0.3$ in equations \eqref{eq:sumofGaussians} and \eqref{eq:Kernelbasis}, forming a semi-compact support Mexican-hat shape. Such a kernel is commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The kernel and its estimation are plotted in \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. An estimation for $\sigma_{\varepsilon}^2$ is found by \eqref{eq:BoundOnObsVariance} giving $\sigma_{\varepsilon}^2=0.105$ which is close to the actual value of the observation noise variance. The estimated disturbance covariance function is also shown in \figurename{\ref{fig:EstimatedSupport1d}}. In this figure the true and estimated covariance function at observation locations are shown by solid and dashed lines respectively.
+ Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, $\theta_0=0.5$ and $\theta_1=-0.3$ in \eqref{eq:sumofGaussians} and \eqref{eq:Kernelbasis}, forming a semi-compact support Mexican-hat shape. Such a kernel is commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The kernel and its estimation are plotted in \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. An estimation for $\sigma_{\varepsilon}^2$ is found by \eqref{eq:BoundOnObsVariance} giving $\sigma_{\varepsilon}^2=0.105$ which is close to the actual value of the observation noise variance. The estimated disturbance covariance function is also shown in \figurename{\ref{fig:EstimatedSupport1d}}. In this figure the true and estimated covariance function at observation locations are shown by solid and dashed lines respectively.
  
  \begin{figure}[!h] 
  \centering
