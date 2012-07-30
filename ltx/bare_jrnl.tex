@@ -683,7 +683,7 @@ and the spatial cross-correlation shall be denoted as
 \end{equation} 
 where $\boldsymbol{\tau}$ is the spatial shift.
 \subsection{Estimation of spatial mixing kernel} 
-Under the assumption that the sensors are not spatially band-limiting the spectral content of the field and the spatial mixing kernel is homogeneous, the shape of the spatial mixing kernel can be inferred by studying the spatial cross-correlation between consecutive observations.  To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as  
+Under the assumption that the sensors are not spatially band-limiting, the spectral content of the field and the spatial mixing kernel is homogeneous, the shape of the spatial mixing kernel can be inferred by studying the spatial cross-correlation between consecutive observations.  To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as  
 % The spatial relationship between consecutive observations is governed by the shape of the mixing kernel. 
 % The deterministic component of the spatial mapping of the current field is due to the convolution of the kernel with the previous field. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape.
 \begin{equation}
@@ -726,11 +726,11 @@ where $\delta\left(\cdot\right)$ denotes Kronecker delta. Now substituting \eqre
  \begin{align}\label{eq:Tobesolvedforthekernel}
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= k(-\boldsymbol\tau) \ast \left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right).
 \end{align} 
-The solution of the above equation for the mixing kernel is a deconvolution. Using the convolution theorem \eqref{eq:Tobesolvedforthekernel} can be solved for the kernel in the frequency domain.
-\begin{align}\label{eq:EM-XcorrFourier}
-	\mathcal{F}\{k(-\boldsymbol\tau)\} \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}.
-\end{align}
-Now rearranging \eqref{eq:EM-XcorrFourier} gives
+The solution of the above equation for the mixing kernel is a deconvolution. Using the convolution theorem \eqref{eq:Tobesolvedforthekernel} can be solved for the kernel in the frequency domain giving,
+% \begin{align}\label{eq:EM-XcorrFourier}
+% 	\mathcal{F}\{k(-\boldsymbol\tau)\} \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}.
+% \end{align}
+% Now rearranging \eqref{eq:EM-XcorrFourier} gives 
 \begin{equation}\label{eq:EM-Fourier_TF_of_Kernel}
 	\mathcal{F}\left(k(-\boldsymbol\tau)\right) = \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}}\right].
 \end{equation}
@@ -758,7 +758,7 @@ where over-bar denotes the complex conjugate operator. As the mixing kernel is a
 % Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. To show this we take the spatial Fourier transform of both sides of equation~\ref{} giving
 \subsection{Estimation of disturbance covariance function}
 The field disturbance at each spatial location and at a given time is correlated with other spatial locations through the disturbance covariance
-function, suggesting the auto-correlation of the observed field at each time instant can provide useful information about the field disturbance characteristics.
+function, suggesting the auto-correlation of the observed field at each time instant may provide useful information about the field disturbance characteristics.
 The observation auto-correlation at time $t+1$ can be expressed as
 \begin{equation}\label{eq:EM-ObservationEquationAutocorrelation}
 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})=(y_{t+1} \star y_{t+1})(\boldsymbol\tau).
@@ -836,7 +836,7 @@ where $\theta_i$ is the weight and
 \end{equation}
  In each example data was generated using \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $ and sampled over $t=\left\lbrace1 \cdots 10000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by \eqref{eq:observationkernel} with $\sigma_m^2=0.81$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. First 1000 samples discarded allowing the model's initial transients to die out. We assumed periodic boundary conditions (PBC) for the spatial field. Examples of the generated fields for each experiment at a single time instant are shown in \figurename{\ref{fig:field}}. 
 
-In the experiments first $\sigma_{\varepsilon}^2$ is estimated using the minimum defined by inequality \eqref{eq:BoundOnObsVariance}. The estimated variance is then used in the formulations given by \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} to estimate the spatial mixing kernel and the disturbance covariance function, (multiplied by temporal disturbance) $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$.
+In the experiments first $\sigma_{\varepsilon}^2$ is estimated using the minimum defined by inequality \eqref{eq:BoundOnObsVariance}. The estimated variance is then used in the formulations given by \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} to estimate the spatial mixing kernel and the disturbance covariance function, multiplied by temporal disturbance, i.e. $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$.
 \begin{figure}[!h] 
  \centering
  \includegraphics[width=0.5\textwidth]{./Graph/FieldSnapshot.pdf}
@@ -879,7 +879,7 @@ For this experiment the homogeneous kernel parameters are set as $n_\theta=3$, $
  \label{fig:anisoKernel1d}    
  \end{figure}  
  \subsection{Example III: anisotropic mixing kernel}
-For this experiment the homogeneous kernel parameters are set as $n_\theta=2$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$ and resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.
+For this experiment the homogeneous kernel parameters are set as $n_\theta=2$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.
 \begin{figure}[!h] 
  \centering
  \includegraphics[width=0.5\textwidth]{./Graph/1anisoKernelEstimation2d.pdf}
@@ -907,9 +907,9 @@ The approximated support of the disturbance covariance function also facilitates
 
 
 % if have a single appendix:
-%\appendix[Proof of the Zonklar Equations]
+% \appendix[Convolution and Correlation]
 % or
-% \appendix  % for no appendix heading
+ \appendix  % for no appendix heading
 % do not use \section anymore after \appendix, only \section*
 % is possibly needed
 % use appendices with more than one appendix
@@ -918,7 +918,7 @@ The approximated support of the disturbance covariance function also facilitates
 % \subsection or using \label (\appendices by itself
 % starts a section numbered zero.)
 %  ###########################################
-\section*{Convolution and Correlation}\label{ap:CorrelationAnalysis}
+ \section*{Convolution and Correlation}\label{ap:CorrelationAnalysis}
 In this appendix the properties of the cross-correlation and the convolution used in Section~\ref{sec:EstimationMethod}   are derived. To show 
 \begin{equation}\label{eq:app-ConvXcorRelation1}
  \left(a \ast b \right)\left(\boldsymbol\tau\right)  \star c\left(\boldsymbol\tau\right)  = a\left(-\boldsymbol\tau\right)\ast\left(b \star c\right)\left(\boldsymbol\tau\right)
