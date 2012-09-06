@@ -901,7 +901,9 @@ For more accurate estimation of the spatial kernel and also the inference of the
 
 An alternative to estimating the support of the kernel in a traditional state-space scheme is to place a regular grid of spatial mixing kernel basis functions over the entire spatial domain of the field. However, the estimate of the spatial extent of the mixing kernel greatly improves the speed of the estimation algorithm as the number of basis functions can be significantly reduced. This also improves the uncertainty in the estimated coefficients, as a lower number of unknown parameters needs to be estimated. 
 
-The approximated support of the disturbance covariance function also facilitates the application of the EM algorithm for estimating the temporal variance in the disturbance signal. This way the disturbance covariance matrix can be decomposed into two parts: an unknown scalar and a constant matrix depending only on the inferred spatial support. Therefore, the estimation problem of the disturbance covariance matrix breaks down to the estimation of a single scalar parameter, improving the accuracy and the convergence property of the algorithm.         
+The approximated support of the disturbance covariance function also facilitates the application of the EM algorithm for estimating the temporal variance in the disturbance signal. This way the disturbance covariance matrix can be decomposed into two parts: an unknown scalar and a constant matrix depending only on the inferred spatial support. Therefore, the estimation problem of the disturbance covariance matrix breaks down to the estimation of a single scalar parameter, improving the accuracy and the convergence property of the algorithm.
+
+The method here is applicable to equally spaced observation locations, however ...          
 
 
 
