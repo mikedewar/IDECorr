@@ -381,7 +381,7 @@ For the derivation of the spatial properties estimator of the field equations we
 \begin{equation}
 	\label{ActivationFunction} f\left( z\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( z_0 - z\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
-The parameter $z_0$ describes the firing threshold of the neural populations and $\varsigma$ governs the slope of the sigmoid. The result can be easily modified to account for linear IDE (See Appendix). To proceed we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
+The parameter $z_0$ describes the firing threshold of the neural populations and $\varsigma$ governs the slope of the sigmoid. The result can be easily modified to account for linear IDE (See Appendix~\ref{ap:linearIDE}). To proceed we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
 \begin{equation}
 	\int_\Omega a(\mathbf{r}-\mathbf{r}')b(\mathbf{r}')d\mathbf{r}' = (a\ast b)(\mathbf{r}),
 \end{equation}
@@ -651,7 +651,7 @@ In the case where the spatial process is observed at irregular locations, spatia
 % if have a single appendix:
 % \appendix[Convolution and Correlation]
 % or
- \appendix  % for no appendix heading
+ \appendices  % for no appendix heading
 % do not use \section anymore after \appendix, only \section*
 % is possibly needed
 % use appendices with more than one appendix
@@ -660,7 +660,7 @@ In the case where the spatial process is observed at irregular locations, spatia
 % \subsection or using \label (\appendices by itself
 % starts a section numbered zero.)
 %  ###########################################
- \section*{Convolution and Correlation}\label{ap:CorrelationAnalysis}
+ \section{Convolution and Correlation}\label{ap:CorrelationAnalysis}
 In this appendix the properties of the cross-correlation and the convolution used in Section~\ref{sec:EstimationMethod}   are derived. To show 
 \begin{equation}\label{eq:app-ConvXcorRelation1}
  \left(a \ast b \right)\left(\boldsymbol\tau\right)  \star c\left(\boldsymbol\tau\right)  = a\left(-\boldsymbol\tau\right)\ast\left(b \star c\right)\left(\boldsymbol\tau\right)
@@ -685,8 +685,8 @@ Similarly, \eqref{eq:app-ConvXcorRelation2} can be written as
 &=a(-\boldsymbol\tau)\ast a(\boldsymbol\tau) \ast b(-\boldsymbol\tau)\ast b(\boldsymbol\tau) \nonumber \\
 &=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau).
 \end{align}     
-                
-
+ \section{Linear IDE}\label{ap:linearIDE}                
+ blah blah
 
 %\appendices
 %\section{Proof of the First Zonklar Equation}
