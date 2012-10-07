@@ -693,9 +693,30 @@ Similarly, \eqref{eq:app-ConvXcorRelation2} can be written as
 &=a(-\boldsymbol\tau)\ast a(\boldsymbol\tau) \ast b(-\boldsymbol\tau)\ast b(\boldsymbol\tau) \nonumber \\
 &=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau).
 \end{align}     
- \section{Linear IDE}\label{ap:linearIDE}                
- blah blah
-
+ \section{Linear IDE}\label{ap:linearIDE}  
+Consider the following homogeneous linear IDE
+\begin{equation}\label{app:DiscreteTimeModel}
+	z_{t+1}\left(\mathbf{r}\right) = 
+	\xi z_t\left(\mathbf{r}\right) + 
+	T_s \int_\Omega { 
+	    k\left(\mathbf{r}-\mathbf{r'}\right)z_t\left(\mathbf{r}'\right)
+	\, \mathrm{d}\mathbf{r}'} 
+	+ e_t\left(\mathbf{r}\right), 
+\end{equation}              
+then the results for the spatial mixing kernel and the covariance functions are simplified to
+\begin{equation}\label{app:EM-KernelSolution}
+	k(\boldsymbol\tau) = \frac{1}{T_s }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }-\xi\right\}}.
+\end{equation}  
+and
+\begin{align}\label{app:EM-MMGFourier2}
+	&\gamma(\boldsymbol\tau) =\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\tau)}\Bigg[\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2\right] \nonumber \right.\\
+ &\left. \left.- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]\right]\right\rbrace.
+\end{align}                                                                                                                       
+This is in fact a spacial case for the general solutions given by \eqref{eq:Fourier_TF_of_Kernel} and \eqref{eq:EM-MMGFourier2} with $\varsigma=4$ and $z_0=0.5$. This can be further simplified by setting  $\xi=0$ and $T_s=1$. In this case the equation for the kernel is further simplified to
+\begin{equation}\label{app:EM-KernelSolution1}
+	k(\boldsymbol\tau) =\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }\right\}}.
+\end{equation}                      
+while the disturbance covariance function solution remains unchanged.
 %\appendices
 %\section{Proof of the First Zonklar Equation}
 %Appendix one text goes here.
