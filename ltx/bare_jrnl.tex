@@ -371,7 +371,7 @@ where $t\in \mathbb{Z}^{+} $ denotes discrete time, $T_s$ is the sampling time a
 cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d^2\delta(t-t')\gamma(\mathbf{r}-\mathbf{r'}),
 \label{eq:FieldDisturbance}
 \end{equation}
-where $\sigma_d$ is temporal disturbance, $\delta(\cdot)$ is the Dirac-delta function and $\gamma(\mathbf{r}-\mathbf{r'})$ is a spatially homogeneous covariance function. The mapping between the spatial field and the observations, denoted by $\mathbf{y}_t$, is modeled using the observation function that incorporates sensors with a spatial extent
+where $\sigma_d$ is temporal disturbance, $\delta(t)$ is the Dirac-delta function and $\gamma(\mathbf{r}-\mathbf{r'})$ is a spatially homogeneous covariance function. The mapping between the spatial field and the observations, denoted by $\mathbf{y}_t$, is modeled using the observation function that incorporates sensors with a spatial extent
 \begin{equation}\label{eq:ObservationEquation}
 	y_t(\mathbf{r}) = \int_{\Omega} { m\left(\mathbf{r}-\mathbf{r}'\right) z_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
 \end{equation}
@@ -427,9 +427,9 @@ since the disturbance and measurement noise are assumed to be independent of the
 	&= \xi \mathbf{E}\left[ (y_t \star y_t)(\boldsymbol{\tau}) - \left(\varepsilon_t\star y_t \right)(\boldsymbol{\tau})\right] \nonumber \\
 	&= \xi\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})  - \left(\varepsilon_t \star (m\ast z_t + \varepsilon_t)\right) (\boldsymbol{\tau})] \nonumber \\
 	&=\xi\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau}) -\left(\varepsilon_t\star (m\ast z_t)\right)(\boldsymbol{\tau}) - (\varepsilon_t\star\varepsilon_t)(\boldsymbol{\tau})] \nonumber\\ 
-	&= \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right). \label{eq:FirstTermReduced}
+	&= \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right), \label{eq:FirstTermReduced}
 \end{align}
-Next we simplify second term in equation \eqref{eq:ExpectationToCancelNoise} to get an expression involving the spatial mixing kernel. By substituting equation \eqref{eq:averagefiringrate} for $g_t$ we can write
+where $\delta(\boldsymbol\tau)$ denotes Kronecker delta. Next we simplify second term in equation \eqref{eq:ExpectationToCancelNoise} to get an expression involving the spatial mixing kernel. By substituting equation \eqref{eq:averagefiringrate} for $g_t$ we can write
 \begin{equation}\label{eq:before_linearization}
 	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) = T_s((k \ast m\ast f(z_t)) \star y_t)(\boldsymbol\tau).
 \end{equation}   
@@ -583,9 +583,15 @@ Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  an
 	& $f_t(\mathbf{r})$ & Sigmoidal function & spike~s$^{-1}$ \\ 
 	& $g_t(\mathbf{r})$ & Weighted sigmoidal function & spike~s$^{-1}$ \\
  	& $e_t(\mathbf{r})$ & Field disturbance, with covariance function $\gamma(\mathbf{r}-\mathbf{r'})$  & spike~s$^{-1}$ \\
+ 	& $\varepsilon_t$ & Observation noise, with covariance matrix $\Sigma_{\varepsilon}$  & mV \\  
+ 	& $m(\mathbf{r}-\mathbf{r'})$ & Observation kernel& n.a. \\  
+ 	& $k(\mathbf{r}-\mathbf{r'})$ & Spatial mixing kernel& n.a. \\  
+ 	& $\xi$ &Decay parameter& n.a. \\  
+ 	& $\delta(t)$ &Dirac-delta function& n.a. \\  
+ 	& $\delta(\boldsymbol\tau)$ &Kronecker delta& n.a. \\  
  
-	
-	\hline \hline
+
+ 	\hline \hline
 	\end{tabular}}
  \caption {{\bf Cardinal B-Splines at the knot sequence}.} 
  \label{table:MRA-BsplineatIntegerPoints}
