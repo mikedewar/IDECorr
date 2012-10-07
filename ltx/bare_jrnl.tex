@@ -356,12 +356,12 @@ The rest of this paper is set out as follows: in Section 2, the stochastic IDE m
 
 
 \section{Stochastic IDE Model}
-The spatially homogeneous, linear IDE is given by
+The spatially homogeneous IDE is given by
 \begin{equation}
- z_{t+1}\left(\mathbf{r}\right)=\int_{\Omega}k\left(\mathbf{r}-\mathbf{r}'\right)z_{t}\left(\mathbf{r}'\right)d\mathbf{r}'+e_{t}\left(\mathbf{r}\right)
+ z_{t+T_s}\left(\mathbf{r}\right)=\xi z_t(\mathbf{r})+T_s\int_{\Omega}k\left(\mathbf{r}-\mathbf{r}'\right)f(z_{t}\left(\mathbf{r}'\right))d\mathbf{r}'+e_{t}\left(\mathbf{r}\right),
 \label{eq:ConvolutionIntegral}
 \end{equation}
-where $t\in \mathbb{Z}_0 $ denotes discrete time, $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n$-dimensional physical space, where $n \in \left\lbrace 1,2,3 \right\rbrace $. The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The model dynamics  are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}-\mathbf{r}'\right)$ which maps the current spatial field to the next spatial field via the integral (\ref{eq:ConvolutionIntegral}). The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
+where $t\in \mathbb{Z}_0 $ denotes discrete time, $T_s$ is the sampling time and $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n$-dimensional physical space, where $n \in \left\lbrace 1,2,3 \right\rbrace $. The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The model dynamics  are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}-\mathbf{r}'\right)$ which maps $f(z_{t})$  to the next spatial field via the integral (\ref{eq:ConvolutionIntegral}) where $f(\cdot)$ is a non-linear function. The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
 \begin{equation}
 cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d^2\delta(t-t')\gamma(\mathbf{r}-\mathbf{r'}),
 \label{eq:FieldDisturbance}
@@ -377,7 +377,11 @@ where $m\left(\mathbf{r}-\mathbf{r}'\right)$ is the observation kernel defined i
 where $\sigma_m$ sets the observation kernel width. The superscript $\top$ denotes the transpose operator and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix.
 
 \section{Estimation method}\label{sec:EstimationMethod}
-For the derivation of the spatial properties estimator of the field equations we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
+For the derivation of the spatial properties estimator of the field equations we assume the non-linearity is a sigmoidal function. This is common in studying the brain dynamics to describe the firing rate of the presynaptic neurons in terms of the post-synaptic membrane potential by [refs].
+\begin{equation}
+	\label{ActivationFunction} f\left( z\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( z_0 - z\left(\mathbf{r}',t\right) \right) \right)}. 
+\end{equation}
+The parameter $z_0$ describes the firing threshold of the neural populations and $\varsigma$ governs the slope of the sigmoid. The result can be easily modified to account for linear IDE (See Appendix~\ref{ap:linearIDE}). To proceed we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
 \begin{equation}
 	\int_\Omega a(\mathbf{r}-\mathbf{r}')b(\mathbf{r}')d\mathbf{r}' = (a\ast b)(\mathbf{r}),
 \end{equation}
@@ -398,68 +402,95 @@ Under the assumption that the sensors are not spatially band-limiting, the spect
 	R_{y_{t+1}y_t}\left(\boldsymbol{\tau}\right) = \left(\left(m \ast z_{t+1}\right)\star y_t\right)\left(\boldsymbol{\tau}\right) + \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
 Next we substitute \eqref{eq:ConvolutionIntegral} for $z_{t+1}(\mathbf{r})$ giving 
+% \begin{align}
+% 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(k\ast z_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\nonumber\\
+% 	&= \left(\left(m\ast k\ast z_t\right)\star y_t \right)(\boldsymbol{\tau}) + \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber \\
+% 	&+ \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
+% \end{align}  
 \begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(k\ast z_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\nonumber\\
-	&= \left(\left(m\ast k\ast z_t\right)\star y_t \right)(\boldsymbol{\tau}) + \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber \\
-	&+ \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(\xi z_t +  T_s g_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\\
+	&= \xi\left(\left(m \ast z_t\right) \star y_t \right)(\boldsymbol{\tau}) \nonumber\\
+	&\quad+ T_s \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
+	&\quad+ \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
+	&\quad+ (\varepsilon_{t+1} \star y_t)(\boldsymbol{\tau}).
 \end{align}
 Now we take the expectation over time, so that the observation noise and process disturbance terms have minimal effect on the result, giving 
+% \begin{align}\label{eq:ExpectationToCancelNoise}
+% 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E} \left(\left(m\ast k\ast z_t\right)\star y_t \right)(\boldsymbol{\tau}) ],
+% \end{align}  
 \begin{align}\label{eq:ExpectationToCancelNoise}
-	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E} \left(\left(m\ast k\ast z_t\right)\star y_t \right)(\boldsymbol{\tau}) ],
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E}[\xi\left(\left(m \ast z_t\right) \star y_t \right)(\boldsymbol{\tau})] \nonumber \\
+	 &\quad+ T_s \mathbf{E}[\left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})],
 \end{align}
-since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. Now by substituting $y_t - \varepsilon_t$   in for $m\ast z_t$ from \eqref{eq:ObservationEquation} the above equation can be written as
- \begin{align}\label{eq:ExpectationToCancelNoise}
-	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E} [\left( k\ast (y_t - \varepsilon_t)\star y_t \right)(\boldsymbol{\tau}) ].
+since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. Now by substituting $y_t - \varepsilon_t$   in for $m\ast z_t$ from \eqref{eq:ObservationEquation} the first term of above equation can be written as
+\begin{align}
+	\mathbf{E}[\xi&\left(\left(m \ast z_t \right) \star y_t \right)(\boldsymbol{\tau})] = \mathbf{E}\left[\xi\left(\left(y_t-\varepsilon_t\right) \star y_t \right)(\boldsymbol{\tau})\right] \nonumber \\
+	&= \xi \mathbf{E}\left[ (y_t \star y_t)(\boldsymbol{\tau}) - \left(\varepsilon_t\star y_t \right)(\boldsymbol{\tau})\right] \nonumber \\
+	&= \xi\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})  - \left(\varepsilon_t \star (m\ast z_t + \varepsilon_t)\right) (\boldsymbol{\tau})] \nonumber \\
+	&=\xi\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau}) -\left(\varepsilon_t\star (m\ast z_t)\right)(\boldsymbol{\tau}) - (\varepsilon_t\star\varepsilon_t)(\boldsymbol{\tau})] \nonumber\\ 
+	&= \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right), \label{eq:FirstTermReduced}
+\end{align}
+Next we simplify second term in equation \eqref{eq:ExpectationToCancelNoise} to get an expression involving the spatial mixing kernel. By substituting equation blah for $g_t$ we can write
+\begin{equation}\label{eq:before_linearization}
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) = T_s((k \ast m\ast f(z_t)) \star y_t)(\boldsymbol\tau).
+\end{equation}   
+The remainder of the derivation is focused on isolating the connectivity kernel. To show how this is done, the activation function is simplified by linearizing about the threshold using a first order Taylor series expansion giving
+\begin{align}
+	\hat{f}(z_t\left(\mathbf{r}\right)) &=\frac{2 + \varsigma(z_t\left(\mathbf{r}\right) - z_0)}{4}. 
+\end{align}	
+Substituting the linearized activation function back into equation~\ref{eq:before_linearization} we get
+\begin{align}	
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) \approx \frac{T_s}{4}((k\ast (c_1 + \varsigma m \ast z_t)) \star y_t)(\boldsymbol\tau), 
+\end{align}
+where
+\begin{equation}
+	c_1 = m\ast (2 - \varsigma z_0),
+\end{equation}
+is a constant. Now by substituting $y_t - \varepsilon_t$ in for $m\ast v_t$ we can write
+\begin{align}
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \frac{T_s}{4}((k\ast (c_1 + \varsigma (y_t - \varepsilon_t))) \star y_t) (\boldsymbol\tau)
 \end{align}
 To isolate the kernel, the order of the convolution and cross-correlation is reversed by recognizing that a property $(a \ast b)(\boldsymbol\tau) \star c(\boldsymbol\tau) = a(-\boldsymbol\tau)\ast(b \star c)(\boldsymbol\tau)$ (see Appendix~\ref{ap:CorrelationAnalysis}). Therefore,
-\begin{align}\label{eq:ExpectationToCancelNoise1}
- (k \ast (y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau) &= k(-\boldsymbol\tau) \ast ((y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau).
-\end{align}  
-Substituting \eqref{eq:ExpectationToCancelNoise1} back into \eqref{eq:ExpectationToCancelNoise} we have
-\begin{align}\label{eq:ExpectationToCancelNoise2}
-	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= k(-\boldsymbol\tau) \ast \mathbf{E} [((y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau)].
-\end{align} 
-The cross-correlation is further simplified by recognizing that the right hand side of \eqref{eq:ExpectationToCancelNoise2} can be written as 
-\begin{align}\label{eq:FirstTermReduced}  
-	\mathbf{E}&\left[\left(\left(y_t-\varepsilon_t\right) \star y_t \right)(\boldsymbol{\tau})\right] = \mathbf{E}\left[ (y_t \star y_t)(\boldsymbol{\tau}) - \left(\varepsilon_t\star y_t \right)(\boldsymbol{\tau})\right] \nonumber \\
-	&=\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})  - \left(\varepsilon_t \star (m\ast v_t + \varepsilon_t)\right) (\boldsymbol{\tau})] \nonumber\\
-	&=\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau}) -\left(\varepsilon_t\star (m\ast v_t)\right)(\boldsymbol{\tau}) - (\varepsilon_t\star\varepsilon_t)(\boldsymbol{\tau})]\nonumber \\
-	&=\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau}), 
+\begin{align}
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \frac{T_s}{4} k(-\boldsymbol\tau) \ast ((c_1 + \varsigma (y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau) \nonumber\\
+	= \frac{T_s}{4}k(-\boldsymbol\tau) & \ast (( c_t + \varsigma (y_t - \varepsilon_t)) \star y_t) (\boldsymbol\tau),
 \end{align}
-where $\delta\left(\cdot\right)$ denotes Kronecker delta. Now substituting \eqref{eq:FirstTermReduced} into \eqref{eq:ExpectationToCancelNoise2} gives
- \begin{align}\label{eq:Tobesolvedforthekernel}
-	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= k(-\boldsymbol\tau) \ast \left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right).
-\end{align} 
+where
+\begin{equation}
+	c_t = (c_1\star y_t)(\boldsymbol\tau).
+\end{equation}  
+Now using the identity established to get equation~\ref{eq:FirstTermReduced} we have
+\begin{align}\label{eq:second_term_reduced}
+	T_s\mathbf{E}&\left[((m \ast g_t) \star y_t)(\boldsymbol\tau)\right] \approx \nonumber \\
+	&\frac{T_s}{4} k(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)))
+\end{align}
+Now substituting back to equation~\ref{eq:second_term_reduced} into equation~\ref{eq:ExpectationToCancelNoise}  we get
+\begin{align}\label{eq:SimplifiedXcorr}
+	\mathbf{E}&[R_{y_{t+1}y_t}(\boldsymbol{\tau})] \approx \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) \nonumber \\
+	&\quad+ \frac{T_s}{4} k(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))).
+\end{align}
+Rearranging equation~\ref{eq:SimplifiedXcorr} we get
+\begin{align} \label{eq:Tobesolvedforthekernel}
+	k(-\boldsymbol\tau) & \ast (\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))) \approx  \nonumber \\
+	& \frac{4}{T_s}(\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right))
+\end{align}
 The solution of the above equation for the mixing kernel is a deconvolution. Using the convolution theorem \eqref{eq:Tobesolvedforthekernel} can be solved for the kernel in the frequency domain giving,
-% \begin{align}\label{eq:EM-XcorrFourier}
-% 	\mathcal{F}\{k(-\boldsymbol\tau)\} \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}.
-% \end{align}
-% Now rearranging \eqref{eq:EM-XcorrFourier} gives 
-\begin{equation}\label{eq:EM-Fourier_TF_of_Kernel}
-	\mathcal{F}\left(k(-\boldsymbol\tau)\right) = \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}}\right].
-\end{equation}
-From \eqref{eq:EM-Fourier_TF_of_Kernel} it can be seen that to compute the exact shape of the kernel, the observation noise variance is required. An error in the initial guess of  the observation noise variance will result in a distortion in the shape of the kernel, however if the signal-to-noise ratio is high such a distortion becomes insignificant.
+\begin{align}
+	\mathcal{F}&\{k(-\boldsymbol\tau)\} \approx  \nonumber \\
+	&\frac{4}{T_s} \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right)\}}{\mathcal{F}\{\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}} \nonumber \\
+	&= \frac{4}{T_s} \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )}.  \label{eq:Fourier_TF_of_Kernel}
+\end{align} 
+From this we see that an error in our guess for $\xi$ will result in a dilation or contraction of the estimated kernel support. An incorrect estimate of $c_t$ will result in a DC shift in the kernel estimate and an incorrect estimate in the observation noise will result in a distortion in the shape of the kernel. Finally an expression for the kernel is obtained by taking the inverse Fourier transform giving
+\begin{align}\label{eq:EM-Fourier_TF_of_Kernel}   
+	k&(\boldsymbol\tau) = \nonumber \\
+	&\frac{4}{T_s}\mathcal{F}^{-1}\overline{\left\{ \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )} \right\}},
+\end{align}
+where over-bar denotes the complex conjugate operator. As the mixing kernel is a real function, the complex conjugate operator essentially reflects the kernel through the origin in the spatial domain \cite{Bracewell2000}. In the case of isotropic kernel, the complex conjugate operator can be dropped.  From \eqref{eq:EM-Fourier_TF_of_Kernel} it can be seen that to compute the exact shape of the kernel, the observation noise variance is required. An error in the initial guess of  the observation noise variance will result in a distortion in the shape of the kernel, however if the signal-to-noise ratio is high such a distortion becomes insignificant.
 By the Wiener-Khintchine theorem (WKT) the denominator in \eqref{eq:EM-Fourier_TF_of_Kernel} is equivalent to the power spectral density (PSD) which is non-negative and a real quantity \cite{Ricker2003}. The WKT allows to establish the bounds on the initial guess of $\sigma_{\varepsilon}^2$
 % The WKT states that the power spectral density of the wide sense stationary process is the Fourier transform of its auto-correlation function .
 \begin{equation}\label{eq:BoundOnObsVariance}   
   \min\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\}\ge\sigma_{\varepsilon}^2\ge0. 
-\end{equation} 
-% \begin{align}
-% 	\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]& - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}\ge0 \nonumber \\
-% 	\implies & \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\}\ge\mathcal{F}\{\sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}\ge0 \nonumber \\
-% 	\implies & \min\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\}\ge\sigma_{\varepsilon}^2\ge0. \label{eq:BoundOnObsVariance}
-% \end{align}    
-%  the following relation holds 
-% \begin{equation}
-%  \mathcal{F}\left(k(\boldsymbol\tau)\right)=\overline{\mathcal{F}\left(k(-\boldsymbol\tau)\right)},
-% \end{equation}    
- Finally, an expression for the kernel is obtained by taking the inverse Fourier transform giving
-\begin{equation}\label{eq:EM-KernelSolution}
-	k(\boldsymbol\tau) = \mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }\right\}}.
 \end{equation}
-where over-bar denotes the complex conjugate operator. As the mixing kernel is a real function, the complex conjugate operator essentially reflects the kernel through the origin in the spatial domain \cite{Bracewell2000}. In the case of isotropic kernel, the complex conjugate operator can be dropped. 
-% Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations.  
-% Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. To show this we take the spatial Fourier transform of both sides of equation~\ref{} giving
 \subsection{Estimation of disturbance covariance function}
 The field disturbance at each spatial location and at a given time is correlated with other spatial locations through the disturbance covariance
 function, suggesting the auto-correlation of the observed field at each time instant may provide useful information about the field disturbance characteristics.
@@ -467,67 +498,73 @@ The observation auto-correlation at time $t+1$ can be expressed as
 \begin{equation}\label{eq:EM-ObservationEquationAutocorrelation}
 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})=(y_{t+1} \star y_{t+1})(\boldsymbol\tau).
 \end{equation}
- After substituting for $y_{t+1}$ from \eqref{eq:ObservationEquation} and using \eqref{eq:ConvolutionIntegral}   for $z_{t+1}$,  \eqref{eq:EM-ObservationEquationAutocorrelation} is expanded to give
-\begin{align}\label{eq:EM-expanded_auto_corr}
-	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= ((m\ast k\ast z_t)\star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
-	&+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\tau})+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\tau}).
+ After substituting for $y_{t+1}$ from \eqref{eq:ObservationEquation} and using \eqref{eq:ConvolutionIntegral}   for $z_{t+1}$,  \eqref{eq:EM-ObservationEquationAutocorrelation} is expanded to give 
+\begin{align}\label{eq:EM-expanded_auto_corr}  
+	R_{y_{t+1}y_{t+1}} & (\boldsymbol{\tau}) = \\ \nonumber 
+	\left( \left(\xi( m\ast z_{t}) \right.\right.&+\left.\left. T_s(m\ast g_{t}) + ( m \ast e_{t})+\varepsilon_{t+1} \right) \star y_{t+1} \right) (\boldsymbol{\tau})
+\end{align}
+Now expanding we get
+\begin{align}\label{eq:expanded_auto_corr}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= \xi((m \ast z_{t}) \star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
+	&\quad+T_s((m\ast g_{t})\star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
+	&\quad+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\tau}) \nonumber \\
+	&\quad+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\tau}).
 \end{align}
 By using similar arguments that were used in the derivation for the mixing kernel, the auto-correlation can be simplified by recognizing that
+\begin{align}\label{eq:EM-Autoterm1} 
+  \mathbf{E}[\xi((m\ast z_{t})\star y_{t+1})(\boldsymbol{\tau})]&=\xi \mathbf{E}[ R_{y_ty_{t+1}}(\boldsymbol{\tau})],
+\end{align}
 \begin{align}\label{eq:EM-Autoterm2}
-	((m\ast k \ast z_t) \star y_{t+1})(\boldsymbol\tau) &= k(-\boldsymbol\tau) \ast R_{y_ty_{t+1}}(\boldsymbol\tau),
-\end{align}
+ (\varepsilon_{t+1}\star y_{t+1})(\boldsymbol\tau)&=\sigma_{\varepsilon}^2\delta(\boldsymbol{\tau}),
+\end{align} 
 and
-\begin{align}\label{eq:EM-Autoterm3}
- (\varepsilon_{t+1}\star y_{t+1})(\boldsymbol\tau)&=\sigma_{\varepsilon}^2\delta(\boldsymbol{\tau}).
+\begin{align}\label{eq:EM-Autoterm3} 
+	T_s\mathbf{E}[((m\ast g_t) &\star y_{t+1})(\boldsymbol\tau)] \nonumber \\ 
+	&\approx \frac{T_s}{4}\mathbf{E}[((m \ast k \ast (2 + \varsigma z_t - \varsigma z_0))\star y_{t+1})(\boldsymbol\tau)] \nonumber \\
+	&= \frac{T_s}{4} w(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ).
 \end{align}
-Substituting \eqref{eq:EM-Autoterm2}, and ~\eqref{eq:EM-Autoterm3} back into \eqref{eq:EM-expanded_auto_corr} and taking the expectation over time  gives
-\begin{align}\label{eq:EM-Auto&CrossNoisy}
-	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})] &= k(-\boldsymbol\tau) \ast (\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ) \nonumber \\
-	&+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] +\sigma_{\epsilon}^2\delta(\boldsymbol{\tau}).
+Substituting \eqref{eq:EM-Autoterm1}, \eqref{eq:EM-Autoterm2} and ~\eqref{eq:EM-Autoterm3} back into \eqref{eq:expanded_auto_corr} and taking the expectation over time  gives
+\begin{align}\label{eq:Auto&CrossNoisy}
+	\mathbf{E}&[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})] = \xi \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})] \nonumber \\
+	&\quad+  \frac{T_s}{4} k(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ) \nonumber \\
+	&\quad+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)]+\sigma_{\epsilon}^2\delta(\boldsymbol{\tau}).
 \end{align}
-The second term in \eqref{eq:EM-Auto&CrossNoisy} can be simplified as
-\begin{align}\label{eq:EM-term3Noisy}
-\mathbf{E}&[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)]\nonumber \\
-&=\mathbf{E}[((m\ast e_t)\star (m\ast z_{t+1}+\varepsilon_{t+1})) (\boldsymbol\tau)] \nonumber \\
-	&= \mathbf{E}[(\left(m \ast e_t\right) \star (m \ast [k\ast z_t + e_t]+\varepsilon_{t+1}))(\boldsymbol\tau)] \nonumber \\
-	&=\mathbf{E}[\left(m \ast e_t\right)\star\left(m \ast e_t\right)(\boldsymbol\tau)].
-\end{align}  
-This holds as the disturbance, $e_t$, is not correlated with the field, $z_t$, and the observation noise, $\varepsilon_{t+1}$. A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix~\ref{ap:CorrelationAnalysis}). By using this relationship and the isotropy property of the observation kernel \eqref{eq:EM-term3Noisy} can be written as
+The third term in \eqref{eq:Auto&CrossNoisy} can be simplified as 
+\begin{align}\label{eq:term3Noisy}
+\mathbf{E}&[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] = \mathbf{E}[((m\ast e_t)\star (m\ast z_{t+1}+\varepsilon_{t+1})) (\boldsymbol\tau)] \nonumber \\
+	&= \mathbf{E}[(\left(m \ast e_t\right) \star (m \ast [\xi z_t+ T_s g_t + e_t]+\varepsilon_{t+1}))(\boldsymbol\tau)] \nonumber \\
+	&=\mathbf{E}[\left(m \ast e_t\right)\star\left(m \ast e_t\right)(\boldsymbol\tau)]
+\end{align} 
+This holds as the disturbance, $e_t$, is not correlated with the field, $z_t$, and the observation noise, $\varepsilon_{t+1}$. A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix~\ref{ap:CorrelationAnalysis}). By using this relationship and the isotropy property of the observation kernel \eqref{eq:term3Noisy} can be written as
 \begin{align}\label{eq:EM-Autoterm4}
 \mathbf{E}[(\left(m \ast e_t\right)\star\left(m \ast e_t\right))(\boldsymbol\tau)]&=\mathbf{E}[(\left(m \star m\right)\ast\left(e_t \star e_t\right))(\boldsymbol\tau)] \nonumber \\
 &=(m\ast m \ast \gamma)(\boldsymbol\tau).
 \end{align}
-Substituting this back into \eqref{eq:EM-Auto&CrossNoisy} gives
+Substituting this back into \eqref{eq:Auto&CrossNoisy}  gives
 \begin{align}
-	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})] &=k(-\boldsymbol\tau) \ast (\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ) \nonumber \\
-	&+(m\ast m \ast \gamma)(\boldsymbol\tau) +\sigma_{\epsilon}^2\delta(\boldsymbol{\tau}).
+	\mathbf{E}&[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})] = \xi \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})] \nonumber \\
+	&\quad+  \frac{T_s}{4} k(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ) \nonumber \\
+	&\quad+(m\ast m \ast \gamma)(\boldsymbol\tau)+\sigma_{\varepsilon}^2\delta(\boldsymbol{\tau}).
 \end{align}
 To solve for the disturbance covariance function, once again the convolution theorem is used. Taking the Fourier transform and rearranging gives
 \begin{align}
-	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}\nonumber \\ 
-	&-\mathcal{F}\{k(-\boldsymbol\tau)\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}-\sigma_{\varepsilon}^2.
+	\mathcal{F}&\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} = \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2 \nonumber \\ 
+	&\quad-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
+	&\quad - \frac{T_s}{4} \mathcal{F}\{k(-\boldsymbol\tau)\}\mathcal{F}\left\{\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\},
 \end{align}
-Now substituting in \eqref{eq:EM-Fourier_TF_of_Kernel} for $\mathcal{F}\{k(-\boldsymbol{\tau})\}$, rearranging and taking the inverse Fourier transform yields the final result 
-% \begin{align}
-% 	\mathcal{F}&\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} = \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}\nonumber \\ 
-% 	&-\left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}}\right]\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\} -\sigma_{\varepsilon}^2.\label{eq:EM-mmgamma}
-% \end{align}
-% Now rearranging and taking the inverse Fourier transform of the above equation yields the final result 
-% \begin{align}\label{eq:EM-MMGFourier1}
-% 	\mathcal{F}&\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{\gamma(\boldsymbol\tau)\} =\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\ &-\left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]-\sigma_{\varepsilon}^2 ,
-% \end{align}
-% rearranging and taking the inverse Fourier transform yields the final result
-\begin{align}\label{eq:EM-MMGFourier2}
-	&\gamma(\boldsymbol\tau) =\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\tau)}\Bigg[\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2\right] \nonumber \right.\\
- &\left. \left.- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]\right]\right\rbrace,
+ rearranging and taking the inverse Fourier transform yields the final result 
+ \begin{align}\label{eq:EM-MMGFourier2}   
+	\gamma&(\boldsymbol\tau) =\mathcal{F}^{-1}\left\lbrace\frac{1}{\tilde{m}(\boldsymbol\tau)}\Bigg[\left[ \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2  \nonumber \right. \right. \\ 
+	&\quad-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
+	&\left.\quad - \frac{T_s}{4} \mathcal{F}\{k(-\boldsymbol\tau)\}\mathcal{F}\left\{\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}\Bigg]\right\rbrace,
 \end{align}
 where
 \begin{equation}
  \tilde{m}(\boldsymbol\tau)=\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}.
 \end{equation}
 % from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
-From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Similarly an estimate  of $\sigma_{\varepsilon}^2$ can be found using \eqref{eq:BoundOnObsVariance}. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} is then required. 
-Note using uniform observation samples in \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
+Using the result for the kernel from  \eqref{eq:Fourier_TF_of_Kernel}  the equation for covariance function can be solved. From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Similarly an estimate  of $\sigma_{\varepsilon}^2$ can be found using \eqref{eq:BoundOnObsVariance}. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} is then required. 
+Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
 \section{Simulation}   
 This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where different spatial mixing kernels (isotropic and anisotropic) were adopted. These kernels are defined as a sum of Gaussian basis functions in the form of
 \begin{align}\label{eq:sumofGaussians}
@@ -622,7 +659,7 @@ In the case where the spatial process is observed at irregular locations, spatia
 % if have a single appendix:
 % \appendix[Convolution and Correlation]
 % or
- \appendix  % for no appendix heading
+ \appendices  % for no appendix heading
 % do not use \section anymore after \appendix, only \section*
 % is possibly needed
 % use appendices with more than one appendix
@@ -631,7 +668,7 @@ In the case where the spatial process is observed at irregular locations, spatia
 % \subsection or using \label (\appendices by itself
 % starts a section numbered zero.)
 %  ###########################################
- \section*{Convolution and Correlation}\label{ap:CorrelationAnalysis}
+ \section{Convolution and Correlation}\label{ap:CorrelationAnalysis}
 In this appendix the properties of the cross-correlation and the convolution used in Section~\ref{sec:EstimationMethod}   are derived. To show 
 \begin{equation}\label{eq:app-ConvXcorRelation1}
  \left(a \ast b \right)\left(\boldsymbol\tau\right)  \star c\left(\boldsymbol\tau\right)  = a\left(-\boldsymbol\tau\right)\ast\left(b \star c\right)\left(\boldsymbol\tau\right)
@@ -656,8 +693,8 @@ Similarly, \eqref{eq:app-ConvXcorRelation2} can be written as
 &=a(-\boldsymbol\tau)\ast a(\boldsymbol\tau) \ast b(-\boldsymbol\tau)\ast b(\boldsymbol\tau) \nonumber \\
 &=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau).
 \end{align}     
-                
-
+ \section{Linear IDE}\label{ap:linearIDE}                
+ blah blah
 
 %\appendices
 %\section{Proof of the First Zonklar Equation}
