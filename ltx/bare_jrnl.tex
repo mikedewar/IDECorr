@@ -563,7 +563,34 @@ where
 \end{equation}
 % from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
 Using the result obtained for the kernel from  \eqref{eq:Fourier_TF_of_Kernel}  the equation for covariance function can be solved. From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, in addition to the parameters affecting the spatial mixing kernel the observation noise variance and the sensor kernel support are required. Similarly an estimate  of $\sigma_{\varepsilon}^2$ can be found using \eqref{eq:BoundOnObsVariance}. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} is then required. 
-Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
+Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function. 
+\begin {table}[t]
+\begin{center}
+	{\tiny\begin{tabular}{llll}
+	\hline \hline
+	& Symbol & Quantity & Units\\ 
+	\hline 
+	& Domain and indices&& \\
+	& $\Omega$ &Spatial domain& n.a. \\ 
+	& $\mathbb{Z}^{+}$ &Non-negative integers& n.a. \\ 
+	& $\mathbf{r}$ &Spatial location& arbitrary unit\\ 
+	& $t$ &Time & s \\  
+ 	& $\boldsymbol{\nu}$ &Spatial frequency& arbitrary unit\\  
+	& $\mathbf I$ & Identity matrix & n.a. \\
+	& Model&& \\ 
+	& $\mathbf{y}_t$ & Observation & Arbitrary unit \\
+	& $z_t(\mathbf{r})$ & Spatial field & Arbitrary unit \\ 
+	& $f_t(\mathbf{r})$ & Sigmoidal function & spike~s$^{-1}$ \\ 
+	& $g_t(\mathbf{r})$ & Weighted sigmoidal function & spike~s$^{-1}$ \\
+ 	& $e_t(\mathbf{r})$ & Field disturbance, with covariance function $\gamma(\mathbf{r}-\mathbf{r'})$  & spike~s$^{-1}$ \\
+ 
+	
+	\hline \hline
+	\end{tabular}}
+ \caption {{\bf Cardinal B-Splines at the knot sequence}.} 
+ \label{table:MRA-BsplineatIntegerPoints}
+ \end{center}
+ \end {table}
 \section{Simulation}   
 \begin{figure}[ht]
 	\centering
