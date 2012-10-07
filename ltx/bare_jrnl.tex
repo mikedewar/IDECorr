@@ -346,6 +346,12 @@ Techniques for modeling spatio-temporal systems are generating growing interest,
 
 The focus on the IDE-based models in this work is because they have received much attention in population ecology as models for the spatio-temporal spread of organisms \cite{Kot1992,Kot1996} and in the brain dynamics to model the electrophysiological measurements \cite{Deco2008,Schiff2008,Freestone2011}. The key feature of IDE models is that they combine discrete temporal dynamics with a continuous spatial representation. The dynamics of this model are governed by a spatial mixing kernel, which defines the mapping between the current spatial field and the previous spatial field. The IDE model can be applied to data sampled both regularly and irregularly in space due to the continuous representation of each spatial field. Estimating the spatial mixing kernel and the underlying spatial field is of particular interest and can be achieved by  using conventional state-space modeling \cite{Dewar2009,Scerri2009} or in a hierarchical Bayesian framework \cite{Wikle1999,Xu2005,Wikle2011}. 
 
+\begin{figure}[ht]
+	\centering
+		\includegraphics[scale=1]{./Graph/FieldsAndKernel_Arrows.pdf}
+	\caption{caption}
+	\label{fig:label}
+\end{figure}
 
 Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation by decomposing the kernel and the field using a set of spectral basis functions. An alternative approach for the decomposition of the IDE was introduced in \cite{Dewar2009} where the resulting state and parameter space dimensions are independent of the number of observation locations. In this work a framework based on expectation maximization (EM)  algorithm \cite{Dempster1977,Gibsona2005}  was used to estimate both the field and the kernel from the observed data. A similar approach is adopted by \cite{Scerri2009} which developed a model selection procedure by considering various spatial scales at which to represent the system.  
 % Therefore, increasing the resolution at which the system is observed does not necessarily increase the complexity of the system identification problem.
@@ -566,6 +572,14 @@ where
 Using the result for the kernel from  \eqref{eq:Fourier_TF_of_Kernel}  the equation for covariance function can be solved. From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, the observation noise variance and the sensor kernel support are required. Similarly an estimate  of $\sigma_{\varepsilon}^2$ can be found using \eqref{eq:BoundOnObsVariance}. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} is then required. 
 Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function.
 \section{Simulation}   
+\begin{figure}[ht]
+	\centering
+		\subfigure[]{\includegraphics[scale=1]{./Graph/100Fields.pdf}}
+		\subfigure[]{\includegraphics[scale=1]{./Graph/SensorArrangement.pdf}}
+	\caption{caption}
+	\label{fig:label}
+\end{figure}
+
 This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where different spatial mixing kernels (isotropic and anisotropic) were adopted. These kernels are defined as a sum of Gaussian basis functions in the form of
 \begin{align}\label{eq:sumofGaussians}
  k\left(\mathbf{r}-\mathbf{r}'\right)=\sum_{i=0}^{n_{\theta}}\theta_i\psi_i\left(\mathbf{r}-\mathbf{r}'\right), 
