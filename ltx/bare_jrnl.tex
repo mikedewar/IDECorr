@@ -317,8 +317,7 @@ The integro-difference equation (IDE) is an increasingly popular mathematical mo
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-dynamic spatio-temporal modelling, integro-difference equation (IDE), expectation maximization
-	(EM) algorithm.
+dynamic spatio-temporal modelling, integro-difference equation (IDE).
 \end{IEEEkeywords}
 
 
@@ -358,7 +357,7 @@ The rest of this paper is set out as follows: in Section 2, the stochastic IDE m
 \section{Stochastic IDE Model}
 The spatially homogeneous IDE is given by
 \begin{equation}
- z_{t+T_s}\left(\mathbf{r}\right)=\xi z_t(\mathbf{r})+T_s\int_{\Omega}k\left(\mathbf{r}-\mathbf{r}'\right)f(z_{t}\left(\mathbf{r}'\right))d\mathbf{r}'+e_{t}\left(\mathbf{r}\right),
+ z_{t+1}\left(\mathbf{r}\right)=\xi z_t(\mathbf{r})+T_s\int_{\Omega}k\left(\mathbf{r}-\mathbf{r}'\right)f(z_{t}\left(\mathbf{r}'\right))d\mathbf{r}'+e_{t}\left(\mathbf{r}\right),
 \label{eq:ConvolutionIntegral}
 \end{equation}
 where $t\in \mathbb{Z}_0 $ denotes discrete time, $T_s$ is the sampling time and $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n$-dimensional physical space, where $n \in \left\lbrace 1,2,3 \right\rbrace $. The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The model dynamics  are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}-\mathbf{r}'\right)$ which maps $f(z_{t})$  to the next spatial field via the integral (\ref{eq:ConvolutionIntegral}) where $f(\cdot)$ is a non-linear function. The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
@@ -377,7 +376,7 @@ where $m\left(\mathbf{r}-\mathbf{r}'\right)$ is the observation kernel defined i
 where $\sigma_m$ sets the observation kernel width. The superscript $\top$ denotes the transpose operator and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix.
 
 \section{Estimation method}\label{sec:EstimationMethod}
-For the derivation of the spatial properties estimator of the field equations we assume the non-linearity is a sigmoidal function. This is common in studying the brain dynamics to describe the firing rate of the presynaptic neurons in terms of the post-synaptic membrane potential by [refs].
+For the derivation of the spatial properties estimator of the field equations we assume the non-linearity is a sigmoidal function. This is common in studying the brain dynamics to describe the firing rate of the presynaptic neurons in terms of the post-synaptic membrane potential and is given by [refs].
 \begin{equation}
 	\label{ActivationFunction} f\left( z\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( z_0 - z\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
@@ -402,22 +401,16 @@ Under the assumption that the sensors are not spatially band-limiting, the spect
 	R_{y_{t+1}y_t}\left(\boldsymbol{\tau}\right) = \left(\left(m \ast z_{t+1}\right)\star y_t\right)\left(\boldsymbol{\tau}\right) + \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
 Next we substitute \eqref{eq:ConvolutionIntegral} for $z_{t+1}(\mathbf{r})$ giving 
-% \begin{align}
-% 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(k\ast z_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\nonumber\\
-% 	&= \left(\left(m\ast k\ast z_t\right)\star y_t \right)(\boldsymbol{\tau}) + \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber \\
-% 	&+ \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
-% \end{align}  
 \begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(\xi z_t +  T_s g_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\\
-	&= \xi\left(\left(m \ast z_t\right) \star y_t \right)(\boldsymbol{\tau}) \nonumber\\
-	&\quad+ T_s \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
-	&\quad+ \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
-	&\quad+ (\varepsilon_{t+1} \star y_t)(\boldsymbol{\tau}).
+	R_{y_{t+1}y_t}&(\boldsymbol{\tau}) = (\left(m \ast \left(\xi z_t +  T_s g_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau}) \nonumber\\
+	&= \xi\left(\left(m \ast z_t\right) \star y_t \right)(\boldsymbol{\tau})+ T_s \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
+	&\quad+ \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau})+ (\varepsilon_{t+1} \star y_t)(\boldsymbol{\tau}),
 \end{align}
+where
+\begin{equation}\label{eq:averagefiringrate}
+	g_t(\mathbf r)=\int_{\Omega}k\left(\mathbf{r}-\mathbf{r}'\right)f(z_{t}\left(\mathbf{r}'\right))d\mathbf{r}'.
+\end{equation}
 Now we take the expectation over time, so that the observation noise and process disturbance terms have minimal effect on the result, giving 
-% \begin{align}\label{eq:ExpectationToCancelNoise}
-% 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E} \left(\left(m\ast k\ast z_t\right)\star y_t \right)(\boldsymbol{\tau}) ],
-% \end{align}  
 \begin{align}\label{eq:ExpectationToCancelNoise}
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E}[\xi\left(\left(m \ast z_t\right) \star y_t \right)(\boldsymbol{\tau})] \nonumber \\
 	 &\quad+ T_s \mathbf{E}[\left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})],
@@ -430,7 +423,7 @@ since the disturbance and measurement noise are assumed to be independent of the
 	&=\xi\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau}) -\left(\varepsilon_t\star (m\ast z_t)\right)(\boldsymbol{\tau}) - (\varepsilon_t\star\varepsilon_t)(\boldsymbol{\tau})] \nonumber\\ 
 	&= \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right), \label{eq:FirstTermReduced}
 \end{align}
-Next we simplify second term in equation \eqref{eq:ExpectationToCancelNoise} to get an expression involving the spatial mixing kernel. By substituting equation blah for $g_t$ we can write
+Next we simplify second term in equation \eqref{eq:ExpectationToCancelNoise} to get an expression involving the spatial mixing kernel. By substituting equation \eqref{eq:averagefiringrate} for $g_t$ we can write
 \begin{equation}\label{eq:before_linearization}
 	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) = T_s((k \ast m\ast f(z_t)) \star y_t)(\boldsymbol\tau).
 \end{equation}   
@@ -438,7 +431,7 @@ The remainder of the derivation is focused on isolating the connectivity kernel.
 \begin{align}
 	\hat{f}(z_t\left(\mathbf{r}\right)) &=\frac{2 + \varsigma(z_t\left(\mathbf{r}\right) - z_0)}{4}. 
 \end{align}	
-Substituting the linearized activation function back into equation~\ref{eq:before_linearization} we get
+Substituting the linearized activation function back into equation~\eqref{eq:before_linearization} we get
 \begin{align}	
 	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) \approx \frac{T_s}{4}((k\ast (c_1 + \varsigma m \ast z_t)) \star y_t)(\boldsymbol\tau), 
 \end{align}
@@ -459,28 +452,27 @@ where
 \begin{equation}
 	c_t = (c_1\star y_t)(\boldsymbol\tau).
 \end{equation}  
-Now using the identity established to get equation~\ref{eq:FirstTermReduced} we have
+Now using the identity established to get equation~\eqref{eq:FirstTermReduced} we have
 \begin{align}\label{eq:second_term_reduced}
 	T_s\mathbf{E}&\left[((m \ast g_t) \star y_t)(\boldsymbol\tau)\right] \approx \nonumber \\
 	&\frac{T_s}{4} k(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)))
 \end{align}
-Now substituting back to equation~\ref{eq:second_term_reduced} into equation~\ref{eq:ExpectationToCancelNoise}  we get
+Now substituting back to equation~\eqref{eq:second_term_reduced} into equation~\eqref{eq:ExpectationToCancelNoise}  we get
 \begin{align}\label{eq:SimplifiedXcorr}
 	\mathbf{E}&[R_{y_{t+1}y_t}(\boldsymbol{\tau})] \approx \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) \nonumber \\
 	&\quad+ \frac{T_s}{4} k(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))).
 \end{align}
-Rearranging equation~\ref{eq:SimplifiedXcorr} we get
+Rearranging equation~\eqref{eq:SimplifiedXcorr} we get
 \begin{align} \label{eq:Tobesolvedforthekernel}
 	k(-\boldsymbol\tau) & \ast (\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))) \approx  \nonumber \\
-	& \frac{4}{T_s}(\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right))
+	& \frac{4}{T_s}(\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right)).
 \end{align}
 The solution of the above equation for the mixing kernel is a deconvolution. Using the convolution theorem \eqref{eq:Tobesolvedforthekernel} can be solved for the kernel in the frequency domain giving,
 \begin{align}
 	\mathcal{F}&\{k(-\boldsymbol\tau)\} \approx  \nonumber \\
-	&\frac{4}{T_s} \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right)\}}{\mathcal{F}\{\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}} \nonumber \\
-	&= \frac{4}{T_s} \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )}.  \label{eq:Fourier_TF_of_Kernel}
+	&= \frac{4}{T_s} \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )},  \label{eq:Fourier_TF_of_Kernel}
 \end{align} 
-From this we see that an error in our guess for $\xi$ will result in a dilation or contraction of the estimated kernel support. An incorrect estimate of $c_t$ will result in a DC shift in the kernel estimate and an incorrect estimate in the observation noise will result in a distortion in the shape of the kernel. Finally an expression for the kernel is obtained by taking the inverse Fourier transform giving
+where $\boldsymbol\nu$ is the spatial frequency. From this we see that an error in our guess for $\xi$ will result in a dilation or contraction of the estimated kernel support. An incorrect estimate of $c_t$ will result in a DC shift in the kernel estimate and an incorrect estimate in the observation noise will result in a distortion in the shape of the kernel. Finally an expression for the kernel is obtained by taking the inverse Fourier transform giving
 \begin{align}\label{eq:EM-Fourier_TF_of_Kernel}   
 	k&(\boldsymbol\tau) = \nonumber \\
 	&\frac{4}{T_s}\mathcal{F}^{-1}\overline{\left\{ \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )} \right\}},
@@ -505,10 +497,8 @@ The observation auto-correlation at time $t+1$ can be expressed as
 \end{align}
 Now expanding we get
 \begin{align}\label{eq:expanded_auto_corr}
-	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= \xi((m \ast z_{t}) \star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
-	&\quad+T_s((m\ast g_{t})\star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
-	&\quad+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\tau}) \nonumber \\
-	&\quad+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\tau}).
+	R_{y_{t+1}y_{t+1}}&(\boldsymbol{\tau}) = \xi((m \ast z_{t}) \star y_{t+1})(\boldsymbol{\tau})+T_s((m\ast g_{t})\star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
+	&\quad+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\tau})+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\tau}).
 \end{align}
 By using similar arguments that were used in the derivation for the mixing kernel, the auto-correlation can be simplified by recognizing that
 \begin{align}\label{eq:EM-Autoterm1} 
@@ -531,7 +521,8 @@ Substituting \eqref{eq:EM-Autoterm1}, \eqref{eq:EM-Autoterm2} and ~\eqref{eq:EM-
 \end{align}
 The third term in \eqref{eq:Auto&CrossNoisy} can be simplified as 
 \begin{align}\label{eq:term3Noisy}
-\mathbf{E}&[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] = \mathbf{E}[((m\ast e_t)\star (m\ast z_{t+1}+\varepsilon_{t+1})) (\boldsymbol\tau)] \nonumber \\
+\mathbf{E}&[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] \nonumber \\
+  &=\mathbf{E}[((m\ast e_t)\star (m\ast z_{t+1}+\varepsilon_{t+1})) (\boldsymbol\tau)] \nonumber \\
 	&= \mathbf{E}[(\left(m \ast e_t\right) \star (m \ast [\xi z_t+ T_s g_t + e_t]+\varepsilon_{t+1}))(\boldsymbol\tau)] \nonumber \\
 	&=\mathbf{E}[\left(m \ast e_t\right)\star\left(m \ast e_t\right)(\boldsymbol\tau)]
 \end{align} 
@@ -586,24 +577,24 @@ In the experiments first $\sigma_{\varepsilon}^2$ is estimated using the minimum
 \subsection{Example I: isotropic mixing kernel}
  Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, $\theta_0=0.5$ and $\theta_1=-0.3$ in \eqref{eq:sumofGaussians} and \eqref{eq:Kernelbasis}, forming a semi-compact support Mexican-hat shape. Such a kernel is commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The kernel and its estimation are plotted in \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. An estimation for $\sigma_{\varepsilon}^2$ is found by \eqref{eq:BoundOnObsVariance} giving $\sigma_{\varepsilon}^2=0.105$ which is close to the actual value of the observation noise variance. The estimated disturbance covariance function is also shown in \figurename{\ref{fig:EstimatedSupport1d}}. In this figure the true and estimated covariance function at observation locations are shown by solid and dashed lines respectively.
  
- \begin{figure}[!h] 
- \centering
- \includegraphics[width=0.5\textwidth]{./Graph/KernelEstimation2d.pdf}
- \caption{Estimation of isotropic mixing kernel (Mexican-hat shape); left panel is the true kernel; right panel is the estimated kernel.}
- \label{fig:MexHatKernel2d}
- \end{figure}
- \begin{figure}[!h] 
- \centering
- \includegraphics[width=0.5\textwidth]{./Graph/KernelSupportEstimation1d.pdf}
- \caption{Estimation of isotropic mixing kernel (Mexican-hat shape);  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
- \label{fig:MexHatKernel1d}
- \end{figure}  
-\begin{figure}[!h] 
- \centering
- \includegraphics[width=0.5\textwidth]{./Graph/DisturbanceSupportEstimation1d.pdf}
- \caption{Estimation of disturbance covariance function, $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$;  cross-sections of the true and estimated  kernels  are shown by solid and dashed lines respectively.}
- \label{fig:EstimatedSupport1d}
- \end{figure} 
+ % \begin{figure}[!h] 
+ % \centering
+ % \includegraphics[width=0.5\textwidth]{./Graph/KernelEstimation2d.pdf}
+ % \caption{Estimation of isotropic mixing kernel (Mexican-hat shape); left panel is the true kernel; right panel is the estimated kernel.}
+ % \label{fig:MexHatKernel2d}
+ % \end{figure} 
+ % \begin{figure}[!h] 
+ %  \centering
+ %  \includegraphics[width=0.5\textwidth]{./Graph/KernelSupportEstimation1d.pdf}
+ %  \caption{Estimation of isotropic mixing kernel (Mexican-hat shape);  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
+ %  \label{fig:MexHatKernel1d}
+ %  \end{figure}   
+% \begin{figure}[!h] 
+%  \centering
+%  \includegraphics[width=0.5\textwidth]{./Graph/DisturbanceSupportEstimation1d.pdf}
+%  \caption{Estimation of disturbance covariance function, $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$;  cross-sections of the true and estimated  kernels  are shown by solid and dashed lines respectively.}
+%  \label{fig:EstimatedSupport1d}
+%  \end{figure}     
 \subsection{Example II: anisotropic mixing kernel}
 For this experiment the homogeneous kernel parameters are set as $n_\theta=3$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$ and $\boldsymbol\mu_1=[0~0]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=-0.07$, $\theta_1=0.07$ and $\theta_2=0.02$ resulting in anisotropic kernel shown in \figurename{\ref{fig:anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:anisoKernel2d}} are shown in \figurename{\ref{fig:anisoKernel1d}}.
 \begin{figure}[!h] 
@@ -612,12 +603,12 @@ For this experiment the homogeneous kernel parameters are set as $n_\theta=3$, $
  \caption{Estimation of anisotropic mixing kernel; left panel is the true kernel; right panel is the estimated kernel.}
  \label{fig:anisoKernel2d}
  \end{figure}
-\begin{figure}[!h] 
- \centering
- \includegraphics[width=0.5\textwidth]{./Graph/anisoKernelSupportEstimation1d.pdf}
- \caption{Estimation of anisotropic mixing kernel;  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
- \label{fig:anisoKernel1d}    
- \end{figure}  
+% \begin{figure}[!h] 
+%  \centering
+%  \includegraphics[width=0.5\textwidth]{./Graph/anisoKernelSupportEstimation1d.pdf}
+%  \caption{Estimation of anisotropic mixing kernel;  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
+%  \label{fig:anisoKernel1d}    
+%  \end{figure}    
 
 \begin{figure*}[ht]
 	\centering
@@ -634,12 +625,12 @@ For this experiment the homogeneous kernel parameters are set as $n_\theta=2$, $
  \caption{Estimation of anisotropic mixing kernel; left panel is the true kernel; right panel is the estimated kernel.}
  \label{fig:1anisoKernel2d}
  \end{figure}
-\begin{figure}[!h] 
- \centering
- \includegraphics[width=0.5\textwidth]{./Graph/1anisoKernelSupportEstimation1d.pdf}
- \caption{Estimation of anisotropic mixing kernel;  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
- \label{fig:1anisoKernel1d}    
- \end{figure} 
+% \begin{figure}[!h] 
+%  \centering
+%  \includegraphics[width=0.5\textwidth]{./Graph/1anisoKernelSupportEstimation1d.pdf}
+%  \caption{Estimation of anisotropic mixing kernel;  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
+%  \label{fig:1anisoKernel1d}    
+%  \end{figure}  
 \section{Conclusion}
 An efficient and novel approach to modeling spatio-temporal systems has been presented. This model is able to identify spatial mixing kernel, disturbance and noise characteristics from observed field. This ability greatly facilitates the identification of the class of system which the IDE can represent.
 
