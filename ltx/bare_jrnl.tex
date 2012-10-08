@@ -570,13 +570,19 @@ Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  an
 	\hline \hline
 	& Symbol & Quantity & Units\\ 
 	\hline 
-	& Domain and indices&& \\
+	& Domain, indices and operators&& \\
 	& $\Omega$ &Spatial domain& n.a. \\ 
 	& $\mathbb{Z}^{+}$ &Non-negative integers& n.a. \\ 
 	& $\mathbf{r}$ &Spatial location& arbitrary unit\\ 
 	& $t$ &Time & s \\  
  	& $\boldsymbol{\nu}$ &Spatial frequency& arbitrary unit\\  
-	& $\mathbf I$ & Identity matrix & n.a. \\
+	& $\mathbf I$ & Identity matrix & n.a. \\ 
+ 	& $\ast$ & Convolution operator & n.a. \\ 
+ 	& $\star$ & Correlation operator & n.a. \\ 
+  & $\mathcal{F}\{\cdot\}$ &Fourier transform& n.a. \\  
+  & $\mathcal{F}^{-1}\{\cdot\}$ &Inverse Fourier transform& n.a. \\  
+  & $\mathbf{E}[\cdot]$ &Expectation operator& n.a. \\  
+
 	& Model&& \\ 
 	& $\mathbf{y}_t$ & Observation & Arbitrary unit \\
 	& $z_t(\mathbf{r})$ & Spatial field & Arbitrary unit \\ 
@@ -589,11 +595,16 @@ Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  an
  	& $\xi$ &Decay parameter& n.a. \\  
  	& $\delta(t)$ &Dirac-delta function& n.a. \\  
  	& $\delta(\boldsymbol\tau)$ &Kronecker delta& n.a. \\  
- 
-
+	& Estimation&& \\
+ 	& $\boldsymbol\tau$ &Spatial shift& Arbitrary unit \\
+  & $\hat{f}(\cdot)$ &Linearized sigmoidal function around the threshold& spike~s$^{-1}$ \\  
+  & $R_{y_{t+1}y_t}(\boldsymbol{\tau}) $ &The spatial cross-correlation between consecutive observations& arbitrary unit \\  
+  & $R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})$ & The spatial auto-correlation at time $t+1$& arbitrary unit \\  
+ 	  
+   
  	\hline \hline
 	\end{tabular}}
- \caption {{\bf Cardinal B-Splines at the knot sequence}.} 
+ \caption {{\bf Notation}.} 
  \label{table:MRA-BsplineatIntegerPoints}
  \end{center}
  \end {table}
