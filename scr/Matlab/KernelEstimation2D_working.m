@@ -497,11 +497,21 @@ ylabel('Connection Strength','fontsize',FS_Label)
 set(gca,'xtick',[-10 0 10],'ytick',[-10 0 10.0],'fontsize',FS_Tick)
 
 %% estimate disturbance support
-MMGamma_est = F_R_acorr - fft2(mean_c_2) - F_R_xcorr .* fft2(R_xcorr_reverse) ./ F_R_acorr;
-mmgamma_est = fftshift(ifft2(MMGamma_est)) / delta_y^2;
+MMGamma_est = F_R_acorr - sigma_varepsilon^2 ...
+    - xi*fft2(R_xcorr_reverse)...
+    - W_est*(fft2(mean_c_2)+varsigma*R_xcorr_reverse)*Ts/4;
 
-mmgamma = conv2(m,conv2(m,gamma,'same'),'same')*Delta_squared^2;
-figure,subplot(121),imagesc(r,r,mmgamma),axis square,title('true'),colorbar
-subplot(122),imagesc(r_est,r_est,real(mmgamma_est),[0,0.3]),axis square,title('estimate'),colorbar
+mmgamma_est = ifft2(MMGamma_est);
+
+gamma_conv_m_conv_m = conv2(gamma,conv2(m_large,m_large,'same'),'same');
+
+figure,imagesc(abs(mmgamma_est))
+
+% fft2(mean_c_2) - F_R_xcorr .* fft2(R_xcorr_reverse) ./ F_R_acorr;
+% mmgamma_est = fftshift(ifft2(MMGamma_est)) / delta_y^2;
+% 
+% mmgamma = conv2(m,conv2(m,gamma,'same'),'same')*Delta_squared^2;
+% figure,subplot(121),imagesc(r,r,mmgamma),axis square,title('true'),colorbar
+% subplot(122),imagesc(r_est,r_est,real(mmgamma_est),[0,0.3]),axis square,title('estimate'),colorbar
 % xlim([-10 10])
 % ylim([-10 10])
