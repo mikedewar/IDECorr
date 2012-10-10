@@ -361,32 +361,32 @@ The rest of this paper is set out as follows: in Section 2, the stochastic IDE m
 
 
 \section{Stochastic IDE Model}
-The spatially homogeneous IDE is given by 
+The form of the spatially homogeneous IDE that is used for the examples in this paper is given by 
 \begin{equation}
  z_{t+1}\left(\mathbf{r}\right)=\xi z_t(\mathbf{r})+T_s\int_{\Omega}k\left(\mathbf{r}-\mathbf{r}'\right)f(z_{t}\left(\mathbf{r}'\right))d\mathbf{r}'+e_{t}\left(\mathbf{r}\right),
 \label{eq:ConvolutionIntegral}
 \end{equation}
-where $t\in \mathbb{Z}^{+} $ denotes discrete time, $T_s$ is the sampling time and $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n$-dimensional physical space, where $n \in \left\lbrace 1,2,3 \right\rbrace $. The dynamics of the field is included via the decay parameter $\xi$ (see \cite{Freestone2011} for more details). The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The model dynamics  are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}-\mathbf{r}'\right)$ which maps $f(z_{t})$  to the next spatial field via the integral (\ref{eq:ConvolutionIntegral}) where $f(\cdot)$ is a non-linear function. The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
+where $t\in \mathbb{Z}^{+} $ denotes discrete time, $T_s$ is the sampling time step and $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n \in \left\lbrace 1,2,3 \right\rbrace $-dimensional physical space. The parameter $\xi$ is a decay term that is used to model synaptic dynamics in neural field models (see \cite{Freestone2011} for more details). In more simple forms of the IDE decay parameter is set to zero to model diffusion processes. The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The model dynamics are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}\right)$, which maps the field through time (which may be transformed or scaled by $f(\cdot)$) via the convolution defined in equation \ref{eq:ConvolutionIntegral}. In the case of the neural field model example that we will employ in this paper, $f(\cdot)$ takes the form of a sigmoidal nonlinearity. The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
 \begin{equation}
 cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d^2\delta(t-t')\gamma(\mathbf{r}-\mathbf{r'}),
 \label{eq:FieldDisturbance}
 \end{equation}
-where $\sigma_d$ is temporal disturbance, $\delta(t)$ is the Dirac-delta function and $\gamma(\mathbf{r}-\mathbf{r'})$ is a spatially homogeneous covariance function. The mapping between the spatial field and the observations, denoted by $\mathbf{y}_t$, is modeled using the observation function that incorporates sensors with a spatial extent
+where $\sigma_d$ is temporal disturbance, $\delta(t)$ is the Dirac-delta function and $\gamma(\mathbf{r}-\mathbf{r'})$ is a spatially homogeneous covariance function. The mapping between the spatial field and the observations, denoted by $\mathbf{y}_t(\mathbf{r}_n)$, is modeled using the observation function that incorporates sensors with a spatial extent
 \begin{equation}\label{eq:ObservationEquation}
-	y_t(\mathbf{r}) = \int_{\Omega} { m\left(\mathbf{r}-\mathbf{r}'\right) z_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
+	y_t(\mathbf{r}_n) = \int_{\Omega} { m\left(\mathbf{r}-\mathbf{r}'\right) z_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
 \end{equation}
-where $m\left(\mathbf{r}-\mathbf{r}'\right)$ is the observation kernel and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix.
+where $m\left(\mathbf{r}\right)$ is the observation kernel and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix.
 % defined in this work by the Gaussian
 % \begin{equation}\label{eq:observationkernel}
 % 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
 % \end{equation} 
 % where $\sigma_m$ sets the observation kernel width. The superscript $\top$ denotes the transpose operator.
-\section{Estimation method}\label{sec:EstimationMethod}
-For the derivation of the spatial properties estimator of the field equations we assume the non-linearity is a sigmoidal function. This is common in modeling the brain dynamics to describe the firing rate of the presynaptic neurons in terms of the post-synaptic membrane potential \cite{Freeman1975} and is given by
+\section{Estimation Method}\label{sec:EstimationMethod}
+For the derivation of the spatial properties estimator of the field equations we assume the non-linearity is a sigmoidal function. This is common in computational modeling of mesoscopic brain dynamics to describe the relation between the mean membrane potential and mean firing rate of a given population of neurons \cite{Freeman1975}. Formally, the sigmoid function is given by
 \begin{equation}
 	\label{ActivationFunction} f\left( z\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( z_0 - z\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
-The parameter $z_0$ describes the firing threshold of the neural populations and $\varsigma$ governs the slope of the sigmoid. The results obtained using the sigmoidal function can be easily modified to account for the linear IDE used in modeling electrophysiological data, population ecology and nowcasting. This is described in a later section in more details. To proceed we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
+The parameter $z_0$ describes the firing threshold of the neural populations and $\varsigma$ governs the slope of the sigmoid. The results obtained using the sigmoidal function can be easily modified to account for other linear forms of the IDE that are used in other models of electrophysiological data, and furthermore, modeling in other areas such as population ecology and weather nowcasting. This is described in a later section in more details. To proceed we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
 \begin{equation}
 	\int_\Omega a(\mathbf{r}-\mathbf{r}')b(\mathbf{r}')d\mathbf{r}' = (a\ast b)(\mathbf{r}),
 \end{equation}

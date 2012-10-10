@@ -109,7 +109,8 @@ delta_y = r(sensor_index(2)) - r(sensor_index(1));
 %% observation noise characteristics
 % ~~~~~~~~~~~~~~~~~~~~
 sigma_varepsilon = 0.1;                                                                     
-Sigma_varepsilon = sigma_varepsilon^2*eye(NSensors);        % observation covariance matrix
+% Sigma_varepsilon = sigma_varepsilon^2*eye(NSensors);        % observation covariance matrix
+Sigma_varepsilon = 0.1*eye(NSensors);        % observation covariance matrix
 
 % create the observation noise
 varepsilon = mvnrnd(zeros(1,NSensors),Sigma_varepsilon,T);
@@ -497,15 +498,26 @@ ylabel('Connection Strength','fontsize',FS_Label)
 set(gca,'xtick',[-10 0 10],'ytick',[-10 0 10.0],'fontsize',FS_Tick)
 
 %% estimate disturbance support
-MMGamma_est = F_R_acorr - sigma_varepsilon^2 ...
-    - xi*fft2(R_xcorr_reverse)...
-    - W_est*(fft2(mean_c_2)+varsigma*R_xcorr_reverse)*Ts/4;
+
+MMGamma_est = fft2(R_acorr/NSensors) - sigma_varepsilon^2 ...
+    - xi*fft2(R_xcorr_reverse/NSensors)...
+    - fft2(w_est).*fft2(mean_c_2/NSensors+varsigma*R_xcorr_reverse/NSensors)*Ts/4;
 
 mmgamma_est = ifft2(MMGamma_est);
 
-gamma_conv_m_conv_m = conv2(gamma,conv2(m_large,m_large,'same'),'same');
+gamma_conv_m_conv_m = conv2(gamma,conv2(m_large,m_large,'same')*Delta_squared,'same')*Delta_squared;
 
-figure,imagesc(abs(mmgamma_est))
+figure
+subplot(121)
+imagesc(gamma_conv_m_conv_m)
+axis square
+colorbar
+subplot(122)
+imagesc(r_est,r_est,abs(mmgamma_est))
+xlim([-10,10])
+ylim([-10,10])
+axis square
+colorbar
 
 % fft2(mean_c_2) - F_R_xcorr .* fft2(R_xcorr_reverse) ./ F_R_acorr;
 % mmgamma_est = fftshift(ifft2(MMGamma_est)) / delta_y^2;
@@ -515,3 +527,12 @@ figure,imagesc(abs(mmgamma_est))
 % subplot(122),imagesc(r_est,r_est,real(mmgamma_est),[0,0.3]),axis square,title('estimate'),colorbar
 % xlim([-10 10])
 % ylim([-10 10])
+
+%%
+tempxxx = zeros(T,41,41);
+for n=1:T
+    tempxxx(n,:,:) = cov(squeeze(v(n,:,:)));
+    
+end
+figure,imagesc(squeeze(mean(tempxxx,1)))
+figure,imagesc(Sigma_gamma)
