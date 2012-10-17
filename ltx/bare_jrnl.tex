@@ -476,9 +476,9 @@ Rearranging equation~\eqref{eq:SimplifiedXcorr} we get
 The solution of the above equation for the mixing kernel is a deconvolution. Using the convolution theorem \eqref{eq:Tobesolvedforthekernel} can be solved for the kernel in the frequency domain giving,
 \begin{align}
 	\mathcal{F}&\{k(-\boldsymbol\tau)\} \approx  \nonumber \\
-	&= \frac{4}{T_s} \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathcal{F}\{\mathbf{E}\left[c_t(\boldsymbol\tau)\right]\} + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )},  \label{eq:Fourier_TF_of_Kernel}
+	&= \frac{4}{T_s} \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathcal{F}\{\mathbf{E}\left[c_t(\boldsymbol\tau)\right]\} + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )}.  \label{eq:Fourier_TF_of_Kernel}
 \end{align} 
-where $\boldsymbol\nu$ is the spatial frequency. Finally an expression for the kernel is obtained by taking the inverse Fourier transform giving 
+Finally an expression for the kernel is obtained by taking the inverse Fourier transform giving 
 \begin{align}\label{eq:EM-Fourier_TF_of_Kernel}   
 	k&(\boldsymbol\tau) = \nonumber \\
 	&\frac{4}{T_s}\mathcal{F}^{-1}\overline{\left\{ \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)}{\mathcal{F}\{\mathbf{E}\left[c_t(\boldsymbol\tau)\right]\} + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )} \right\}},
