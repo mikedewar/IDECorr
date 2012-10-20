@@ -343,13 +343,13 @@ dynamic spatio-temporal modelling, integro-difference equation (IDE).
 %\cite{Schofield2002,Xu2005,Romanowicz2006,Bond-Lamberty2005,Deng2005,Kuo2009,Sun2005}.  %WEINAND1972  
 Techniques for modeling spatio-temporal systems are generating growing interest, both in the applied and theoretical literature. This paper deals in particular with integro-difference equation (IDE) based spatio-temporal models. Other classes of models of particular interest in the wider literature include the cellular automata (CA) \cite{Wolfram1994}, coupled map lattices (CMLs) \cite{Billings2002}, lattice dynamical wavelet neural network (LDWNN) \cite{Wei2009} and spatially correlated time series \cite{Pfeifer1980,Glasbey2008,Dewar2007}, which have all been used in a system identification context. The extent of the spatial interactions in these alternate models is determined by a spatially discrete neighborhood structure.
 
-The focus on the IDE-based models in this work is because they have received much attention in population ecology as models for the spatio-temporal spread of organisms \cite{Kot1992,Kot1996} and in the brain dynamics to model the electrophysiological measurements \cite{Deco2008,Schiff2008,Freestone2011}. The key feature of IDE models is that they combine discrete temporal dynamics with a continuous spatial representation. The dynamics of this model are governed by a spatial mixing kernel, which defines the mapping between the current spatial field and the previous spatial field. The IDE model can be applied to data sampled both regularly and irregularly in space due to the continuous representation of each spatial field. Estimating the spatial mixing kernel and the underlying spatial field is of particular interest and can be achieved by  using conventional state-space modeling \cite{Dewar2009,Scerri2009} or in a hierarchical Bayesian framework \cite{Wikle1999,Xu2005,Wikle2011}. 
+The focus on the IDE-based models in this work is because they have received much attention in population ecology as models for the spatio-temporal spread of organisms \cite{Kot1992,Kot1996} and in the brain dynamics to model the electrophysiological measurements \cite{Deco2008,Schiff2008,Freestone2011}. The key feature of IDE models is that they combine discrete temporal dynamics with a continuous spatial representation. The dynamics of this model are governed by a spatial mixing kernel, which defines the mapping between the current spatial field and the previous spatial field (see~\figurename{\ref{fig:IDEConcept}}). The IDE model can be applied to data sampled both regularly and irregularly in space due to the continuous representation of each spatial field. Estimating the spatial mixing kernel and the underlying spatial field is of particular interest and can be achieved by  using conventional state-space modeling \cite{Dewar2009,Scerri2009} or in a hierarchical Bayesian framework \cite{Wikle1999,Xu2005,Wikle2011}. 
 
 \begin{figure}[ht]
 	\centering
 		\includegraphics[scale=1]{./Graph/FieldsAndKernel_Arrows.pdf}
-	\caption{caption}
-	\label{fig:label}
+	\caption{Spatio-temporal IDE model. The evolution of the spatial field is governed by the spatial mixing kernel. In the case of homogeneous kernel the spatial field evolves through a convolution integral. At each time instant, the spatial field is subject to disturbance (see equation \eqref{eq:ConvolutionIntegral}). }
+	\label{fig:IDEConcept}
 \end{figure}
 
 Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation by decomposing the kernel and the field using a set of spectral basis functions. An alternative approach for the decomposition of the IDE was introduced in \cite{Dewar2009} where the resulting state and parameter space dimensions are independent of the number of observation locations. In this work a framework based on expectation maximization (EM)  algorithm \cite{Dempster1977,Gibsona2005}  was used to estimate both the field and the kernel from the observed data. A similar approach is adopted by \cite{Scerri2009} which developed a model selection procedure by considering various spatial scales at which to represent the system.  
@@ -377,10 +377,7 @@ where $\sigma_d$ is temporal disturbance, $\delta(t)$ is the Dirac-delta functio
 \end{equation}
 where $m\left(\mathbf{r}\right)$ is the observation kernel and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix.
 % defined in this work by the Gaussian
-% \begin{equation}\label{eq:observationkernel}
-% 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
-% \end{equation} 
-% where $\sigma_m$ sets the observation kernel width. The superscript $\top$ denotes the transpose operator.
+
 \section{Estimation Method}\label{sec:EstimationMethod}
 For the derivation of the spatial properties estimator of the field equations we assume the non-linearity is a sigmoidal function. This is common in computational modeling of mesoscopic brain dynamics to describe the relation between the mean membrane potential and mean firing rate of a given population of neurons \cite{Freeman1975}. Formally, the sigmoid function is given by
 \begin{equation}
@@ -611,7 +608,7 @@ Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  an
 		\subfigure[]{\includegraphics[scale=1]{./Graph/100Fields.pdf}}
 		\subfigure[]{\includegraphics[scale=1]{./Graph/SensorArrangement.pdf}}
 	\caption{caption}
-	\label{fig:label}
+	\label{fig:SimulatedData}
 \end{figure}
 
 This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where different spatial mixing kernels (isotropic and anisotropic) were adopted. These kernels are defined as a sum of Gaussian basis functions in the form of
@@ -622,9 +619,13 @@ where $\theta_i$ is the weight and
 \begin{equation}\label{eq:Kernelbasis}
 	\psi_i=\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)}{\sigma_i^2}\right)}.
 \end{equation}
- In each example data was generated using \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $, assuming periodic boundary condition (PBC), and sampled over $t=\left\lbrace1 \cdots 10000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by \eqref{eq:observationkernel} where $\sigma_m^2=0.81$. The observation noise variance $\sigma_{\varepsilon}^2$ is set to $0.1$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. First 1000 samples discarded allowing the model's initial transients to die out. Examples of the simulated fields for each experiment at the final time instant are shown in \figurename{\ref{fig:field}}, showing stable dynamics. 
+ In each example data was generated using \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $, assuming periodic boundary condition (PBC), and sampled over $t=\left\lbrace1 \cdots 10000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by a Gaussian
+\begin{equation}\label{eq:observationkernel}
+ 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
+ \end{equation} 
+ where $\sigma_m$ sets the observation kernel width and chosen $0.9$. The superscript $\top$ denotes the transpose operator. The observation noise variance $\sigma_{\varepsilon}^2$ is set to $0.1$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. One Example of the simulated field over 100 time instants along with the sensor arrangement are shown in \figurename{\ref{fig:SimulatedData}}, showing stable dynamics.
 
-In the experiments first $\sigma_{\varepsilon}^2$ is estimated using the minimum defined by inequality \eqref{eq:BoundOnObsVariance}. The estimated variance is then used in the formulations given by \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} to estimate the kernel and the disturbance function, i.e. $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$. 
+For estimation first 1000 samples discarded allowing the model's initial transients to die out. In the experiments first $\sigma_{\varepsilon}^2$ is estimated using the minimum defined by inequality \eqref{eq:BoundOnObsVariance}. The estimated variance is then used in the formulations given by \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} to estimate the kernel and the disturbance function, i.e. $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$. 
 \begin {table}[t]
 \begin{center}
 	{\tiny\begin{tabular}{lllll}
