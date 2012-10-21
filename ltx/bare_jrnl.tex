@@ -613,7 +613,7 @@ Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  an
 	\label{fig:SimulatedData}
 \end{figure}
 
-This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where different spatial mixing kernels (isotropic and anisotropic) were adopted. These kernels are defined as a sum of Gaussian basis functions in the form of
+This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where in each example two different spatial mixing kernels (isotropic and anisotropic) were adopted. In the first example non-linear and linearized with $\xi\neq 0$ ...and in the second linear with $\xi=0$ .... The spatial mixing kernels are defined as a sum of Gaussian basis functions in the form of
 \begin{align}\label{eq:sumofGaussians}
  k\left(\mathbf{r}-\mathbf{r}'\right)=\sum_{i=0}^{n_{\theta}}\theta_i\psi_i\left(\mathbf{r}-\mathbf{r}'\right), 
  \end{align}
@@ -621,7 +621,7 @@ where $\theta_i$ is the weight and
 \begin{equation}\label{eq:Kernelbasis}
 	\psi_i=\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)}{\sigma_i^2}\right)}.
 \end{equation}
- In each example data was generated using \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $, assuming periodic boundary condition (PBC), and sampled over $t=\left\lbrace1 \cdots 10000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by a Gaussian
+ In each example data was generated using \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $, assuming periodic boundary condition (PBC), and sampled over $t=\left\lbrace1 \cdots 20000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by a Gaussian
 \begin{equation}\label{eq:observationkernel}
  	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
  \end{equation} 
@@ -674,36 +674,10 @@ For estimation first 1000 samples discarded allowing the model's initial transie
 %  \caption{Snapshots of the underlying fields using different spatial mixing kernels; left and right panels are the generated periodic fields using isotropic (Mexican-hat shape) and anisotropic spatial mixing kernels at the final time step.}
 %  \label{fig:field}
 %  \end{figure}    
-\subsection{Example I: isotropic mixing kernel}
- Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, $\theta_0=0.5$ and $\theta_1=-0.3$ in \eqref{eq:sumofGaussians} and \eqref{eq:Kernelbasis}, forming a semi-compact support Mexican-hat shape. Such a kernel is commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The kernel and its estimation are plotted in \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. An estimation for $\sigma_{\varepsilon}^2$ is found by \eqref{eq:BoundOnObsVariance} giving $\sigma_{\varepsilon}^2=0.105$ which is close to the actual value of the observation noise variance. The estimated disturbance covariance function is also shown in \figurename{\ref{fig:EstimatedSupport1d}}. In this figure the true and estimated covariance function at observation locations are shown by solid and dashed lines respectively.
- 
- % \begin{figure}[!h] 
- % \centering
- % \includegraphics[width=0.5\textwidth]{./Graph/KernelEstimation2d.pdf}
- % \caption{Estimation of isotropic mixing kernel (Mexican-hat shape); left panel is the true kernel; right panel is the estimated kernel.}
- % \label{fig:MexHatKernel2d}
- % \end{figure} 
- % \begin{figure}[!h] 
- %  \centering
- %  \includegraphics[width=0.5\textwidth]{./Graph/KernelSupportEstimation1d.pdf}
- %  \caption{Estimation of isotropic mixing kernel (Mexican-hat shape);  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
- %  \label{fig:MexHatKernel1d}
- %  \end{figure}   
-% \begin{figure}[!h] 
-%  \centering
-%  \includegraphics[width=0.5\textwidth]{./Graph/DisturbanceSupportEstimation1d.pdf}
-%  \caption{Estimation of disturbance covariance function, $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$;  cross-sections of the true and estimated  kernels  are shown by solid and dashed lines respectively.}
-%  \label{fig:EstimatedSupport1d}
-%  \end{figure}     
-\subsection{Example II: anisotropic mixing kernel}
-For this experiment the homogeneous kernel parameters are set as $n_\theta=3$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$ and $\boldsymbol\mu_1=[0~0]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=-0.07$, $\theta_1=0.07$ and $\theta_2=0.02$ resulting in anisotropic kernel shown in \figurename{\ref{fig:anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:anisoKernel2d}} are shown in \figurename{\ref{fig:anisoKernel1d}}.
-
-% \begin{figure}[!h] 
-%  \centering
-%  \includegraphics[width=0.5\textwidth]{./Graph/anisoKernelSupportEstimation1d.pdf}
-%  \caption{Estimation of anisotropic mixing kernel;  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
-%  \label{fig:anisoKernel1d}    
-%  \end{figure}    
+\subsection{Example I: Non-linear and linearized IDE, $\xi\neq 0$}
+ % Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, $\theta_0=0.5$ and $\theta_1=-0.3$ in \eqref{eq:sumofGaussians} and \eqref{eq:Kernelbasis}, forming a semi-compact support Mexican-hat shape. Such a kernel is commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The kernel and its estimation are plotted in \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. An estimation for $\sigma_{\varepsilon}^2$ is found by \eqref{eq:BoundOnObsVariance} giving $\sigma_{\varepsilon}^2=0.105$ which is close to the actual value of the observation noise variance. The estimated disturbance covariance function is also shown in \figurename{\ref{fig:EstimatedSupport1d}}. In this figure the true and estimated covariance function at observation locations are shown by solid and dashed lines respectively.  
+% \subsection{Example II: anisotropic mixing kernel}
+% For this experiment the homogeneous kernel parameters are set as $n_\theta=3$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$ and $\boldsymbol\mu_1=[0~0]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=-0.07$, $\theta_1=0.07$ and $\theta_2=0.02$ resulting in anisotropic kernel shown in \figurename{\ref{fig:anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:anisoKernel2d}} are shown in \figurename{\ref{fig:anisoKernel1d}}.
 
 \begin{figure*}[ht]
 	\centering
@@ -741,9 +715,9 @@ For this experiment the homogeneous kernel parameters are set as $n_\theta=3$, $
 \end{figure*}
 
 
-
- \subsection{Example III: anisotropic mixing kernel}
-For this experiment the homogeneous kernel parameters are set as $n_\theta=2$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.
+\subsection{Example II: Linear IDE model, $\xi=0$}
+For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The estimation of the spatial mixing kernel and the underlying field using conventional state-space approach or hierarchical Bayesian framework can be found in \cite{Wikle1999,Xu2005,Wikle2011,Dewar2009,Scerri2009}. In this case solution to the disturbance covariance function and the spatial mixing kernel  are given by \eqref{app:DiffusionDisturbanceSolution}  and \eqref{app:DiffusionKernelSolution} respectively. In this case, the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon^2}$ and any values in the range given by \eqref{eq:BoundOnObsVariance}, i.e. , 
+$0\le\sigma_{\varepsilon}^2\le 0.103$ yields reasonably accurate estimation.   resulting to homogeneous kernel parameters are set as $n_\theta=2$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.
 
 % \begin{figure}[!h] 
 %  \centering

@@ -1,4 +1,4 @@
-%# create stacked images (I am simply repeating the same image 5 times)
+q%# create stacked images (I am simply repeating the same image 5 times)
 % img = load('clown');
 % I = repmat(img.X,[1 1 5]);
 % cmap = img.map;
