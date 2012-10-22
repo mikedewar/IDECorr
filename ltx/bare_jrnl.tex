@@ -716,11 +716,16 @@ For estimation first 1000 samples discarded allowing the model's initial transie
 	\caption{Estimation of the spatial mixing kernel and disturbance disturbance covariance function for linear model using \eqref{app:DiffusionKernelSolution} and \eqref{app:DiffusionDisturbanceSolution} . True, estimated and cross-sections at observation locations are shown in (a), (b) and (c) respectively.}
 	\label{fig:label}
 \end{figure*}
-
+\begin{figure*}[ht]
+	\centering
+		\includegraphics[scale=1]{./Graph/NoiseEffectIsoKernel.pdf}
+	\caption{The effect of the observation noise on the spatial mixing kernel estimation. Cross-sections of the estimated spatial mixing kernel for different values of the observation noise variance are shown. The minimum defined by inequality \eqref{eq:BoundOnObsVariance} is $0.106$. }
+	\label{fig:label}
+\end{figure*}
 
 \subsection{Example II: Linear IDE model, $\xi=0$}
 For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The estimation of the spatial mixing kernel and the underlying field using conventional state-space approach or hierarchical Bayesian framework can be found in \cite{Wikle1999,Xu2005,Wikle2011,Dewar2009,Scerri2009}. In this case solution to the disturbance covariance function and the spatial mixing kernel  are given by \eqref{app:DiffusionDisturbanceSolution}  and \eqref{app:DiffusionKernelSolution} respectively. In this case, the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon^2}$ and any values in the range given by \eqref{eq:BoundOnObsVariance}, i.e. , 
-$0\le\sigma_{\varepsilon}^2\le 0.103$ yields reasonably accurate estimation.   resulting to homogeneous kernel parameters are set as $n_\theta=2$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.
+$0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation.   resulting to homogeneous kernel parameters are set as $n_\theta=2$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.
 
 % \begin{figure}[!h] 
 %  \centering
