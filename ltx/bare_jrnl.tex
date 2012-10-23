@@ -569,7 +569,7 @@ Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  an
 	\hline \hline
 	& Symbol & Quantity & Units\\ 
 	\hline 
-	& Domain and indices&& \\
+	& Domain&& \\
 	& $\Omega$ &Spatial domain& n.a. \\ 
 	& $\mathbb{Z}^{+}$ &Non-negative integers& n.a. \\ 
 	& $\mathbf{r}$ &Spatial location& arbitrary unit\\ 
@@ -578,11 +578,11 @@ Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  an
 	& $\mathbf I$ & Identity matrix & n.a. \\ 
  	%& $\ast$ & Convolution operator & n.a. \\ 
  	%& $\star$ & Correlation operator & n.a. \\ 
-  & $\mathcal{F}\{\cdot\}$ &Fourier transform& n.a. \\  
-  & $\mathcal{F}^{-1}\{\cdot\}$ &Inverse Fourier transform& n.a. \\  
-  & $\mathbf{E}[\cdot]$ &Expectation operator& n.a. \\  
+  % & $\mathcal{F}\{\cdot\}$ &Fourier transform& n.a. \\  
+  %  & $\mathcal{F}^{-1}\{\cdot\}$ &Inverse Fourier transform& n.a. \\  
+  % & $\mathbf{E}[\cdot]$ &Expectation operator& n.a. \\  
 
-	& Model&& \\ 
+	& Model&& \\
 	& $\mathbf{y}_t$ & Observation & Arbitrary unit \\
 	& $z_t(\mathbf{r})$ & Spatial field & Arbitrary unit \\ 
 	& $f_t(\mathbf{r})$ & Sigmoidal function & spike~s$^{-1}$ \\ 
@@ -590,9 +590,13 @@ Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  an
  	& $e_t(\mathbf{r})$ & Field disturbance, with covariance function $\gamma(\mathbf{r}-\mathbf{r'})$  & spike~s$^{-1}$ \\
  	& $\varepsilon_t$ & Observation noise, with covariance matrix $\Sigma_{\varepsilon}$  & mV \\  
  	& $m(\mathbf{r}-\mathbf{r'})$ & Observation kernel& n.a. \\  
- 	& $k(\mathbf{r}-\mathbf{r'})$ & Spatial mixing kernel& n.a. \\  
- 	& $\delta(t)$ &Dirac-delta function& n.a. \\  
- 	& $\delta(\boldsymbol\tau)$ &Kronecker delta& n.a. \\  
+ 	& $k(\mathbf{r}-\mathbf{r'})$ & Spatial mixing kernel& n.a. \\ 
+	&$\psi_i$&kernel basis function&n.a.\\
+	&$\theta_i$ &Connectivity kernel parameters&mVspike$^{-1}$ \\ 
+	& $\boldsymbol\mu_i$ &Kernel centers& mm \\  
+	& $\sigma_{i}$ &kernel width parameters&mm \\ 
+ 	% & $\delta(t)$ &Dirac-delta function& n.a. \\  
+ 	%  	& $\delta(\boldsymbol\tau)$ &Kronecker delta& n.a. \\  
 	& Estimation&& \\
  	& $\boldsymbol\tau$ &Spatial shift& Arbitrary unit \\
   & $\hat{f}(\cdot)$ &Linearized sigmoidal function around the threshold& spike~s$^{-1}$ \\  
@@ -603,7 +607,23 @@ Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  an
  \caption {Notation. 	The symbols, description of the quantity, and the SI units where relevant.} 
  \label{table:Notation}
  \end{center}
- \end {table}
+ \end {table} 
+\begin{table}[htbp]
+\begin{center}
+
+{\tiny\begin{tabular}{lcccc} 
+\hline\hline
+\multicolumn{1}{c}{Parameter} & \multicolumn{ 2}{c}{Non-linear} & \multicolumn{ 2}{c}{linear} \\ \cline{ 1- 5}
+\multicolumn{ 1}{c}{} & Iso & Aniso & Iso & Aniso \\ 
+$\theta_i$ & $100, -80, 5$ & $80, -80, 5, 15$ &$100, -80, 5$&$200, -200$  \\ 
+$\sigma_i$ & $1.8, 2.4, 6$ &$1.8, 2.4, 6, 2$ & $1.8, 2.4, 6$ & $2.4, 2.4$ \\ 
+$\boldsymbol{\mu}_i$&$[0~0]^{\top}$& $3\times[0~0]^{\top}, [-3~0]^{\top}$ &$[0~0]^{\top}$  &$[-0.5~0]^{\top}$, $[0~0.5]^{\top}$  \\ \hline \hline
+\end{tabular}}
+\end{center}
+\caption{Spatial mixing kernel parameters for different examples.}
+\label{table:KernelParameter}
+\end{table}
+
 \section{Simulation}   
 \begin{figure}[ht]
 	\centering
@@ -648,20 +668,15 @@ For estimation first 1000 samples discarded allowing the model's initial transie
   & $\Delta_{y}$ &Distance between sensors&1.5 &mm \\  
   & $\sigma_{m}$ &Observation kernel width&0.9 &mm \\  
   & $\boldsymbol\Sigma_{\varepsilon}$ &Observation noise covariance&$0.1\times\mathbf{I}_{n_y}$ &mV$^2$ \\  
-	&Spatial kernel&&& \\
- 	&Isotropic&&& \\
-& $\boldsymbol\theta$ &Connectivity kernel parameters&$[80~-80~5]^{\top}$& mVspike$^{-1}$ \\
-& $\boldsymbol\mu_i$ &Kernel centers&$[0~0]^{\top}$& mm \\  
-& $\sigma_{\psi_i}$ &kernel width parameters&$1.8, 2.4, 6$& mm \\  
- 	&Anisotropic&&& \\
-& $\boldsymbol\theta$ &Connectivity kernel parameters&$[80~-80~5~15]^{\top}$& mVspike$^{-1}$ \\
-& $\boldsymbol\mu_{1,2,3}, \boldsymbol\mu_4 $ &Vector of kernel centers&$[0~0]^{\top}, [-3~0]^{\top} $& mm \\    
-& $\sigma_{\psi_i}$  &Spatial kernel width parameters&$1.8, 2.4, 6, 2$& mm \\
-
-
-
- 	  
-   
+% 	&Spatial kernel&&& \\
+%  	&Isotropic&&& \\
+% & $\boldsymbol\theta$ &Connectivity kernel parameters&$[80~-80~5]^{\top}$& mVspike$^{-1}$ \\
+% & $\boldsymbol\mu_i$ &Kernel centers&$[0~0]^{\top}$& mm \\  
+% & $\sigma_{\psi_i}$ &kernel width parameters&$1.8, 2.4, 6$& mm \\  
+%  	&Anisotropic&&& \\
+% & $\boldsymbol\theta$ &Connectivity kernel parameters&$[80~-80~5~15]^{\top}$& mVspike$^{-1}$ \\
+% & $\boldsymbol\mu_{1,2,3}, \boldsymbol\mu_4 $ &Vector of kernel centers&$[0~0]^{\top}, [-3~0]^{\top} $& mm \\    
+% & $\sigma_{\psi_i}$  &Spatial kernel width parameters&$1.8, 2.4, 6, 2$& mm \\   
  	\hline \hline
 	\end{tabular}}
  \caption {Parameters for the model. } 
@@ -720,12 +735,12 @@ For estimation first 1000 samples discarded allowing the model's initial transie
 	\centering
 		\includegraphics[scale=1]{./Graph/NoiseEffectIsoKernel.pdf}
 	\caption{The effect of the observation noise on the spatial mixing kernel estimation for linear IDE model and $\xi=0$. Cross-sections of the estimated spatial mixing kernel for different values of the observation noise variance are shown. The minimum defined by inequality \eqref{eq:BoundOnObsVariance} is $0.106$. True and estimated kernel are shown by solid and dashed lines respectively.}
-	\label{fig:label}
+	\label{fig:ObservationNoiseEffectonLinearIDE}
 \end{figure*}
 
 \subsection{Example II: Linear IDE model, $\xi=0$}
-For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The estimation of the spatial mixing kernel and the underlying field using conventional state-space approach or hierarchical Bayesian framework can be found in \cite{Wikle1999,Xu2005,Wikle2011,Dewar2009,Scerri2009}. In this case solution to the disturbance covariance function and the spatial mixing kernel  are given by \eqref{app:DiffusionDisturbanceSolution}  and \eqref{app:DiffusionKernelSolution} respectively. In this case, the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon^2}$ and any values in the range given by \eqref{eq:BoundOnObsVariance}, i.e. , 
-$0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation.   resulting to homogeneous kernel parameters are set as $n_\theta=2$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.
+For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The estimation of the spatial mixing kernel and the underlying field using conventional state-space approach or hierarchical Bayesian framework can be found in \cite{Wikle1999,Xu2005,Wikle2011,Dewar2009,Scerri2009}. In this case solution to the disturbance covariance function and the spatial mixing kernel  are given by \eqref{app:DiffusionDisturbanceSolution}  and \eqref{app:DiffusionKernelSolution} respectively. In this case, the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon^2}$ and any values close to the upper bound given by \eqref{eq:BoundOnObsVariance}, i.e., 
+$0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation. The effect of $\sigma_{\varepsilon}^2$ on the kernel estimation is shown in \figurename{\ref{fig:ObservationNoiseEffectonLinearIDE}}.   resulting to homogeneous kernel parameters are set as $n_\theta=2$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.
 
 % \begin{figure}[!h] 
 %  \centering
