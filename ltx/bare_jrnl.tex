@@ -439,7 +439,7 @@ where $\delta(\boldsymbol\tau)$ denotes Kronecker delta. Next we simplify second
 	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) = T_s((k \ast m\ast f(z_t)) \star y_t)(\boldsymbol\tau).
 \end{equation}   
 The remainder of the derivation is focused on isolating the spatial mixing kernel. To show how this is done, the activation function is simplified by linearizing about the threshold, $z_0$ using a first order Taylor series expansion giving
-\begin{align}
+\begin{align}\label{eq:linearizeSigmoid}
 	\hat{f}(z_t\left(\mathbf{r}\right)) &=\frac{2 + \varsigma(z_t\left(\mathbf{r}\right) - z_0)}{4}. 
 \end{align}	
 Substituting the linearized activation function back into equation~\eqref{eq:before_linearization} we get
@@ -490,12 +490,20 @@ Finally an expression for the kernel is obtained by taking the inverse Fourier t
 \end{align}
  where over-bar denotes the complex conjugate operator. As the mixing kernel is a real function, the complex conjugate operator essentially reflects the kernel through the origin in the spatial domain \cite{Bracewell2000}. In the case of isotropic kernel, the complex conjugate operator can be dropped. 
 
-From \eqref{eq:EM-Fourier_TF_of_Kernel} we see that an error in our guess for $\xi$ will result in a shift of the estimated kernel amplitude. An incorrect estimate of $c_t$ will result in a DC scaling (\parham{or shift?}) in the kernel estimate and an error in the initial guess of  the observation noise variance will result in a distortion in the shape of the kernel, however if the signal-to-noise ratio is high such a distortion becomes insignificant.
-By the Wiener-Khintchine theorem (WKT) the second terms in nominator and denominator of \eqref{eq:EM-Fourier_TF_of_Kernel} are equivalent to the power spectral density (PSD) which is non-negative and a real quantity \cite{Ricker2003}. The WKT allows to establish the bounds on the initial guess of $\sigma_{\varepsilon}^2$
+In the case where $f(z_t(\mathbf{r}))=z_t(\mathbf{r})$, the solution given by \eqref{eq:EM-Fourier_TF_of_Kernel} is simplified to  
+\begin{equation}\label{eq:SimplifiedKernelSolution}
+	k(\boldsymbol\tau) = \frac{1}{T_s }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }-\xi\right\}}.
+\end{equation}
+   
+This is in fact a spacial case for the general solution given by \eqref{eq:EM-Fourier_TF_of_Kernel} with $\varsigma=4$ and $z_0=0.5$ in \eqref{eq:linearizeSigmoid}. From \eqref{eq:SimplifiedKernelSolution} we see that an error in our guess for $\xi$ will result in a shift of the estimated kernel amplitude and an error in the initial guess of  the observation noise variance will result in a distortion in the shape of the kernel, however if the signal-to-noise ratio is high such a distortion becomes insignificant.  The equation \eqref{eq:SimplifiedKernelSolution}   can be further simplified by setting the decay parameter, $\xi=0$ to model diffusion processes. Setting  the sampling time $T_s=1$ solves the linear IDE studied in \cite{Dewar2009, Scerri2009}.  
+% An incorrect estimate of $c_t$ will result in a DC scaling (\parham{or shift?}) in the kernel estimate
+
+By the Wiener-Khintchine theorem (WKT) the denominator of \eqref{eq:SimplifiedKernelSolution} is equivalent to the power spectral density (PSD) which is non-negative and a real quantity \cite{Ricker2003}. The WKT allows to establish the bounds on the initial guess of $\sigma_{\varepsilon}^2$
 % The WKT states that the power spectral density of the wide sense stationary process is the Fourier transform of its auto-correlation function .
 \begin{equation}\label{eq:BoundOnObsVariance}   
   \min\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\}\ge\sigma_{\varepsilon}^2\ge0. 
 \end{equation}
+
 \subsection{Estimation of disturbance covariance function}
 The field disturbance at each spatial location and at a given time is correlated with other spatial locations through the disturbance covariance
 function, suggesting the auto-correlation of the observed field at each time instant may provide useful information about the field disturbance characteristics.
@@ -567,8 +575,14 @@ where
  \tilde{m}(\boldsymbol\tau)=\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}.
 \end{equation}
 % from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
-Using the result obtained for the kernel from  \eqref{eq:Fourier_TF_of_Kernel}  the equation for covariance function can be solved. From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, in addition to the parameters affecting the spatial mixing kernel the observation noise variance and the sensor kernel support are required. Similarly an estimate  of $\sigma_{\varepsilon}^2$ can be found using \eqref{eq:BoundOnObsVariance}. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} is then required. 
-Note using uniform observation samples in \eqref{eq:EM-Fourier_TF_of_Kernel}  and \eqref{eq:EM-MMGFourier2} provide an approximate solution to the estimated  mixing kernel and disturbance covariance function. 
+Using the result obtained for the kernel from  \eqref{eq:Fourier_TF_of_Kernel}  the equation for covariance function can be solved.  This solution can be simplified where $f(z_t(\mathbf{r}))=z_t(\mathbf{r})$ giving
+\begin{align}\label{eq:DiffusionDisturbanceSolution}
+	&\gamma(\boldsymbol\tau) =\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\tau)}\Bigg[\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2\right] \nonumber \right.\\
+ &\left. \left.- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]\right]\right\rbrace.
+\end{align}
+
+In this case, to calculate the exact shape of the disturbance covariance function the observation noise variance and the sensor kernel support are required. Note that the solution is independent of the decay parameter $\xi$. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} and \eqref{eq:DiffusionDisturbanceSolution}  is then required. 
+Note using uniform observation samples to estimate the spatial mixing kernel and the disturbance covariance function provide an approximate solution to the estimated  mixing kernel and disturbance covariance function. 
 \begin {table}[t]
 \begin{center}
 	{\tiny\begin{tabular}{llll}
@@ -747,8 +761,9 @@ In the first example, sigmoid's parameters, i.e slope and threshold, observation
 \end{figure*}
 
 \subsection{Example II: Linear IDE model, $\xi=0$}
-For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The estimation of the spatial mixing kernel and the underlying field using conventional state-space approach or hierarchical Bayesian framework can be found in \cite{Wikle1999,Xu2005,Wikle2011,Dewar2009,Scerri2009}. In this case solution to the disturbance covariance function and the spatial mixing kernel  are given by \eqref{app:DiffusionDisturbanceSolution}  and \eqref{app:DiffusionKernelSolution} respectively. When this type of model is considered the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon}^2$ and any values close to the upper bound given by \eqref{eq:BoundOnObsVariance}, i.e., 
-$0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation. The effect of $\sigma_{\varepsilon}^2$ on the kernel estimation is shown in \figurename{\ref{fig:ObservationNoiseEffectonLinearIDE}}, showing distortion of the spatial mixing kernel where a value outside the bound is used.   resulting to homogeneous kernel parameters are set as $n_\theta=2$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.
+For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The estimation of the spatial mixing kernel and the underlying field using conventional state-space approach or hierarchical Bayesian framework can be found in \cite{Wikle1999,Xu2005,Wikle2011,Dewar2009,Scerri2009}. In this case solutions to the spatial mixing kernel and the disturbance covariance function    are given by \eqref{eq:SimplifiedKernelSolution}   and \eqref{eq:DiffusionDisturbanceSolution} respectively. When this type of model is considered the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon}^2$ and any values close to the upper bound given by \eqref{eq:BoundOnObsVariance}, i.e., 
+$0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation. The effect of $\sigma_{\varepsilon}^2$ on the kernel estimation is shown in \figurename{\ref{fig:ObservationNoiseEffectonLinearIDE}}, showing distortion of the spatial mixing kernel where a value outside the bound is used.   resulting to homogeneous kernel parameters are set as $n_\theta=2$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$. 
+% The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.         
 
 % \begin{figure}[!h] 
 %  \centering
@@ -809,30 +824,30 @@ Similarly, \eqref{eq:app-ConvXcorRelation2} can be written as
 &=a(-\boldsymbol\tau)\ast a(\boldsymbol\tau) \ast b(-\boldsymbol\tau)\ast b(\boldsymbol\tau) \nonumber \\
 &=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau).
 \end{align}     
- \section{Linear IDE}\label{ap:linearIDE}  
-Consider the following homogeneous linear IDE
-\begin{equation}\label{app:DiscreteTimeModel}
-	z_{t+1}\left(\mathbf{r}\right) = 
-	\xi z_t\left(\mathbf{r}\right) + 
-	T_s \int_\Omega { 
-	    k\left(\mathbf{r}-\mathbf{r'}\right)z_t\left(\mathbf{r}'\right)
-	\, \mathrm{d}\mathbf{r}'} 
-	+ e_t\left(\mathbf{r}\right), 
-\end{equation}              
-then the results for the spatial mixing kernel and the covariance functions are simplified to
-\begin{equation}\label{app:EM-KernelSolution}
-	k(\boldsymbol\tau) = \frac{1}{T_s }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }-\xi\right\}}.
-\end{equation}  
-and
-\begin{align}\label{app:DiffusionDisturbanceSolution}
-	&\gamma(\boldsymbol\tau) =\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\tau)}\Bigg[\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2\right] \nonumber \right.\\
- &\left. \left.- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]\right]\right\rbrace.
-\end{align}                                                                                                                       
-This is in fact a spacial case for the general solutions given by \eqref{eq:Fourier_TF_of_Kernel} and \eqref{eq:EM-MMGFourier2} with $\varsigma=4$ and $z_0=0.5$. This can be further simplified by setting the decay parameter, $\xi=0$ to model diffusion processes.  In this case the solution for the kernel is given by
-\begin{equation}\label{app:DiffusionKernelSolution}
-	k(\boldsymbol\tau) =\frac{1}{T_s }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }\right\}}.
-\end{equation}                      
-Setting  the sampling time $T_s=1$ solves the linear IDE studied in \cite{Dewar2009, Scerri2009}. The disturbance covariance function solution remains unchanged, showing that the result is independent of the decay term. In this case the exact shape of the covariance function only depends on the observation noise variance and the observation kernel.
+%  \section{Linear IDE}\label{ap:linearIDE}  
+% Consider the following homogeneous linear IDE
+% \begin{equation}\label{app:DiscreteTimeModel}
+% 	z_{t+1}\left(\mathbf{r}\right) = 
+% 	\xi z_t\left(\mathbf{r}\right) + 
+% 	T_s \int_\Omega { 
+% 	    k\left(\mathbf{r}-\mathbf{r'}\right)z_t\left(\mathbf{r}'\right)
+% 	\, \mathrm{d}\mathbf{r}'} 
+% 	+ e_t\left(\mathbf{r}\right), 
+% \end{equation}              
+% then the results for the spatial mixing kernel and the covariance functions are simplified to
+% \begin{equation}\label{app:EM-KernelSolution}
+% 	k(\boldsymbol\tau) = \frac{1}{T_s }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }-\xi\right\}}.
+% \end{equation}  
+% and
+% \begin{align}\label{app:DiffusionDisturbanceSolution}
+% 	&\gamma(\boldsymbol\tau) =\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\tau)}\Bigg[\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2\right] \nonumber \right.\\
+%  &\left. \left.- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]\right]\right\rbrace.
+% \end{align}                                                                                                                       
+% This is in fact a spacial case for the general solutions given by \eqref{eq:Fourier_TF_of_Kernel} and \eqref{eq:EM-MMGFourier2} with $\varsigma=4$ and $z_0=0.5$. This can be further simplified by setting the decay parameter, $\xi=0$ to model diffusion processes.  In this case the solution for the kernel is given by
+% \begin{equation}\label{app:DiffusionKernelSolution}
+% 	k(\boldsymbol\tau) =\frac{1}{T_s }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }\right\}}.
+% \end{equation}                      
+% Setting  the sampling time $T_s=1$ solves the linear IDE studied in \cite{Dewar2009, Scerri2009}. The disturbance covariance function solution remains unchanged, showing that the result is independent of the decay term. In this case the exact shape of the covariance function only depends on the observation noise variance and the observation kernel.            
 %\appendices
 %\section{Proof of the First Zonklar Equation}
 %Appendix one text goes here.
