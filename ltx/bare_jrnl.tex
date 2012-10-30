@@ -740,20 +740,21 @@ In the first example, sigmoid's parameters, i.e slope and threshold, observation
 	\caption{Estimation of the disturbance covariance function for anisotropic kernel and sigmoidal function. True, estimated and cross-sections at observation locations are shown in (a), (b) and (c) respectively.}
 	\label{fig:label}
 \end{figure*}
- 
-\begin{figure*}[ht]
-	\centering
-		\includegraphics[scale=1]{./Graph/DisturbanceKernelEstimationLinearAniso.pdf}
-	\caption{Estimation of the spatial mixing kernel and disturbance disturbance covariance function for linear model using \eqref{app:DiffusionKernelSolution} and \eqref{app:DiffusionDisturbanceSolution} . True, estimated and cross-sections at observation locations are shown in (a), (b) and (c) respectively.}
-	\label{fig:label}
-\end{figure*}  
- 
 \begin{figure*}[ht]
 	\centering
 		\includegraphics[scale=1]{./Graph/DisturbanceKernelEstimationLineariso.pdf}
-	\caption{Estimation of the spatial mixing kernel and disturbance disturbance covariance function for linear model using \eqref{app:DiffusionKernelSolution} and \eqref{app:DiffusionDisturbanceSolution} . True, estimated and cross-sections at observation locations are shown in (a), (b) and (c) respectively.}
-	\label{fig:label}
-\end{figure*}
+	\caption{Estimation of the isotropic kernel and disturbance covariance function for linear model using \eqref{eq:SimplifiedKernelSolution} and \eqref{eq:DiffusionDisturbanceSolution}. Actual and  estimated spatial mixing kernel at observation locations are shown in (a) and (b).  A cross-section of the actual kernel (solid line) and its estimate  (dashed line) are shown in (c). Cross-sections of the actual (solid line) and estimated (dashed line) disturbance covariance function are shown in (d).}
+	\label{fig:DiffusionIso} 
+	\end{figure*}
+	
+\begin{figure*}[ht]
+	\centering
+		\includegraphics[scale=1]{./Graph/DisturbanceKernelEstimationLinearAniso.pdf}
+	\caption{Estimation of the anisotropic kernel and disturbance covariance function for linear model using \eqref{eq:SimplifiedKernelSolution} and \eqref{eq:DiffusionDisturbanceSolution}. Actual and  estimated spatial mixing kernel at observation locations are shown in (a) and (b).  A cross-section of the actual kernel (solid line) and its estimate  (dashed line) are shown in (c). Cross-sections of the actual (solid line) and estimated (dashed line) disturbance covariance function are shown in (d).}
+	\label{fig:DifussionAniso}
+\end{figure*}  
+ 
+
 \begin{figure*}[ht]
 	\centering
 		\includegraphics[scale=1]{./Graph/NoiseEffectIsoKernel.pdf}
@@ -764,7 +765,7 @@ In the first example, sigmoid's parameters, i.e slope and threshold, observation
 \subsection{Example II: Linear IDE model, $\xi=0$}
 For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The estimation of the spatial mixing kernel and the underlying field using  EM based algorithm, data augmentation (DA) algorithm or hierarchical Bayesian framework can be found in \cite{Dewar2009,Scerri2009,Wikle1999,Xu2005,Wikle2011}. The parameters of the isotropic kernel are set to $\boldsymbol\theta=[100~-80~5]^{\top}$,  $\boldsymbol\mu_i=[0~0]^{\top}$, $\sigma_0=1.8$, $\sigma_1=2.4$ and $\sigma_2=6$, forming a semi-compact support Mexican-hat shape commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The parameters of the anisotropic kernel are set to $\boldsymbol\theta=[200~-200]^{\top}$, $\boldsymbol\mu_0=[-0.5~0]^{\top}$, $\boldsymbol\mu_1=[0~0.5]^{\top}$, $\sigma_0=\sigma_1=2.4$.  
 In this example solutions to the spatial mixing kernel and the disturbance covariance function are found by \eqref{eq:SimplifiedKernelSolution}   and \eqref{eq:DiffusionDisturbanceSolution} respectively. When this type of model is considered the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon}^2$ and any values close to the upper bound given by \eqref{eq:BoundOnObsVariance}, i.e., 
-$0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation. Using this upper bound the estimation of the kernel and the disturbance covariance functions are obtained (see fig ...) The effect of $\sigma_{\varepsilon}^2$ on the kernel estimation is shown in \figurename{\ref{fig:ObservationNoiseEffectonLinearIDE}}, showing distortion of the spatial mixing kernel where a value outside the bound is used.   resulting to homogeneous kernel parameters are set as  
+$0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation. Using this upper bound the estimation of the kernel and the disturbance covariance functions are obtained (see \figurename{\ref{fig:DiffusionIso}} and \figurename{\ref{fig:DifussionAniso}). The effect of $\sigma_{\varepsilon}^2$ on the kernel estimation is also shown in \figurename{\ref{fig:ObservationNoiseEffectonLinearIDE}}, showing distortion of the spatial mixing kernel where a value outside the bound is used.
 % The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.         
 
 % \begin{figure}[!h] 
