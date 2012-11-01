@@ -405,13 +405,13 @@ and the spatial cross-correlation shall be denoted as
 where $\boldsymbol{\tau}$ is the spatial shift.
 
 \subsection{Estimation of spatial mixing kernel} 
-Under the assumption that the sensors are not spatially band-limiting (i.e. have a wider bandwidth then the connectivity kernel and disturbance covariance), the spectral content of the field and the spatial mixing kernel is homogeneous, the shape of the spatial mixing kernel can be inferred by studying the spatial cross-correlation between consecutive observations.  To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as  
+The shape of the spatial mixing kernel can be inferred by studying the spatial cross-correlation between consecutive observations under the assumption that the sensors are not spatially band-limiting (i.e. have a wider bandwidth then the connectivity kernel and disturbance covariance), and the \dean{spectral content of the field and the <- can we chop this?} spatial mixing kernel is homogeneous.  To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as  
 % The spatial relationship between consecutive observations is governed by the shape of the mixing kernel. 
 % The deterministic component of the spatial mapping of the current field is due to the convolution of the kernel with the previous field. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape.
 \begin{equation}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
- The goal of the derivation is to make the necessary substitutions and simplifications to get an expression of the cross-correlation as a function of the mixing kernel. In the next step we substitute \eqref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and expand to give
+The goal of the derivation is to make the necessary substitutions and simplifications to get an expression of the cross-correlation as a function of the mixing kernel. In the next step we substitute \eqref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and expand to give
 \begin{equation}
 	R_{y_{t+1}y_t}\left(\boldsymbol{\tau}\right) = \left(\left(m \ast z_{t+1}\right)\star y_t\right)\left(\boldsymbol{\tau}\right) + \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
