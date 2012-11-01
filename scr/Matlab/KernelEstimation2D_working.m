@@ -6,7 +6,7 @@ clear
 close all
 
 UsePBC = true;
-UseIso = false;
+UseIso = true;
 UseLinear = false;
 UseLinearized = false;
 UseNonlinear = true;
@@ -44,7 +44,7 @@ EstimationSpaceMin = -10;
 Ts = 1e-3;              % sampling period (s)
 T = 20000;              % maximum time (ms)          % 2 seconds = 100 seconds
 
-%% kernel parameters
+%% spatial kernel parameters
 % ~~~~~~~~~~~~~~
 if UseIso
     theta(1) = 100;%80.0;           % local kernel amplitude
@@ -135,13 +135,13 @@ gamma_weight = 0.1;            % variance of disturbance
 if UsePBC
     SphericalBoundary               % run the script that generates the covariance matrix
 else
-    mm=1;
+    mm = 1;
     Sigma_gamma = zeros(NPoints^2,NPoints^2);   % create disturbance covariance matrix
     for n=1:NPoints
         for nn=1:NPoints
             temp = gamma_weight*Define2DGaussian(r(n),r(nn), sigma_gamma^2, 0,NPoints,SpaceMin,SpaceMax);
             Sigma_gamma(:,mm) = temp(:);
-            mm=mm+1;
+            mm = mm+1;
         end
     end
 end
