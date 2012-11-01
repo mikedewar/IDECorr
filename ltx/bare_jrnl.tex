@@ -375,7 +375,7 @@ The form of the spatially homogeneous IDE that is used for the examples in this 
  z_{t+1}\left(\mathbf{r}\right)=\xi z_t(\mathbf{r})+T_s\int_{\Omega}k\left(\mathbf{r}-\mathbf{r}'\right)f(z_{t}\left(\mathbf{r}'\right))d\mathbf{r}'+e_{t}\left(\mathbf{r}\right),
 \label{eq:ConvolutionIntegral}
 \end{equation}
-where $t\in \mathbb{Z}^{+} $ denotes discrete time, $T_s$ is the sampling time step and $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n \in \left\lbrace 1,2,3 \right\rbrace $-dimensional physical space. The parameter $\xi$ is a decay term that is used to model synaptic dynamics in neural field models (see \cite{Freestone2011} for more details). In more simple forms of the IDE decay parameter is set to zero to model diffusion processes. The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The model dynamics are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}\right)$, which maps the field through time (which may be transformed or scaled by $f(\cdot)$) via the convolution defined in \eqref{eq:ConvolutionIntegral}. In the case of the neural field model example that we will employ in this paper, $f(\cdot)$ takes the form of a sigmoidal nonlinearity. The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
+where $t\in \mathbb{Z}^{+} $ denotes discrete time, $T_s$ is the sampling time step and $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n \in \left\lbrace 1,2,3 \right\rbrace $-dimensional physical space. The parameter $\xi$ is a decay term that is used to model synaptic dynamics in neural field models (see \cite{Freestone2011} for more details). In more simple forms of the IDE decay parameter is set to zero to model pure diffusion processes. The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The model dynamics are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}\right)$, which maps the field through time (which may be transformed or scaled by $f(\cdot)$) via the convolution defined in \eqref{eq:ConvolutionIntegral}. In the case of the neural field model example that we will employ in this paper, $f(\cdot)$ takes the form of a sigmoidal function in the forward model and is approximated as a linear function in the estimator. The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
 \begin{equation}
 cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d^2\delta(t-t')\gamma(\mathbf{r}-\mathbf{r'}),
 \label{eq:FieldDisturbance}
@@ -388,11 +388,13 @@ where $m\left(\mathbf{r}\right)$ is the observation kernel and $\varepsilon_t(\m
 % defined in this work by the Gaussian
 
 \section{Estimation Method}\label{sec:EstimationMethod}
-For the derivation of the spatial properties estimator of the field equations we assume the non-linearity is a sigmoidal function. This is common in computational modeling of mesoscopic brain dynamics to describe the relation between the mean membrane potential and mean firing rate of a given population of neurons \cite{Freeman1975}. Formally, the sigmoid function is given by
+For the derivation of the spatial properties estimator of the field equations we assume \dean{the forward model} has a non-linearity is a sigmoidal function. This is common in computational modeling of mesoscopic brain dynamics to describe the relation between the mean membrane potential and mean firing rate of a given population of neurons \cite{Freeman1975}. Formally, the sigmoid function is given by
 \begin{equation}
 	\label{ActivationFunction} f\left( z\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( z_0 - z\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
-The parameter $z_0$ describes the firing threshold of the neural populations and $\varsigma$ governs the slope of the sigmoid. The results obtained using the sigmoidal function can be easily modified to account for other linear forms of the IDE that are used in other models of electrophysiological data, and furthermore, modeling in other areas such as population ecology and weather nowcasting. This is described in a later section in more details. To proceed we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
+The parameter $z_0$ describes the firing threshold of the neural populations and $\varsigma$ governs the slope of the sigmoid. The results obtained using the sigmoidal function can be easily modified to account for other linear forms of the IDE that are used in other models of electrophysiological data, and furthermore, modeling in other areas such as population ecology and weather nowcasting. This is described in a later section in more details. 
+
+To proceed we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
 \begin{equation}
 	\int_\Omega a(\mathbf{r}-\mathbf{r}')b(\mathbf{r}')d\mathbf{r}' = (a\ast b)(\mathbf{r}),
 \end{equation}
@@ -401,8 +403,9 @@ and the spatial cross-correlation shall be denoted as
 	\int_\Omega a(\mathbf{r})b(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r} = (a\star b)(\boldsymbol{\tau}),
 \end{equation} 
 where $\boldsymbol{\tau}$ is the spatial shift.
+
 \subsection{Estimation of spatial mixing kernel} 
-Under the assumption that the sensors are not spatially band-limiting, the spectral content of the field and the spatial mixing kernel is homogeneous, the shape of the spatial mixing kernel can be inferred by studying the spatial cross-correlation between consecutive observations.  To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as  
+Under the assumption that the sensors are not spatially band-limiting (i.e. have a wider bandwidth then the connectivity kernel and disturbance covariance), the spectral content of the field and the spatial mixing kernel is homogeneous, the shape of the spatial mixing kernel can be inferred by studying the spatial cross-correlation between consecutive observations.  To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as  
 % The spatial relationship between consecutive observations is governed by the shape of the mixing kernel. 
 % The deterministic component of the spatial mapping of the current field is due to the convolution of the kernel with the previous field. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape.
 \begin{equation}
