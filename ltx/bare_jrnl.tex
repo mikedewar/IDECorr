@@ -516,12 +516,12 @@ The observation auto-correlation at time $t+1$ can be expressed as
 \begin{equation}\label{eq:EM-ObservationEquationAutocorrelation}
 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})=(y_{t+1} \star y_{t+1})(\boldsymbol\tau).
 \end{equation}
- After substituting for $y_{t+1}$ from \eqref{eq:ObservationEquation} and using \eqref{eq:ConvolutionIntegral}   for $z_{t+1}$,  \eqref{eq:EM-ObservationEquationAutocorrelation} is expanded to give 
+ After substituting for $y_{t+1}$ from \eqref{eq:ObservationEquation} and using equation~\eqref{eq:ConvolutionIntegral}   for $z_{t+1}$,  equation~\eqref{eq:EM-ObservationEquationAutocorrelation} is expanded to give 
 \begin{align}\label{eq:EM-expanded_auto_corr}  
 	R_{y_{t+1}y_{t+1}} & (\boldsymbol{\tau}) = \\ \nonumber 
-	\left( \left(\xi( m\ast z_{t}) \right.\right.&+\left.\left. T_s(m\ast g_{t}) + ( m \ast e_{t})+\varepsilon_{t+1} \right) \star y_{t+1} \right) (\boldsymbol{\tau})
+	\left( \left(\xi( m\ast z_{t}) \right.\right.&+\left.\left. T_s(m\ast g_{t}) + ( m \ast e_{t})+\varepsilon_{t+1} \right) \star y_{t+1} \right) (\boldsymbol{\tau}).
 \end{align}
-Now expanding we get
+Now we expand to get
 \begin{align}\label{eq:expanded_auto_corr}
 	R_{y_{t+1}y_{t+1}}&(\boldsymbol{\tau}) = \xi((m \ast z_{t}) \star y_{t+1})(\boldsymbol{\tau})+T_s((m\ast g_{t})\star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
 	&\quad+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\tau})+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\tau}).
@@ -545,12 +545,12 @@ Substituting \eqref{eq:EM-Autoterm1}, \eqref{eq:EM-Autoterm2} and ~\eqref{eq:EM-
 	&\quad+  \frac{T_s}{4} k(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t(\boldsymbol\tau)\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ) \nonumber \\
 	&\quad+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)]+\sigma_{\epsilon}^2\delta(\boldsymbol{\tau}).
 \end{align}
-The third term in \eqref{eq:Auto&CrossNoisy} can be simplified as 
+The third term in \eqref{eq:Auto&CrossNoisy} can be simplified by 
 \begin{align}\label{eq:term3Noisy}
 \mathbf{E}&[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] \nonumber \\
   &=\mathbf{E}[((m\ast e_t)\star (m\ast z_{t+1}+\varepsilon_{t+1})) (\boldsymbol\tau)] \nonumber \\
 	&= \mathbf{E}[(\left(m \ast e_t\right) \star (m \ast [\xi z_t+ T_s g_t + e_t]+\varepsilon_{t+1}))(\boldsymbol\tau)] \nonumber \\
-	&=\mathbf{E}[\left(m \ast e_t\right)\star\left(m \ast e_t\right)(\boldsymbol\tau)]
+	&=\mathbf{E}[\left(m \ast e_t\right)\star\left(m \ast e_t\right)(\boldsymbol\tau)].
 \end{align} 
 This holds as the disturbance, $e_t$, is not correlated with the field, $z_t$, and the observation noise, $\varepsilon_{t+1}$. A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix~\ref{ap:CorrelationAnalysis}). By using this relationship and the isotropy property of the observation kernel \eqref{eq:term3Noisy} can be written as
 \begin{align}\label{eq:EM-Autoterm4}
@@ -567,9 +567,9 @@ To solve for the disturbance covariance function, once again the convolution the
 \begin{align}
 	\mathcal{F}&\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} = \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2 \nonumber \\ 
 	&\quad-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
-	&\quad - \frac{T_s}{4} \mathcal{F}\{k(-\boldsymbol\tau)\}\mathcal{F}\left\{\mathbf{E}\left[c_t(\boldsymbol\tau)\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\},
+	&\quad - \frac{T_s}{4} \mathcal{F}\{k(-\boldsymbol\tau)\}\mathcal{F}\left\{\mathbf{E}\left[c_t(\boldsymbol\tau)\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}.
 \end{align}
- rearranging and taking the inverse Fourier transform yields the final result 
+Now rearranging and taking the inverse Fourier transform yields the final result 
  \begin{align}\label{eq:EM-MMGFourier2}   
 	\gamma&(\boldsymbol\tau) =\mathcal{F}^{-1}\left\lbrace\frac{1}{\tilde{m}(\boldsymbol\tau)}\Bigg[\left[ \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2  \nonumber \right. \right. \\ 
 	&\quad-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
@@ -580,7 +580,7 @@ where
  \tilde{m}(\boldsymbol\tau)=\mathcal{F}\{m(\boldsymbol\tau)\}\mathcal{F}\{m(\boldsymbol\tau)\}.
 \end{equation}
 % from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
-Using the result obtained for the kernel from  \eqref{eq:Fourier_TF_of_Kernel}  the equation for covariance function can be solved.  This solution can be simplified where $f(z_t(\mathbf{r}))=z_t(\mathbf{r})$ giving
+Using the result obtained for the kernel from  \eqref{eq:Fourier_TF_of_Kernel}  the equation for covariance function can be solved.  This solution can be simplified when $f(z_t(\mathbf{r}))=z_t(\mathbf{r})$ giving
 \begin{align}\label{eq:DiffusionDisturbanceSolution}
 	&\gamma(\boldsymbol\tau) =\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\tau)}\Bigg[\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2\right] \nonumber \right.\\
  &\left. \left.- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]\right]\right\rbrace.
@@ -649,7 +649,7 @@ $\boldsymbol{\mu}_i$&$[0~0]^{\top}$& $3\times[0~0]^{\top}, [-3~0]^{\top}$ &$[0~0
 \label{table:KernelParameters}
 \end{table}
 
-\section{Simulation}   
+\section{Simulation and Results}   
 \begin{figure}[ht]
 	\centering
 		\subfigure[]{\includegraphics[scale=1]{./Graph/100Fields.pdf}}
@@ -658,7 +658,7 @@ $\boldsymbol{\mu}_i$&$[0~0]^{\top}$& $3\times[0~0]^{\top}, [-3~0]^{\top}$ &$[0~0
 	\label{fig:SimulatedData}
 \end{figure}
 
-This section demonstrates the performance of the proposed estimation scheme. Two examples are shown where in each example two different spatial mixing kernels (isotropic and anisotropic) were adopted. In the first example non-linear and linearized with $\xi\neq 0$ ...and in the second linear with $\xi=0$ .... The spatial mixing kernels are defined as a sum of Gaussian basis functions in the form of
+This section demonstrates the performance of the proposed estimation scheme. Two examples are shown, where in each example two different spatial mixing kernels (isotropic and anisotropic) were adopted. In the first example non-linear and linearized with $\xi\neq 0$ ...and in the second linear with $\xi=0$. The actual spatial mixing kernels are defined as a sum of Gaussian basis functions in the form of
 \begin{align}\label{eq:sumofGaussians}
  k\left(\mathbf{r}-\mathbf{r}'\right)=\sum_{i=0}^{n_{\theta}}\theta_i\psi_i\left(\mathbf{r}-\mathbf{r}'\right), 
  \end{align}
@@ -666,11 +666,11 @@ where $\theta_i$ is the weight and
 \begin{equation}\label{eq:Kernelbasis}
 	\psi_i=\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)}{\sigma_i^2}\right)}.
 \end{equation}
-The kernel parameters for each simulation are given in Table~\ref{table:KernelParameters}. In each example data was generated using \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $, assuming periodic boundary condition (PBC), and sampled over $t=\left\lbrace1 \cdots 20000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by a Gaussian
+The kernel parameters for each simulation are given in Table~\ref{table:KernelParameters}. In each example data was generated using equation \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $, assuming periodic boundary condition (PBC), and sampled over $t=\left\lbrace1 \cdots 20000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by a Gaussian
 \begin{equation}\label{eq:observationkernel}
  	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
  \end{equation} 
- where $\sigma_m$ sets the observation kernel width and chosen to be $0.9$. The superscript $\top$ denotes the transpose operator. The observation noise variance $\sigma_{\varepsilon}^2$ is set to $0.1$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. For estimation first 1000 samples discarded allowing the model's initial transients to die out.  The simulation parameters are summarized in Table~\ref{table:SimulationParameters}. One Example of the simulated field over 100 time instants along with the sensor arrangement are shown in \figurename{\ref{fig:SimulatedData}}, showing stable dynamics \parham{(figure needs colorbar)}.
+ where $\sigma_m$ sets the observation kernel width and chosen to be $0.9$. The superscript $\top$ denotes the transpose operator. The observation noise variance $\sigma_{\varepsilon}^2$ is set to $0.1$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. For estimation, the first 1000 samples discarded allowing the initial transients to die out.  The simulation parameters are summarized in Table~\ref{table:SimulationParameters}. One example of the simulated field over 100 time instants along with the sensor arrangement are shown in \figurename{\ref{fig:SimulatedData}}, showing stable dynamics \parham{(figure needs colorbar)}.
 
 In the first example, sigmoid's parameters, i.e slope and threshold, observation noise variance and time scale parameter are assumed to be known. In the second example observation noise variance is also unknown to the estimator.
 
@@ -728,26 +728,27 @@ In the first example, sigmoid's parameters, i.e slope and threshold, observation
 	\centering
 		\includegraphics[scale=1]{./Graph/AnisoKernelIEEE1.pdf}
 	\caption{Caption goes here}
-	\label{fig:label}
+	\label{fig:label1}
 \end{figure*}
 
 \begin{figure*}[ht]
 	\centering
 		\includegraphics[scale=1]{./Graph/IsoKernelIEEE.pdf}
 	\caption{Caption goes here}
-	\label{fig:label}
+	\label{fig:label2}
 \end{figure*}  
 
 \begin{figure*}[ht]
 	\centering
 		\includegraphics[scale=1]{./Graph/DisturbanceWidthEstimation.pdf}
 	\caption{Estimation of the disturbance covariance function for anisotropic kernel and sigmoidal function. True, estimated and cross-sections at observation locations are shown in (a), (b) and (c) respectively.}
-	\label{fig:label}
+	\label{fig:label3}
 \end{figure*}
 
 
 \subsection{Example II: Linear IDE model, $\xi=0$}
-For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The estimation of the spatial mixing kernel and the underlying field using  EM based algorithm, data augmentation (DA) algorithm or hierarchical Bayesian framework can be found in \cite{Dewar2009,Scerri2009,Wikle1999,Xu2005,Wikle2011}. The parameters of the isotropic kernel are set to $\boldsymbol\theta=[100~-80~5]^{\top}$,  $\boldsymbol\mu_i=[0~0]^{\top}$, $\sigma_0=1.8$, $\sigma_1=2.4$ and $\sigma_2=6$, forming a semi-compact support Mexican-hat shape commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The parameters of the anisotropic kernel are set to $\boldsymbol\theta=[200~-200]^{\top}$, $\boldsymbol\mu_0=[-0.5~0]^{\top}$, $\boldsymbol\mu_1=[0~0.5]^{\top}$, $\sigma_0=\sigma_1=2.4$.  
+For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. \dean{I believe we should remove this bit. It is stated elsewhere: The estimation of the spatial mixing kernel and the underlying field using EM based algorithm, data augmentation (DA) algorithm or hierarchical Bayesian framework can be found in \cite{Dewar2009,Scerri2009,Wikle1999,Xu2005,Wikle2011}. }
+The parameters of the isotropic kernel are set to $\boldsymbol\theta=[100~-80~5]^{\top}$,  $\boldsymbol\mu_i=[0~0]^{\top}$, $\sigma_0=1.8$, $\sigma_1=2.4$ and $\sigma_2=6$, forming a semi-compact support Mexican-hat shape commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The parameters of the anisotropic kernel are set to $\boldsymbol\theta=[200~-200]^{\top}$, $\boldsymbol\mu_0=[-0.5~0]^{\top}$, $\boldsymbol\mu_1=[0~0.5]^{\top}$, $\sigma_0=\sigma_1=2.4$.  
 In this example solutions to the spatial mixing kernel and the disturbance covariance function are found by \eqref{eq:SimplifiedKernelSolution}   and \eqref{eq:DiffusionDisturbanceSolution} respectively. When this type of model is considered the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon}^2$ and any values close to the upper bound given by \eqref{eq:BoundOnObsVariance}, i.e., 
 $0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation. Using this upper bound the estimation of the kernel and the disturbance covariance functions are obtained (see \figurename{\ref{fig:DiffusionIso}} and \figurename{\ref{fig:DifussionAniso}). 
 \begin{figure*}[h]
@@ -780,16 +781,40 @@ The effect of $\sigma_{\varepsilon}^2$ on the kernel estimation is also shown in
 %  \label{fig:1anisoKernel1d}    
 %  \end{figure}  
 \section{Conclusion}
-An efficient and novel approach to modeling spatio-temporal systems has been presented. This model is able to identify spatial mixing kernel, disturbance and noise characteristics from observed field. This ability greatly facilitates the identification of the class of system which the IDE can represent.
+\dean{a quick summary}
 
+An efficient and novel approach to identifying spatio-temporal systems has been presented. The results demonstrated the ability to identify the spatial mixing kernel, disturbance and noise characteristics from noisy observations. This ability greatly facilitates the identification of the class of system which the IDE can represent.
+
+\dean{what is different and where is it better}
+
+\begin{enumerate}
+	\item computational complexity
+	\item implementation and algorithmic complexity
+	\item can see how errors in other parameters might effect the kernel estimate
+	\item an interesting aside is that it formally shows how synaptic time constants are linked to connectivity
+	\item non prior knowledge of kernel shape is required and it may be isotropic
+	\item can estimate disturbance and noise
+\end{enumerate}
+
+
+\dean{how this might compliment other schemes}
 
 For more accurate estimation of the spatial kernel and also the inference of the underlying field the EM framework can be combined with the proposed method in this work. The estimated support of the kernel can be  used as a guide to constrain the placement of basis functions and the corresponding coefficients can be further corrected using the EM algorithm for more accurate representation of the mixing kernel structure. In fact, the correlation analysis can be considered a prerequisite for the EM algorithm described in \cite{Dewar2009}, where the approximated supports can be used to estimate the gain of the kernel and the field disturbance variance.                                             
-                                                                                                                                                                              
+         
+The approximated support of the disturbance covariance function facilitates the application of the EM algorithm for estimating the temporal variance in the disturbance signal. This way the disturbance covariance matrix can be decomposed into two parts: an unknown scalar and a constant matrix depending only on the inferred spatial support. Therefore, the estimation problem of the disturbance covariance matrix breaks down to the estimation of a single scalar parameter, improving the accuracy and the convergence property of the algorithm.
+                                                                                                                                                                     
+\dean{alternatives to the IDECorr method}
 
 An alternative to estimating the support of the kernel in a traditional state-space scheme is to place a regular grid of spatial mixing kernel basis functions over the entire spatial domain of the field. However, the estimate of the spatial extent of the mixing kernel greatly improves the speed of the estimation algorithm as the number of basis functions can be significantly reduced. This also improves the uncertainty in the estimated coefficients, as a lower number of unknown parameters needs to be estimated. 
 
-The approximated support of the disturbance covariance function also facilitates the application of the EM algorithm for estimating the temporal variance in the disturbance signal. This way the disturbance covariance matrix can be decomposed into two parts: an unknown scalar and a constant matrix depending only on the inferred spatial support. Therefore, the estimation problem of the disturbance covariance matrix breaks down to the estimation of a single scalar parameter, improving the accuracy and the convergence property of the algorithm.
 
+\dean{extensions}
+
+\begin{enumerate}
+	\item second order
+	\item automated placement of kernel basis functions
+	\item freq analysis to define basis function width
+\end{enumerate}
 In the case where the spatial process is observed at irregular locations, spatial interpolation maybe possible to apply in order to obtain a regular grid of observations to perform the proposed estimation framework.
 
 
