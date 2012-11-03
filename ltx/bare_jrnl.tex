@@ -658,7 +658,9 @@ $\boldsymbol{\mu}_i$&$[0~0]^{\top}$& $3\times[0~0]^{\top}, [-3~0]^{\top}$ &$[0~0
 	\label{fig:SimulatedData}
 \end{figure}
 
-This section demonstrates the performance of the proposed estimation scheme. Two examples are shown, where in each example two different spatial mixing kernels (isotropic and anisotropic) were adopted. In the first example non-linear and linearized with $\xi\neq 0$ ...and in the second linear with $\xi=0$. The actual spatial mixing kernels are defined as a sum of Gaussian basis functions in the form of
+The aim of this section is to demonstrate the performance of the proposed estimation scheme. Estimation results using two forms of the IDE are demonstrated. In each form of the IDE two different spatial mixing kernels, isotropic and anisotropic, were adopted. The first example uses a forward model in the form of the Amari style neural field model \dean{(ref)} ($\xi\neq 0$). Sythetic data is generated using a nonlinear sigmoidal activation function and an activation function that has been linearized about the threshold. The second example uses a forward model that is consistent with the work of Dewar et al.~\cite{Dewar2007}, where the decay parameter $\xi=0$.
+
+The actual spatial mixing kernels are defined as a sum of Gaussian basis functions in the form of
 \begin{align}\label{eq:sumofGaussians}
  k\left(\mathbf{r}-\mathbf{r}'\right)=\sum_{i=0}^{n_{\theta}}\theta_i\psi_i\left(\mathbf{r}-\mathbf{r}'\right), 
  \end{align}
@@ -666,7 +668,7 @@ where $\theta_i$ is the weight and
 \begin{equation}\label{eq:Kernelbasis}
 	\psi_i=\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)}{\sigma_i^2}\right)}.
 \end{equation}
-The kernel parameters for each simulation are given in Table~\ref{table:KernelParameters}. In each example data was generated using equation \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $, assuming periodic boundary condition (PBC), and sampled over $t=\left\lbrace1 \cdots 20000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by a Gaussian
+The kernel parameters for each simulation are given in Table~\ref{table:KernelParameters}. In each example, data was generated using equation \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $, assuming periodic boundary conditions (PBC), and sampled over $t=\left\lbrace1 \cdots 20000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by a Gaussian
 \begin{equation}\label{eq:observationkernel}
  	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
  \end{equation} 
