@@ -380,7 +380,7 @@ where $t\in \mathbb{Z}^{+} $ denotes discrete time, $T_s$ is the sampling time s
 	\label{ActivationFunction} f\left( z_t\left( \mathbf{r}'\right) \right) =& \frac{1}{1 + \exp \left( \varsigma \left( z_0 - z_t\left(\mathbf{r}'\right) \right) \right)} \\
 	\hat{f}(z_t\left(\mathbf{r}\right)) &=\frac{2 + \varsigma(z_t\left(\mathbf{r}\right) - z_0)}{4}, 
 \end{align}
-where $\hat{f}(z_t\left(\mathbf{r}\right))$ is linearized about the threshold $z_0$. The parameter $\varsigma$ defines the slope of the activation function. The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
+where $\hat{f}(z_t\left(\mathbf{r}\right))$ is a linearized (about the threshold $z_0$) version of $f(z_t\left(\mathbf{r}\right))$. The parameter $\varsigma$ defines the slope of the activation function. The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
 \begin{equation}
 cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d^2\delta(t-t')\gamma(\mathbf{r}-\mathbf{r'}),
 \label{eq:FieldDisturbance}
@@ -672,7 +672,7 @@ The kernel parameters for each simulation are given in Table~\ref{table:KernelPa
 \begin{equation}\label{eq:observationkernel}
  	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
  \end{equation} 
- where $\sigma_m$ sets the observation kernel width and chosen to be $0.9$. The superscript $\top$ denotes the transpose operator. The observation noise variance $\sigma_{\varepsilon}^2$ is set to $0.1$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. For estimation, the first 1000 samples discarded allowing the initial transients to die out.  The simulation parameters are summarized in Table~\ref{table:SimulationParameters}. One example of the simulated field over 100 time instants along with the sensor arrangement are shown in \figurename{\ref{fig:SimulatedData}}, showing stable dynamics \parham{(figure needs colorbar)}.
+ where $\sigma_m$ sets the observation kernel width and chosen to be $0.9$. The superscript $\top$ denotes the transpose operator. The observation noise variance $\sigma_{\varepsilon}^2$ is set to $0.1$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. For estimation, the first 1000 samples discarded allowing the initial transients to die out.  The simulation parameters are summarized in Table~\ref{table:SimulationParameters}. One example of the simulated field over 100 time instants along with the sensor arrangement are shown in \figurename{\ref{fig:SimulatedData}}, showing stable dynamics.
 
 In the first example, sigmoid's parameters, i.e slope and threshold, observation noise variance and time scale parameter are assumed to be known. In the second example observation noise variance is also unknown to the estimator.
 
