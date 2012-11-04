@@ -1,14 +1,14 @@
-q%# create stacked images (I am simply repeating the same image 5 times)
+%# create stacked images (I am simply repeating the same image 5 times)
 % img = load('clown');
 % I = repmat(img.X,[1 1 5]);
 % cmap = img.map;
 % 
 % imagesc(cmap)
-clc
-close all
-clear
-
-load Results_NonlinearModel_PBC_Aniso
+% clc
+% close all
+% clear
+% 
+% load Results_NonlinearModel_PBC_Aniso
 
 %%
 
@@ -23,7 +23,7 @@ fig = figure('units','centimeters','position',[0 0 width height],'filename',file
     'papersize',[height, width],'paperorientation','landscape','renderer','painters');
 subplot(121)
 %# plot each slice as a texture-mapped surface (stacked along the Z-dimension)
-for k=100:2:110
+for k=100:1:110
     surface('XData',X-0.5, 'YData',Y-0.5, 'ZData',Z.*k, ...
         'CData',squeeze(v(k,:,:)),'linestyle','none')
     shading interp
@@ -65,14 +65,16 @@ width = 8.8;
 
 fig = figure('units','centimeters','position',[0 0 width height],...
     'papersize',[height, width],'paperorientation','landscape','renderer','painters');
-
-for k=200:300
+axes('position',[0.13,0.068,0.775,0.815])
+for k=200:1:300
     surface('XData',X-0.5, 'YData',Y-0.5, 'ZData',Z.*k, ...
         'CData',squeeze(v(k,:,:)),'linestyle','none')
     shading interp
 end
 axis tight
 box on
+colorbar('units','centimeters','location','northoutside','position',[1.2 9 6.5 0.5],'fontsize',FS)
+
 % set(gca, 'YDir','reverse', 'ZLim',[0 size(I,3)+1])
 zlabel('Time (ms)','fontsize',FS)
 ylabel('Space','fontsize',FS)
@@ -82,9 +84,9 @@ set(gca,'fontsize',FS,'xtick',[1 21 41],'xticklabel',{'-10','0','10'},'ytick',[1
 view([-45 45])
 
 %%
-
-height = 6;
-width = 8.8;
-
-fig = figure('units','centimeters','position',[0 0 width height],'filename',filename,...
-    'papersize',[height, width],'paperorientation','landscape','renderer','painters');
+% 
+% height = 6;
+% width = 8.8;
+% 
+% fig = figure('units','centimeters','position',[0 0 width height],'filename',filename,...
+%     'papersize',[height, width],'paperorientation','landscape','renderer','painters');
