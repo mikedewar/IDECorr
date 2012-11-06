@@ -367,7 +367,52 @@ A heuristic approximate estimate of the kernel support obtained by the temporal 
 
 Here we further develop the work of Scerri et al. \cite{Scerri2009}, by establishing an efficient method for estimating the spatial mixing kernel, the field disturbance characteristics, and the observation noise variance. The estimates are given by closed-form equations, based on the average (over time) spatial auto-correlation and cross-correlation of the observed field. This eliminates the computational load imposed by the methods in Dewar et al. and Scerri et al. \cite{Dewar2009,Scerri2009}. Furthermore, we relax assumptions in the previous work where they assumed that disturbance and noise characteristics were known to the estimator. Although the proposed method does not infer the underlying field from observed data, the results from the new methods can be used as a prerequisite for the EM-based algorithms (see \cite{Dewar2009,Xu2007}), providing better and efficient state (spatial field) and parameter estimations (spatial mixing kernel). 
 
-The rest of this paper is set out as follows. In Section 2 the stochastic IDE model is briefly reviewed. Section 3 describes the derivation of the estimation framework and provides necessary formulations to construct such an estimator using the observed field. In Section 4, synthetic examples are given to demonstrate the estimation performance. Finally, conclusions are drawn in Section 5.
+The rest of this paper is set out as follows. In Section 2 the stochastic IDE model is briefly reviewed. Section 3 describes the derivation of the estimation framework and provides necessary formulations to construct such an estimator using the observed field. In Section 4, synthetic examples are given to demonstrate the estimation performance. Finally, conclusions are drawn in Section 5. All symbols used in the subsequent sections are given in Table.~\ref{table:Notation}. 
+\begin {table}[t]
+\begin{center}
+	{\tiny\begin{tabular}{llll}
+	\hline \hline
+	& Symbol & Quantity & Units\\ 
+	\hline 
+	& Domain&& \\
+	& $\Omega$ &Spatial domain& n.a. \\ 
+	& $\mathbb{Z}^{+}$ &Non-negative integers& n.a. \\ 
+	& $\mathbf{r}$ &Spatial location& arbitrary unit\\ 
+	& $t$ &Time & s \\  
+ 	% & $\boldsymbol{\nu}$ &Spatial frequency& arbitrary unit\\  
+	& $\mathbf I$ & Identity matrix & n.a. \\ 
+ 	%& $\ast$ & Convolution operator & n.a. \\ 
+ 	%& $\star$ & Correlation operator & n.a. \\ 
+  % & $\mathcal{F}\{\cdot\}$ &Fourier transform& n.a. \\  
+  %  & $\mathcal{F}^{-1}\{\cdot\}$ &Inverse Fourier transform& n.a. \\  
+  % & $\mathbf{E}[\cdot]$ &Expectation operator& n.a. \\  
+
+	& Model&& \\
+	& $\mathbf{y}_t$ & Observation & Arbitrary unit \\
+	& $z_t(\mathbf{r})$ & Spatial field & Arbitrary unit \\ 
+	& $f_t(\mathbf{r})$ & Sigmoidal function & spike~s$^{-1}$ \\ 
+	& $g_t(\mathbf{r})$ & Weighted sigmoidal function & spike~s$^{-1}$ \\
+ 	& $e_t(\mathbf{r})$ & Field disturbance, with covariance function $\gamma(\mathbf{r}-\mathbf{r'})$  & spike~s$^{-1}$ \\
+ 	& $\varepsilon_t$ & Observation noise, with covariance matrix $\Sigma_{\varepsilon}$  & mV \\  
+ 	& $m(\mathbf{r}-\mathbf{r'})$ & Observation kernel& n.a. \\  
+ 	& $k(\mathbf{r}-\mathbf{r'})$ & Spatial mixing kernel& n.a. \\ 
+	&$\psi_i$&kernel basis function&n.a.\\
+	&$\theta_i$ &Connectivity kernel parameters&mVspike$^{-1}$ \\ 
+	& $\boldsymbol\mu_i$ &Kernel centers& mm \\  
+	& $\sigma_{i}$ &kernel width parameters&mm \\ 
+ 	% & $\delta(t)$ &Dirac-delta function& n.a. \\  
+ 	%  	& $\delta(\boldsymbol\tau)$ &Kronecker delta& n.a. \\  
+	& Estimation&& \\
+ 	& $\boldsymbol\tau$ &Spatial shift& Arbitrary unit \\
+  & $\hat{f}(\cdot)$ &Linearized sigmoidal function around the threshold& spike~s$^{-1}$ \\  
+  & $R_{y_{t+1}y_t}(\boldsymbol{\tau}) $ &The spatial cross-correlation between consecutive observations& arbitrary unit \\  
+  & $R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})$ & The spatial auto-correlation at time $t+1$& arbitrary unit \\    
+ 	\hline \hline
+	\end{tabular}}
+ \caption {Notation. 	The symbols, description of the quantity, and the SI units where relevant.} 
+ \label{table:Notation}
+ \end{center}
+ \end {table}
 
 \section{Stochastic IDE Model}
 The form of the spatially homogeneous IDE that is used for the examples in this paper is the Amari style neural field model. This was chosen since it generalizes to more simple IDE models that are commonly used in the literature with particular parameter settings. The stochastic Amari neural field model (see \cite{Freestone2011} for more details) is given by the equation  
@@ -588,54 +633,28 @@ Using the result obtained for the kernel from  \eqref{eq:Fourier_TF_of_Kernel}  
 
 In this case, to calculate the exact shape of the disturbance covariance function the observation noise variance and the sensor kernel support are required. Note that the solution is independent of the decay parameter $\xi$. If $m(\cdot)$ is a point sensor then the shape of $\gamma(\cdot)$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\tau)$ in \eqref{eq:EM-MMGFourier2} and \eqref{eq:DiffusionDisturbanceSolution}  is then required. 
 Note using uniform observation samples to estimate the spatial mixing kernel and the disturbance covariance function provide an approximate solution to the estimated  mixing kernel and disturbance covariance function. 
-\begin {table}[t]
-\begin{center}
-	{\tiny\begin{tabular}{llll}
-	\hline \hline
-	& Symbol & Quantity & Units\\ 
-	\hline 
-	& Domain&& \\
-	& $\Omega$ &Spatial domain& n.a. \\ 
-	& $\mathbb{Z}^{+}$ &Non-negative integers& n.a. \\ 
-	& $\mathbf{r}$ &Spatial location& arbitrary unit\\ 
-	& $t$ &Time & s \\  
- 	% & $\boldsymbol{\nu}$ &Spatial frequency& arbitrary unit\\  
-	& $\mathbf I$ & Identity matrix & n.a. \\ 
- 	%& $\ast$ & Convolution operator & n.a. \\ 
- 	%& $\star$ & Correlation operator & n.a. \\ 
-  % & $\mathcal{F}\{\cdot\}$ &Fourier transform& n.a. \\  
-  %  & $\mathcal{F}^{-1}\{\cdot\}$ &Inverse Fourier transform& n.a. \\  
-  % & $\mathbf{E}[\cdot]$ &Expectation operator& n.a. \\  
+\section{Simulation and Results}   
+\begin{figure}[ht]
+	\centering
+		\subfigure[]{\includegraphics[scale=1]{./Graph/100FieldsColorbar.pdf}}
+		\subfigure[]{\includegraphics[scale=1]{./Graph/SensorArrangement.pdf}}
+	\caption{The spatio-temporal dynamics of the field. (a) One example of 100 time instants of the simulated field using \eqref{eq:ConvolutionIntegral}-\eqref{eq:ObservationEquation}   with PBC. (b) Arrangement of the sensor kernels. 196 Gaussian sensor kernels are centered on the plus with the distance between adjacent sensors $2.5$ mm and the width $\sigma_m=0.9$ mm.}
+	\label{fig:SimulatedData}
+\end{figure}
 
-	& Model&& \\
-	& $\mathbf{y}_t$ & Observation & Arbitrary unit \\
-	& $z_t(\mathbf{r})$ & Spatial field & Arbitrary unit \\ 
-	& $f_t(\mathbf{r})$ & Sigmoidal function & spike~s$^{-1}$ \\ 
-	& $g_t(\mathbf{r})$ & Weighted sigmoidal function & spike~s$^{-1}$ \\
- 	& $e_t(\mathbf{r})$ & Field disturbance, with covariance function $\gamma(\mathbf{r}-\mathbf{r'})$  & spike~s$^{-1}$ \\
- 	& $\varepsilon_t$ & Observation noise, with covariance matrix $\Sigma_{\varepsilon}$  & mV \\  
- 	& $m(\mathbf{r}-\mathbf{r'})$ & Observation kernel& n.a. \\  
- 	& $k(\mathbf{r}-\mathbf{r'})$ & Spatial mixing kernel& n.a. \\ 
-	&$\psi_i$&kernel basis function&n.a.\\
-	&$\theta_i$ &Connectivity kernel parameters&mVspike$^{-1}$ \\ 
-	& $\boldsymbol\mu_i$ &Kernel centers& mm \\  
-	& $\sigma_{i}$ &kernel width parameters&mm \\ 
- 	% & $\delta(t)$ &Dirac-delta function& n.a. \\  
- 	%  	& $\delta(\boldsymbol\tau)$ &Kronecker delta& n.a. \\  
-	& Estimation&& \\
- 	& $\boldsymbol\tau$ &Spatial shift& Arbitrary unit \\
-  & $\hat{f}(\cdot)$ &Linearized sigmoidal function around the threshold& spike~s$^{-1}$ \\  
-  & $R_{y_{t+1}y_t}(\boldsymbol{\tau}) $ &The spatial cross-correlation between consecutive observations& arbitrary unit \\  
-  & $R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})$ & The spatial auto-correlation at time $t+1$& arbitrary unit \\    
- 	\hline \hline
-	\end{tabular}}
- \caption {Notation. 	The symbols, description of the quantity, and the SI units where relevant.} 
- \label{table:Notation}
- \end{center}
- \end {table} 
+The aim of this section is to demonstrate the performance of the proposed estimation scheme. Estimation results using two forms of the IDE are demonstrated. In each form of the IDE two different spatial mixing kernels, isotropic and anisotropic, were adopted. The first example uses a forward model in the form of the Amari style neural field model \cite{Amari1977} ($\xi\neq 0$). Sythetic data is generated using a nonlinear sigmoidal activation function and an activation function that has been linearized about the threshold. The second example uses a linear forward model that is consistent with the work of Dewar et al.~\cite{Dewar2007}, where the decay parameter $\xi=0$.
+
+The actual spatial mixing kernels are defined as a sum of Gaussian basis functions in the form of
+\begin{align}\label{eq:sumofGaussians}
+ k\left(\mathbf{r}-\mathbf{r}'\right)=\sum_{i=0}^{n_{\theta}}\theta_i\psi_i\left(\mathbf{r}-\mathbf{r}'\right), 
+ \end{align}
+where $\theta_i$ is the weight and
+\begin{equation}\label{eq:Kernelbasis}
+	\psi_i=\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)}{\sigma_i^2}\right)}.
+\end{equation}
+The kernel parameters for each simulation are given in Table~\ref{table:KernelParameters}.
 \begin{table}[htbp]
 \begin{center}
-
 {\tiny\begin{tabular}{lcccc} 
 \hline\hline
 \multicolumn{1}{c}{Parameter} & \multicolumn{ 2}{c}{Non-linear} & \multicolumn{ 2}{c}{linear}   \\  \cline{ 1- 5}   
@@ -648,35 +667,11 @@ $\boldsymbol{\mu}_i$&$[0~0]^{\top}$& $3\times[0~0]^{\top}, [-3~0]^{\top}$ &$[0~0
 \caption{Spatial mixing kernel parameters for different examples.}
 \label{table:KernelParameters}
 \end{table}
-
-\section{Simulation and Results}   
-\begin{figure}[ht]
-	\centering
-		\subfigure[]{\includegraphics[scale=1]{./Graph/100FieldsColorbar.pdf}}
-		\subfigure[]{\includegraphics[scale=1]{./Graph/SensorArrangement.pdf}}
-	\caption{The spatio-temporal dynamics of the field. (a) One example of 100 time instants of the simulated field using \eqref{eq:ConvolutionIntegral}-\eqref{eq:ObservationEquation}   with PBC. (b) Arrangement of the sensor kernels. 196 Gaussian sensor kernels are centered on the plus with the distance between adjacent sensors $2.5$ mm and the width $\sigma_m=0.9$ mm.}
-	\label{fig:SimulatedData}
-\end{figure}
-
-The aim of this section is to demonstrate the performance of the proposed estimation scheme. Estimation results using two forms of the IDE are demonstrated. In each form of the IDE two different spatial mixing kernels, isotropic and anisotropic, were adopted. The first example uses a forward model in the form of the Amari style neural field model \cite{Amari1977} ($\xi\neq 0$). Sythetic data is generated using a nonlinear sigmoidal activation function and an activation function that has been linearized about the threshold. The second example uses a forward model that is consistent with the work of Dewar et al.~\cite{Dewar2007}, where the decay parameter $\xi=0$.
-
-The actual spatial mixing kernels are defined as a sum of Gaussian basis functions in the form of
-\begin{align}\label{eq:sumofGaussians}
- k\left(\mathbf{r}-\mathbf{r}'\right)=\sum_{i=0}^{n_{\theta}}\theta_i\psi_i\left(\mathbf{r}-\mathbf{r}'\right), 
- \end{align}
-where $\theta_i$ is the weight and
-\begin{equation}\label{eq:Kernelbasis}
-	\psi_i=\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)^\top(\mathbf{r}-\mathbf{r}'-\boldsymbol\mu_i)}{\sigma_i^2}\right)}.
-\end{equation}
-The kernel parameters for each simulation are given in Table~\ref{table:KernelParameters}. In each example, data was generated using equation \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $, assuming periodic boundary conditions (PBC), and sampled over $t=\left\lbrace1 \cdots 20000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by a Gaussian
+ In each example, data was generated using equation \eqref{eq:ConvolutionIntegral} and \eqref{eq:ObservationEquation} over the spatial region $\mathcal{S}=[-10,10]^2 $, assuming periodic boundary conditions (PBC), and sampled over $t=\left\lbrace1 \cdots 20000  \right\rbrace $ at 196 regularly spaced locations, with the sensor kernel defined by a Gaussian
 \begin{equation}\label{eq:observationkernel}
  	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
  \end{equation} 
- where $\sigma_m$ sets the observation kernel width and chosen to be $0.9$. The superscript $\top$ denotes the transpose operator. The observation noise variance $\sigma_{\varepsilon}^2$ is set to $0.1$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. For estimation, the first 1000 samples discarded allowing the initial transients to die out.  The simulation parameters are summarized in Table~\ref{table:SimulationParameters}. One example of the simulated field over 100 time instants, showing stable dynamics along with the sensor arrangement are shown in \figurename{\ref{fig:SimulatedData}}.
-
-In the first example, sigmoid's parameters, i.e slope and threshold, observation noise variance and time scale parameter are assumed to be known. In the second example observation noise variance is also unknown to the estimator.
-
-% In the experiments first $\sigma_{\varepsilon}^2$ is estimated using the minimum defined by inequality \eqref{eq:BoundOnObsVariance}. The estimated variance is then used in the formulations given by \eqref{eq:EM-KernelSolution} and \eqref{eq:EM-MMGFourier2} to estimate the kernel and the disturbance function, i.e. $\sigma_d^2\gamma(\mathbf{r}-\mathbf{r'})$.  
+ where $\sigma_m$ sets the observation kernel width and chosen to be $0.9$. The superscript $\top$ denotes the transpose operator. The observation noise variance $\sigma_{\varepsilon}^2$ is set to $0.1$. The field disturbance covariance function, $\gamma(\cdot)$ is modeled by a Gaussian with the width $\sigma_{\gamma}^2=1.3$ and $\sigma_d^2=0.1$. For estimation, the first 1000 samples discarded allowing the initial transients to die out.  The simulation parameters are summarized in Table~\ref{table:SimulationParameters}.
 \begin {table}[t]
 \begin{center}
 	{\tiny\begin{tabular}{lllll}
@@ -712,20 +707,14 @@ In the first example, sigmoid's parameters, i.e slope and threshold, observation
  \label{table:SimulationParameters}
  \end{center}
  \end {table}
-% \begin{figure}[!h] 
-%  \centering
-%  \includegraphics[width=0.5\textwidth]{./Graph/FieldSnapshot.pdf}
-%  \caption{Snapshots of the underlying fields using different spatial mixing kernels; left and right panels are the generated periodic fields using isotropic (Mexican-hat shape) and anisotropic spatial mixing kernels at the final time step.}
-%  \label{fig:field}
-%  \end{figure}    
+ One example of the simulated field over 100 time instants, showing stable dynamics along with the sensor arrangement are shown in \figurename{\ref{fig:SimulatedData}}.
+
+In the first example, sigmoid's parameters, i.e slope and threshold, observation noise variance and time scale parameter are assumed to be known. In the second example observation noise variance is also unknown to the estimator.
 \subsection{Example I: Non-linear and linearized IDE model, $\xi\neq 0$}
 \begin{itemize}
 \item Note: In this case it is very sensitive to observation noise and $\xi$, although a bound can be found for the observation noise, the exact values of theses parameters are required.
 \end{itemize}
- % Consider the following homogeneous mixing kernel with $n_\theta=2$, $\boldsymbol\mu_0=\boldsymbol\mu_1=\mathbf 0$, $\sigma_0^2=3.24$, $\sigma_1^2=5.76$, $\theta_0=0.5$ and $\theta_1=-0.3$ in \eqref{eq:sumofGaussians} and \eqref{eq:Kernelbasis}, forming a semi-compact support Mexican-hat shape. Such a kernel is commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The kernel and its estimation are plotted in \figurename{\ref{fig:MexHatKernel2d}}. Diagonal cross-sections of the true and estimated kernels are also shown in \figurename{\ref{fig:MexHatKernel1d}}. An estimation for $\sigma_{\varepsilon}^2$ is found by \eqref{eq:BoundOnObsVariance} giving $\sigma_{\varepsilon}^2=0.105$ which is close to the actual value of the observation noise variance. The estimated disturbance covariance function is also shown in \figurename{\ref{fig:EstimatedSupport1d}}. In this figure the true and estimated covariance function at observation locations are shown by solid and dashed lines respectively.  
-% \subsection{Example II: anisotropic mixing kernel}
-% For this experiment the homogeneous kernel parameters are set as $n_\theta=3$, $\boldsymbol\mu_0=-\boldsymbol\mu_2=[-0.5~-0.5]$ and $\boldsymbol\mu_1=[0~0]$. The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=-0.07$, $\theta_1=0.07$ and $\theta_2=0.02$ resulting in anisotropic kernel shown in \figurename{\ref{fig:anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:anisoKernel2d}} are shown in \figurename{\ref{fig:anisoKernel1d}}.
-
+ 
 \begin{figure*}[ht]
 	\centering
 		\includegraphics[scale=1]{./Graph/AnisoKernelIEEE1.pdf}
