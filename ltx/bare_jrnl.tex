@@ -709,7 +709,7 @@ $\boldsymbol{\mu}_i$&$[0~0]^{\top}$& $3\times[0~0]^{\top}, [-3~0]^{\top}$ &$[0~0
  \end {table}
  One example of the simulated field over 100 time instants, showing stable dynamics along with the sensor arrangement are shown in \figurename{\ref{fig:SimulatedData}}.
 
-In the first example, sigmoid's parameters, i.e slope and threshold, observation noise variance and time scale parameter are assumed to be known. In the second example observation noise variance is also unknown to the estimator.
+In the first example, sigmoid's parameters, i.e slope and threshold, observation noise variance and time scale parameter are assumed to be known. In the second example observation noise variance is also unknown to the estimator. In this case the effect of the observation noise variance on the spatial mixing kernel estimate is also examined.
 \subsection{Example I: Non-linear and linearized IDE model, $\xi\neq 0$}
 \begin{itemize}
 \item Note: In this case it is very sensitive to observation noise and $\xi$, although a bound can be found for the observation noise, the exact values of theses parameters are required.
@@ -803,7 +803,7 @@ An alternative to estimating the support of the kernel in a traditional state-sp
 \begin{enumerate}
 	\item second order 
  
-\parham{ One extension to this framework is to include finite rise impulse response into the model, leading into a second-order IDE which can be written as two first-order IDEs. This is particularly relevant if the proposed method is to be applied to electrophysiological data as the synaptic dynamics can be better approximated \cite{VanRotterdam1982}.}   
+\parham{ One extension to this framework is to include finite rise impulse response into the model, leading into a second-order IDE which can be written as two coupled first-order IDEs. This is particularly relevant if the proposed method is to be applied to electrophysiological data as the synaptic dynamics can be better approximated \cite{VanRotterdam1982}.}   
 	\item automated placement of kernel basis functions
 	\item freq analysis to define basis function width  
 	\parham{One way to infer the spatial mixing kernel and the underlying field from observation is to find a finite dimensional state-space representation of the IDE using basis function decomposition. An approximation of the basis function widths can be determined using conventional spectral analysis of the observed field. However, it may be also possible to compute a closed-form solution of the basis functions ...  }
