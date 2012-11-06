@@ -683,8 +683,8 @@ $\boldsymbol{\mu}_i$&$[0~0]^{\top}$& $3\times[0~0]^{\top}, [-3~0]^{\top}$ &$[0~0
  	& $T_s$ &Time step&0.001&s \\ 
  	& $T$ &Number of time steps&20000&n.a. \\ 
  	&Model&&& \\
- 	& $\varsigma$ &Sigmoidal's slope&0.56&mV$^{-1}$spike.s$^{-1}$ \\ 
- 	& $z_0$ &Sigmoid's threshold &1.8&mV \\ 
+ 	& $\varsigma$ &Sigmoidal's slope&0.56 \cite{Wendling2005}&mV$^{-1}$spike.s$^{-1}$ \\ 
+ 	& $z_0$ &Sigmoid's threshold &1.8 \cite{Marreiros2008}&mV \\ 
  	& $\xi$ &Decay parameter&0.9 &n.a. \\  
   & $\sigma_{\gamma}$ &Disturbance covariance width&1.3 &mm \\  
   & $\sigma_{d}$ &Disturbance variance&0.1 &mV \\  
@@ -711,6 +711,7 @@ $\boldsymbol{\mu}_i$&$[0~0]^{\top}$& $3\times[0~0]^{\top}, [-3~0]^{\top}$ &$[0~0
 
 In the first example, sigmoid's parameters, i.e slope and threshold, observation noise variance and time scale parameter are assumed to be known. In the second example observation noise variance is also unknown to the estimator. In this case the effect of the observation noise variance on the spatial mixing kernel estimate is also examined.
 \subsection{Example I: Non-linear and linearized IDE model, $\xi\neq 0$}
+In this example we consider Amari type neural field model and set the decay parameter, $\xi$  to 0.9 \cite{Freestone2011}. The parameters of the isotropic kernel are set to $\boldsymbol\theta=[100~-80~5]^{\top}$,  $\boldsymbol\mu_i=[0~0]^{\top}$, $\sigma_0=1.8$, $\sigma_1=2.4$ and $\sigma_2=6$, forming a semi-compact support Mexican-hat shape commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}.
 \begin{itemize}
 \item Note: In this case it is very sensitive to observation noise and $\xi$, although a bound can be found for the observation noise, the exact values of theses parameters are required.
 \end{itemize}
@@ -738,7 +739,7 @@ In the first example, sigmoid's parameters, i.e slope and threshold, observation
 
 
 \subsection{Example II: Linear IDE model, $\xi=0$}
-For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The parameters of the isotropic kernel are set to $\boldsymbol\theta=[100~-80~5]^{\top}$,  $\boldsymbol\mu_i=[0~0]^{\top}$, $\sigma_0=1.8$, $\sigma_1=2.4$ and $\sigma_2=6$, forming a semi-compact support Mexican-hat shape commonly used in the neural field modeling \cite{Amari1977,Atay2005,Breakspear2010}. The parameters of the anisotropic kernel are set to $\boldsymbol\theta=[200~-200]^{\top}$, $\boldsymbol\mu_0=[-0.5~0]^{\top}$, $\boldsymbol\mu_1=[0~0.5]^{\top}$, $\sigma_0=\sigma_1=2.4$.  
+For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The parameters of the isotropic kernel are the same as the previous example. The parameters of the anisotropic kernel are set to $\boldsymbol\theta=[200~-200]^{\top}$, $\boldsymbol\mu_0=[-0.5~0]^{\top}$, $\boldsymbol\mu_1=[0~0.5]^{\top}$, $\sigma_0=\sigma_1=2.4$.  
 In this example solutions to the spatial mixing kernel and the disturbance covariance function are found by \eqref{eq:SimplifiedKernelSolution}   and \eqref{eq:DiffusionDisturbanceSolution} respectively. When this type of model is considered the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon}^2$ and any values close to the upper bound given by \eqref{eq:BoundOnObsVariance}, i.e., 
 $0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation. Using this upper bound the estimation of the kernel and the disturbance covariance functions are obtained (see \figurename{\ref{fig:DiffusionIso}} and \figurename{\ref{fig:DifussionAniso}). 
 \begin{figure*}[h]
