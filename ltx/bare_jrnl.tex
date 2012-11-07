@@ -726,7 +726,7 @@ In this example we consider Amari type neural field model and set the decay para
 	\label{fig:AnisoNonlinear}
 \end{figure*}
 
- Note the spatial mixing kernel can only be reconstructed at the observation locations which can be seen clearly in panel (d) of \figurename{\ref{fig:IsoNonlinear}} and \figurename{\ref{fig:AnisoNonlinear}}. Estimations of the disturbance covariance function are also depicted in \figurename{\ref{fig:DisturbanceNon}}, showing a small discrepancy at the origin. Note for the non-linear and linearized activation functions the results are very sensitive to observation noise, although a bound can be found for the observation noise, the exact value this parameter is required in order to obtain fairly accurate estimations.
+ Note the spatial mixing kernel can only be reconstructed at the observation locations which can be seen clearly in panel (d) of \figurename{\ref{fig:IsoNonlinear}} and \figurename{\ref{fig:AnisoNonlinear}}. Estimations of the disturbance covariance function are also depicted in \figurename{\ref{fig:DisturbanceNon}}, showing a small discrepancy at the origin. Note for the non-linear and linearized activation functions the results are very sensitive to observation noise, although a bound can be found for the observation noise, the exact value of this parameter is required in order to obtain fairly accurate estimations.
 \begin{figure*}[ht]   
 	\centering
 		\includegraphics[scale=1]{./Graph/DisturbanceWidthEstimation.pdf}
@@ -759,15 +759,6 @@ The effect of $\sigma_{\varepsilon}^2$ on the kernel estimation is also shown in
 	\caption{The effect of the observation noise on the spatial mixing kernel estimation for linear IDE model and $\xi=0$. Cross-sections of the estimated spatial mixing kernel for different values of the observation noise variance are shown. The minimum defined by inequality \eqref{eq:BoundOnObsVariance} is $0.106$. True and estimated kernel are shown by solid and dashed lines respectively.}
 	\label{fig:ObservationNoiseEffectonLinearIDE}
 \end{figure*}
-
-% The widths  of the kernel components are equal and chosen to be $\sigma_i^2=5.76$ with $\theta_0=0.2$ and $\theta_1=-0.2$, resulting in anisotropic kernel shown in \figurename{\ref{fig:1anisoKernel2d}} where the estimated kernel is also depicted. Cross-sections of plots in \figurename{\ref{fig:1anisoKernel2d}} are shown in \figurename{\ref{fig:1anisoKernel1d}}.         
-
-% \begin{figure}[!h] 
-%  \centering
-%  \includegraphics[width=0.5\textwidth]{./Graph/1anisoKernelSupportEstimation1d.pdf}
-%  \caption{Estimation of anisotropic mixing kernel;  cross-sections of the true (at observation locations) and estimated kernels are shown by solid and dotted lines respectively .}
-%  \label{fig:1anisoKernel1d}    
-%  \end{figure}  
 \section{Conclusion}
 \dean{a quick summary}
 
