@@ -422,15 +422,15 @@ The form of the spatially homogeneous IDE that is used for the examples in this 
 \end{equation}
 where $t\in \mathbb{Z}^{+} $ denotes discrete time, $T_s$ is the sampling time step and $\mathbf{r} \in \Omega \subset \mathbb{R}^{n}$ are spatial locations in $n \in \left\lbrace 1,2,3 \right\rbrace $-dimensional physical space. The parameter $\xi$ is a decay term that is used to model synaptic dynamics in neural field models. In more simple forms of the IDE decay parameter is set to zero to model pure diffusion processes. The continuous spatial field at time $t$ and at location $\mathbf r$ is denoted $z_t\left(\mathbf r\right)$. The spatial dynamics are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{r}\right)$, which maps the field through time (which may be transformed or scaled by the activation function $f(\cdot)$) via the convolution defined in \eqref{eq:ConvolutionIntegral}. In the case of the neural field model example that we will employ in this paper, $f(\cdot)$ takes the form of a sigmoidal function or a linearized sigmoid function in the forward model and is always approximated as a linearized function in the estimator. These functions are given by
 \begin{align}
-	\label{ActivationFunction} f\left( z_t\left( \mathbf{r}'\right) \right) =& \frac{1}{1 + \exp \left( \varsigma \left( z_0 - z_t\left(\mathbf{r}'\right) \right) \right)} \\
-	\hat{f}(z_t\left(\mathbf{r}\right)) &=\frac{2 + \varsigma(z_t\left(\mathbf{r}\right) - z_0)}{4}, 
+	 f\left( z_t\left( \mathbf{r}'\right) \right) =& \frac{1}{1 + \exp \left( \varsigma \left( z_0 - z_t\left(\mathbf{r}'\right) \right) \right)} \label{ActivationFunction}\\
+	\hat{f}(z_t\left(\mathbf{r}\right)) &=\frac{2 + \varsigma(z_t\left(\mathbf{r}\right) - z_0)}{4} \label{LinearizedActivationFunction}, 
 \end{align}
 where $\hat{f}(z_t\left(\mathbf{r}\right))$ is linearized about the threshold $z_0$. The parameter $\varsigma$ defines the slope of the activation function. The disturbance $e_{t}(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially colored but temporally independent, with covariance \cite{Rasmussen2005}
 \begin{equation}
 cov\left(e_{t}\left(\mathbf{r}\right),e_{t+t'}\left(\mathbf{r'}\right)\right)=\sigma_d^2\delta(t-t')\gamma(\mathbf{r}-\mathbf{r'}),
 \label{eq:FieldDisturbance}
 \end{equation}
-where $\sigma_d$ is temporal disturbance, $\delta(t)$ is the Dirac-delta function and $\gamma(\mathbf{r}-\mathbf{r'})$ is a spatially homogeneous covariance function. The mapping between the spatial field and the observations, denoted by $\mathbf{y}_t(\mathbf{r}_n)$, is modeled using the observation function that incorporates sensors with a spatial extent
+where $\sigma_d$ is temporal disturbance, $\delta(t)$ is the Dirac-delta function and $\gamma(\mathbf{r})$ is a spatially homogeneous covariance function. The mapping between the spatial field and the observations, denoted by $\mathbf{y}_t(\mathbf{r}_n)$, is modeled using the observation function that incorporates sensors with a spatial extent
 \begin{equation}\label{eq:ObservationEquation}
 	y_t(\mathbf{r}_n) = \int_{\Omega} { m\left(\mathbf{r}-\mathbf{r}'\right) z_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
 \end{equation}
@@ -438,7 +438,7 @@ where $m\left(\mathbf{r}\right)$ is the observation kernel and $\varepsilon_t(\m
 % defined in this work by the Gaussian
 
 \section{Estimation Method}\label{sec:EstimationMethod}
-For the derivation of the spatial properties estimator of the field equations we assume \dean{the forward model} has a nonlinear sigmoidal activation function. This is common in computational modeling of mesoscopic brain dynamics to describe the relationship between the mean membrane potential and mean firing rate of a given population of neurons \cite{Freeman1975}. The results obtained using the sigmoidal function can be easily modified to account for other linear forms of the IDE that are used in other models of electrophysiological data, and furthermore, modeling in other areas such as population ecology and weather nowcasting. This is described in a later section in more details. 
+For the derivation of the spatial properties estimator of the field equations we assume the forward model has a nonlinear sigmoidal activation function. This is common in computational modeling of mesoscopic brain dynamics to describe the relationship between the mean membrane potential and mean firing rate of a given population of neurons \cite{Freeman1975}. The results obtained using the sigmoidal function can be easily modified to account for other linear forms of the IDE that are used in other models of electrophysiological data, and furthermore, modeling in other areas such as population ecology and weather nowcasting. This is described in a later section in more details. 
 
 To proceed we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
 \begin{equation}
@@ -540,7 +540,7 @@ In the case where $f(z_t(\mathbf{r}))=z_t(\mathbf{r})$, it can be shown that the
 \begin{equation}\label{eq:SimplifiedKernelSolution}
 	k(\boldsymbol\tau) = \frac{1}{T_s }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }-\xi\right\}}.
 \end{equation}
-This is in fact a spacial case for the general solution given by equation~\eqref{eq:EM-Fourier_TF_of_Kernel} with $\varsigma=4$ and $z_0=0.5$ in equation~\eqref{eq:linearizeSigmoid}. From equation~\eqref{eq:SimplifiedKernelSolution} we see that an error in our guess for $\xi$ will result in a shift of the estimated kernel amplitude and an error in the initial guess of the observation noise variance will result in a distortion in the shape of the kernel. However, if the signal-to-noise ratio is high such a distortion becomes insignificant. The equation \eqref{eq:SimplifiedKernelSolution} can be further simplified by setting the decay parameter, $\xi=0$ to model diffusion processes. Setting the sampling time $T_s=1$ solves the linear IDE studied in \cite{Dewar2009, Scerri2009}.  
+This is in fact a spacial case for the general solution given by equation~\eqref{eq:EM-Fourier_TF_of_Kernel} with $\varsigma=4$ and $z_0=0.5$ in equation~\eqref{LinearizedActivationFunction}. From equation~\eqref{eq:SimplifiedKernelSolution} we see that an error in our guess for $\xi$ will result in a shift of the estimated kernel amplitude and an error in the initial guess of the observation noise variance will result in a distortion in the shape of the kernel. However, if the signal-to-noise ratio is high such a distortion becomes insignificant. The equation \eqref{eq:SimplifiedKernelSolution} can be further simplified by setting the decay parameter, $\xi=0$ to model diffusion processes. Setting the sampling time $T_s=1$ solves the linear IDE studied in \cite{Dewar2009, Scerri2009}.  
 % An incorrect estimate of $c_t$ will result in a DC scaling (\parham{or shift?}) in the kernel estimate
 
 By the Wiener-Khintchine theorem (WKT) the denominator of \eqref{eq:SimplifiedKernelSolution} is equivalent to the power spectral density (PSD) which is non-negative and a real quantity \cite{Ricker2003}. The WKT allows to establish the bounds on the initial guess of $\sigma_{\varepsilon}^2$
@@ -739,21 +739,21 @@ In this example we consider Amari type neural field model and set the decay para
 For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The parameters of the isotropic kernel are the same as the previous example and the parameters of the anisotropic kernel are set to $\boldsymbol\theta=[200~-200]^{\top}$, $\boldsymbol\mu_0=[-0.5~0]^{\top}$, $\boldsymbol\mu_1=[0~0.5]^{\top}$, $\sigma_0=\sigma_1=2.4$.  
 In this example solutions to the spatial mixing kernel and the disturbance covariance function are found by \eqref{eq:SimplifiedKernelSolution}   and \eqref{eq:DiffusionDisturbanceSolution} respectively. When this type of model is considered the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon}^2$ and any values close to the upper bound given by \eqref{eq:BoundOnObsVariance}, i.e., 
 $0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation. Using this upper bound the estimation of the kernel and the disturbance covariance functions are obtained (see \figurename{\ref{fig:DiffusionIso}} and \figurename{\ref{fig:DifussionAniso}). 
-\begin{figure*}[h]
+\begin{figure*}[!h]
 	\centering
 		\includegraphics[scale=1]{./Graph/DisturbanceKernelEstimationLinearIso.pdf}
 	\caption{Estimation of the isotropic kernel and disturbance covariance function for linear model using \eqref{eq:SimplifiedKernelSolution} and \eqref{eq:DiffusionDisturbanceSolution}. Actual and  estimated spatial mixing kernel at observation locations are shown in (a) and (b).  A cross-section of the actual kernel (solid line) and its estimate  (dashed line) are shown in (c). Cross-sections of the actual (solid line) and estimated (dashed line) disturbance covariance function are shown in (d).}
 	\label{fig:DiffusionIso} 
 	\end{figure*}
 	
-\begin{figure*}[h]
+\begin{figure*}[!hb]
 	\centering
 		\includegraphics[scale=1]{./Graph/DisturbanceKernelEstimationLinearAniso.pdf}
 	\caption{Estimation of the anisotropic kernel and disturbance covariance function for linear model using \eqref{eq:SimplifiedKernelSolution} and \eqref{eq:DiffusionDisturbanceSolution}. Actual and  estimated spatial mixing kernel at observation locations are shown in (a) and (b).  A cross-section of the actual kernel (solid line) and its estimate  (dashed line) are shown in (c). Cross-sections of the actual (solid line) and estimated (dashed line) disturbance covariance function are shown in (d).}
 	\label{fig:DifussionAniso}
 \end{figure*}  
 The effect of $\sigma_{\varepsilon}^2$ on the kernel estimation is also shown in \figurename{\ref{fig:ObservationNoiseEffectonLinearIDE}}, showing distortion of the spatial mixing kernel where a value outside the bound is used.
-\begin{figure*}[h]
+\begin{figure*}[!hb]
 	\centering
 		\includegraphics[scale=1]{./Graph/NoiseEffectIsoKernel.pdf}
 	\caption{The effect of the observation noise on the spatial mixing kernel estimation for linear IDE model and $\xi=0$. Cross-sections of the estimated spatial mixing kernel for different values of the observation noise variance are shown. The minimum defined by inequality \eqref{eq:BoundOnObsVariance} is $0.106$. True and estimated kernel are shown by solid and dashed lines respectively.}
@@ -802,7 +802,9 @@ In the case where the spatial process is observed at irregular locations, spatia
 
 
 
-% if have a single appendix:
+% if have a single appendix: 
+\clearpage
+\newpage
  \appendix[Convolution and Correlation]
 % or
 % \appendices  % for no appendix heading
@@ -839,30 +841,6 @@ Similarly, \eqref{eq:app-ConvXcorRelation2} can be written as
 &=a(-\boldsymbol\tau)\ast a(\boldsymbol\tau) \ast b(-\boldsymbol\tau)\ast b(\boldsymbol\tau) \nonumber \\
 &=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau).
 \end{align}     
-%  \section{Linear IDE}\label{ap:linearIDE}  
-% Consider the following homogeneous linear IDE
-% \begin{equation}\label{app:DiscreteTimeModel}
-% 	z_{t+1}\left(\mathbf{r}\right) = 
-% 	\xi z_t\left(\mathbf{r}\right) + 
-% 	T_s \int_\Omega { 
-% 	    k\left(\mathbf{r}-\mathbf{r'}\right)z_t\left(\mathbf{r}'\right)
-% 	\, \mathrm{d}\mathbf{r}'} 
-% 	+ e_t\left(\mathbf{r}\right), 
-% \end{equation}              
-% then the results for the spatial mixing kernel and the covariance functions are simplified to
-% \begin{equation}\label{app:EM-KernelSolution}
-% 	k(\boldsymbol\tau) = \frac{1}{T_s }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }-\xi\right\}}.
-% \end{equation}  
-% and
-% \begin{align}\label{app:DiffusionDisturbanceSolution}
-% 	&\gamma(\boldsymbol\tau) =\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\tau)}\Bigg[\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2\right] \nonumber \right.\\
-%  &\left. \left.- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2}\right]\right]\right\rbrace.
-% \end{align}                                                                                                                       
-% This is in fact a spacial case for the general solutions given by \eqref{eq:Fourier_TF_of_Kernel} and \eqref{eq:EM-MMGFourier2} with $\varsigma=4$ and $z_0=0.5$. This can be further simplified by setting the decay parameter, $\xi=0$ to model diffusion processes.  In this case the solution for the kernel is given by
-% \begin{equation}\label{app:DiffusionKernelSolution}
-% 	k(\boldsymbol\tau) =\frac{1}{T_s }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }\right\}}.
-% \end{equation}                      
-% Setting  the sampling time $T_s=1$ solves the linear IDE studied in \cite{Dewar2009, Scerri2009}. The disturbance covariance function solution remains unchanged, showing that the result is independent of the decay term. In this case the exact shape of the covariance function only depends on the observation noise variance and the observation kernel.            
 %\appendices
 %\section{Proof of the First Zonklar Equation}
 %Appendix one text goes here.
@@ -899,7 +877,8 @@ Similarly, \eqref{eq:app-ConvXcorRelation2} can be written as
 % http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
- % \newpage
+\clearpage
+\newpage
 \bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
 \bibliography{IEEEabrv,IEEECorr}  
