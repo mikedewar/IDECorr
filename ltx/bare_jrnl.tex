@@ -726,7 +726,7 @@ In this example we consider Amari type neural field model and set the decay para
 	\label{fig:AnisoNonlinear}
 \end{figure*}
 
- Note the spatial mixing kernel can only be reconstructed at the observation locations (see panel (d) of \figurename{\ref{fig:IsoNonlinear}} and \figurename{\ref{fig:AnisoNonlinear}}). Estimations of the disturbance covariance function are also depicted in \figurename{\ref{fig:DisturbanceNon}}, showing a small discrepancy at the origin. Note for the non-linear and linearized activation functions the results are very sensitive to observation noise, although a bound can be found for the observation noise, the exact value of this parameter is required in order to obtain fairly accurate estimations.
+ Note the spatial mixing kernel can only be reconstructed at the observation locations (see panel (d) of \figurename{\ref{fig:IsoNonlinear}} and \figurename{\ref{fig:AnisoNonlinear}}). Estimations of the disturbance covariance function are also depicted in \figurename{\ref{fig:DisturbanceNon}}, showing a small discrepancy at the origin. Note for the non-linear and linearized activation functions the results are very sensitive to the observation noise, although a bound can be found for the observation noise, the exact value of this parameter is required in order to obtain fairly accurate estimations.
 \begin{figure*}[ht]   
 	\centering
 		\includegraphics[scale=1]{./Graph/DisturbanceWidthEstimation.pdf}
@@ -737,7 +737,7 @@ In this example we consider Amari type neural field model and set the decay para
 
 \subsection{Example II: Linear IDE model, $\xi=0$}
 For this experiment the decay parameter, $\xi$ in \eqref{eq:ConvolutionIntegral} is set to zero describing a diffusive process described in \cite{Kot1992,Kot1996,Wikle1999,Xu2005}. The parameters of the isotropic kernel are the same as the previous example and the parameters of the anisotropic kernel are set to $\boldsymbol\theta=[200~-200]^{\top}$, $\boldsymbol\mu_0=[-0.5~0]^{\top}$, $\boldsymbol\mu_1=[0~0.5]^{\top}$, $\sigma_0=\sigma_1=2.4$.  
-In this example solutions to the spatial mixing kernel and the disturbance covariance function are found by \eqref{eq:SimplifiedKernelSolution}   and \eqref{eq:DiffusionDisturbanceSolution} respectively. When this type of model is considered the solution to the kernel is not very sensitive to the observation noise variance, $\sigma_{\varepsilon}^2$ and any values close to the upper bound given by \eqref{eq:BoundOnObsVariance}, i.e., 
+In this example solutions to the spatial mixing kernel and the disturbance covariance function are found by \eqref{eq:SimplifiedKernelSolution}   and \eqref{eq:DiffusionDisturbanceSolution} respectively. When this type of model is considered the solution to the kernel is robust to the observation noise variance variations, $\sigma_{\varepsilon}^2$ and any values close to the upper bound given by \eqref{eq:BoundOnObsVariance}, i.e., 
 $0\le\sigma_{\varepsilon}^2\le 0.106$ yields reasonably accurate estimation. Using this upper bound the estimation of the kernel and the disturbance covariance functions are obtained (see \figurename{\ref{fig:DiffusionIso}} and \figurename{\ref{fig:DifussionAniso}). 
 \begin{figure*}[!h]
 	\centering
