@@ -778,9 +778,16 @@ An efficient and novel approach to identifying spatio-temporal systems has been 
 
 \dean{how this might compliment other schemes}
 
-For more accurate estimation of the spatial kernel and also the inference of the underlying field the EM framework can be combined with the proposed method in this work. The estimated support of the kernel can be  used as a guide to constrain the placement of basis functions and the corresponding coefficients can be further corrected using the EM algorithm for more accurate representation of the mixing kernel structure. In fact, the correlation analysis can be considered a prerequisite for the EM algorithm described in \cite{Dewar2009}, where the approximated supports can be used to estimate the gain of the kernel and the field disturbance variance.                                             
+The correlation analysis introduced in this work can be considered a prerequisite for the EM algorithm described in \cite{Dewar2009}, where the approximated supports can be used to estimate the gain of the kernel and the field disturbance variance.    
+
+% For more accurate estimation of the spatial kernel and also the inference of the underlying field the EM framework can be combined with the proposed method in this work.
+The estimated support of the kernel can be  used as a guide to constrain the placement of basis functions and the corresponding coefficients can be further corrected using the EM algorithm for more accurate representation of the mixing kernel structure.
+
+The approximated support of the disturbance covariance function also facilitates the application of the EM algorithm for estimating the temporal variance in the disturbance signal. This way the disturbance covariance matrix can be decomposed into two parts: an unknown scalar and a constant matrix depending only on the inferred spatial support. Therefore, the estimation problem of the disturbance covariance matrix breaks down to the estimation of a single scalar parameter, improving the accuracy and the convergence property of the algorithm.     
+
+                                          
          
-The approximated support of the disturbance covariance function facilitates the application of the EM algorithm for estimating the temporal variance in the disturbance signal. This way the disturbance covariance matrix can be decomposed into two parts: an unknown scalar and a constant matrix depending only on the inferred spatial support. Therefore, the estimation problem of the disturbance covariance matrix breaks down to the estimation of a single scalar parameter, improving the accuracy and the convergence property of the algorithm.
+
                                                                                                                                                                      
 \dean{alternatives to the IDECorr method}
 
