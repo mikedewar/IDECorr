@@ -760,51 +760,24 @@ The effect of $\sigma_{\varepsilon}^2$ on the kernel estimation is also shown in
 	\label{fig:ObservationNoiseEffectonLinearIDE}
 \end{figure*}
 \section{Conclusion}
-\dean{a quick summary}
-
 An efficient and novel approach to identifying spatio-temporal systems has been presented. The results demonstrated the ability to identify the spatial mixing kernel, disturbance and noise characteristics from noisy observations. This ability greatly facilitates the identification of the class of system which the IDE can represent.
 
-\dean{what is different and where is it better}
-
-\begin{enumerate}
-	\item computational complexity
-	\item implementation and algorithmic complexity
-	\item can see how errors in other parameters might effect the kernel estimate
-	\item an interesting aside is that it formally shows how synaptic time constants are linked to connectivity
-	\item non prior knowledge of kernel shape is required and it may be isotropic
-	\item can estimate disturbance and noise
-\end{enumerate}
-
-
-\dean{how this might compliment other schemes}
-
+The method presented in this paper has several advantages over previously published methods. For example, although the derivations are complex, the closed-form estimators presented in equations~\eqref{eq:EM-Fourier_TF_of_Kernel} and \eqref{eq:SimplifiedKernelSolution} provide methods that less complex algorithmically than the alternative EM-algorithm. Furthermore, by using the closed-form solution one can see how potential errors in other parameters of the model, that are assumed to be known, may effect the estimates. This also leads to new insights into the IDE-based neural fields models by formally relating other parameters of the model to the connectivity structure.
+ 
 The correlation analysis introduced in this work can be considered a prerequisite for the EM algorithm described in \cite{Dewar2009}, where the approximated supports can be used to estimate the gain of the kernel and the temporal variance in the disturbance signal.    
 
 % For more accurate estimation of the spatial kernel and also the inference of the underlying field the EM framework can be combined with the proposed method in this work.
-The estimated support of the kernel can be  used as a guide to constrain the placement of basis functions and the corresponding coefficients can be further corrected using the EM algorithm for more accurate representation of the mixing kernel structure.
+The estimated support of the kernel can be used as a guide to constrain the placement of basis functions and the corresponding coefficients can be further corrected using the EM algorithm for more accurate representation of the mixing kernel structure.
 
-The approximated support of the disturbance covariance function also facilitates the application of the EM algorithm for estimating the temporal variance in the disturbance signal. This way the disturbance covariance matrix can be decomposed into two parts: an unknown scalar and a constant matrix depending only on the inferred spatial support. Therefore, the estimation problem of the disturbance covariance matrix breaks down to the estimation of a single scalar parameter, improving the accuracy and the convergence property of the algorithm.     
-
-                                          
-         
-
-                                                                                                                                                                     
-\dean{alternatives to the IDECorr method}
+The approximated support of the disturbance covariance function also facilitates the application of the EM algorithm for estimating the temporal variance in the disturbance signal. This way the disturbance covariance matrix can be decomposed into two parts: an unknown scalar and a constant matrix depending only on the inferred spatial support. Therefore, the estimation problem of the disturbance covariance matrix breaks down to the estimation of a single scalar parameter, potentially improving the accuracy and the convergence property of the algorithm.     
 
 An alternative to estimating the support of the kernel in a traditional state-space scheme is to place a regular grid of spatial mixing kernel basis functions over the entire spatial domain of the field. However, the estimate of the spatial extent of the mixing kernel greatly improves the speed of the estimation algorithm as the number of basis functions can be significantly reduced. This also improves the uncertainty in the estimated coefficients, as a lower number of unknown parameters needs to be estimated. 
 
+One extension to this framework is to include finite rise impulse response into the model, leading into a second-order IDE which can be written as two coupled first-order IDEs. This is particularly relevant if the proposed method is to be applied to electrophysiological data as the synaptic dynamics can be better approximated \cite{VanRotterdam1982}.
 
-\dean{extensions}
+% An alternative method to infer the spatial mixing kernel and the underlying field from observations is by using an approximate finite dimensional state-space representation of the IDE using a basis function decomposition~\cite{Dewar2009}. An approximation of the basis function widths can be determined using conventional spectral analysis of the observed field~\cite{Scerri2009}. However, it may be also possible to compute a closed-form solution of the basis functions in frequency domain in terms of average (over time) spatial Fourier transform of observations.
 
-\begin{enumerate}
-	\item second order 
- 
-\parham{ One extension to this framework is to include finite rise impulse response into the model, leading into a second-order IDE which can be written as two coupled first-order IDEs. This is particularly relevant if the proposed method is to be applied to electrophysiological data as the synaptic dynamics can be better approximated \cite{VanRotterdam1982}.}   
-	\item automated placement of kernel basis functions
-	\item freq analysis to define basis function width  
-	\parham{One way to infer the spatial mixing kernel and the underlying field from observation is to find a finite dimensional state-space representation of the IDE using basis function decomposition. An approximation of the basis function widths can be determined using conventional spectral analysis of the observed field. However, it may be also possible to compute a closed-form solution of the basis functions in frequency domain in terms of average (over time) spatial Fourier transform of observations.}
-\end{enumerate}
-In the case where the spatial process is observed at irregular locations, spatial interpolation maybe possible to apply in order to obtain a regular grid of observations to perform the proposed estimation framework.
+% In the case where the spatial process is observed at irregular locations, spatial interpolation maybe possible to apply in order to obtain a regular grid of observations to perform the proposed estimation framework.
 
 
 
