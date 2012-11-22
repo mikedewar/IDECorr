@@ -1,3 +1,14 @@
+*.pyc
+*.aux
+*.pdf
+*.log
+*.bbl
+*.blg
+*.bak
+*.out
+
+*.mat
+
 
 .DS_Store
 
