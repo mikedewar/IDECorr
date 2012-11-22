@@ -352,7 +352,7 @@ In the case where $f(z_t(\mathbf{r}))=z_t(\mathbf{r})$, it can be shown that the
 \begin{equation}\label{eq:SimplifiedKernelSolution}
 	k(\boldsymbol\tau) = \frac{1}{T_s }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }-\xi\right\}}.
 \end{equation}
-This is in fact a spacial case for the general solution given by equation~\eqref{eq:EM-Fourier_TF_of_Kernel} with $\varsigma=4$ and $z_0=0.5$ in equation~\eqref{LinearizedActivationFunction}.
+This is in fact a special case for the general solution given by equation~\eqref{eq:EM-Fourier_TF_of_Kernel} with $\varsigma=4$ and $z_0=0.5$ in equation~\eqref{LinearizedActivationFunction}.
 From equation~\eqref{eq:SimplifiedKernelSolution} we see that an error in our guess for $\xi$ will result in a shift of the estimated kernel amplitude and an error in the initial guess of the observation noise variance will result in a distortion in the shape of the kernel.
 However, if the signal-to-noise ratio is high such a distortion becomes insignificant.
 The equation \eqref{eq:SimplifiedKernelSolution} can be further simplified by setting the decay parameter, $\xi=0$ to model diffusion processes.
